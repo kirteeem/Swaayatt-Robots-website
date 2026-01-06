@@ -101,11 +101,13 @@ export default function ThirdHero() {
         });
       }
 
+      const TOTAL_SECTIONS = 5;
+
       // Create ScrollTrigger with 5 sections (0-4)
       scrollTriggerRef.current = ScrollTrigger.create({
         trigger: sectionRef.current,
         start: "top top+=80",
-        end: "+=500%", // Increased for 5 sections
+        end: `+=${TOTAL_SECTIONS * 120}%`, // Increased for 5 sections
         pin: true,
         pinSpacing: true,
         scrub: 1,
@@ -451,20 +453,20 @@ export default function ThirdHero() {
 
         <div className="absolute top-[120px] left-0 right-0 z-20">
           {/* ===== MAIN LINE (DESKTOP + MOBILE SAME) ===== */}
-          <div className="h-1 bg-white/40 w-full relative">
+          <div className="h-[1px] bg-white/40 w-full relative">
             {/* ===== MOBILE ONLY MARKS ===== */}
             {(isMobile || isTablet) && (
               <>
-                <div className="absolute left-0 top-1/2 w-3 h-3 
+                <div className="absolute left-0 top-1/2 w-1 h-1 
                         -translate-x-1/2 -translate-y-1/2 
                         bg-white/70 rounded-full z-10" />
-                <div className="absolute left-1/3 top-1/2 w-3 h-3 
+                <div className="absolute left-1/3 top-1/2 w-1 h-1 
                         -translate-x-1/2 -translate-y-1/2 
                         bg-white/70 rounded-full z-10" />
-                <div className="absolute left-2/3 top-1/2 w-3 h-3 
+                <div className="absolute left-2/3 top-1/2 w-1 h-1 
                         -translate-x-1/2 -translate-y-1/2 
                         bg-white/70 rounded-full z-10" />
-                <div className="absolute left-full top-1/2 w-3 h-3 
+                <div className="absolute left-full top-1/2 w-1 h-1 
                         -translate-x-1/2 -translate-y-1/2 
                         bg-white/70 rounded-full z-10" />
               </>
@@ -475,7 +477,7 @@ export default function ThirdHero() {
           <div className="max-w-[85vw] mx-auto px-6 relative">
             <div
               ref={diamondRef}
-              className="absolute bottom-[-8px] w-4 h-4 rotate-45 bg-white
+              className="absolute sm:bottom-[-8px] bottom-[-4px] sm:w-5 sm:h-5  w-2 h-2 rotate-45 bg-white
                  shadow-[0_0_16px_rgba(255,255,255,0.95),0_0_30px_rgba(255,255,255,0.6)]
                  transition-all duration-500 ease-out z-30"
             />
