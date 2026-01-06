@@ -191,6 +191,7 @@ function BlogNodes({ progress, activeStep, isMobile }) {
     "/images/Blogs/Homepage-1.webp",
     "/images/Blogs/Blog-1.webp",
     "/images/media/news/n1.webp",
+        "/images/media/news/n1.webp",
   ];
 
   const CENTER_TEXTS = [
