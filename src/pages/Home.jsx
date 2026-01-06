@@ -31,14 +31,21 @@ export default function Home() {
       </section>
 
       {/* ================= TIMELINE SECTION ================= */}
-      <section
+
+
+
+
+     <section
         className="
           relative bg-black z-20
-          -mt-[35vh]
+        
         "
       >
         <TimelineSection />
-      </section>
+      </section> 
+
+
+
 
 <section>
   <FourHome/>

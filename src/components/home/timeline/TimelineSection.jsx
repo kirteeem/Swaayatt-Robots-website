@@ -7,9 +7,10 @@ import CenterFeature from "./CenterFeature";
 gsap.registerPlugin(ScrollTrigger);
 export default function TimelineSection() {
   const sectionRef = useRef(null);
-  // :fire: visible progress for React (throttled)
+
+
   const [progress, setProgress] = useState(0);
-  // :fire: real-time progress (no re-render)
+
   const progressRef = useRef(0);
   const rafRef = useRef(null);
   useLayoutEffect(() => {
@@ -39,7 +40,7 @@ export default function TimelineSection() {
       ref={sectionRef}
       className="
         relative
-        min-h-[100svh]
+        min-h-[100vh]
         bg-black
         overflow-hidden
         overflow-x-hidden

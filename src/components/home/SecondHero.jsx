@@ -33,7 +33,7 @@ export default function SecondHero() {
             ml-0
             md:ml-[60px]
             lg:ml-[-150px]
-            mb-72
+            mb-10
           "
         >
           <p
