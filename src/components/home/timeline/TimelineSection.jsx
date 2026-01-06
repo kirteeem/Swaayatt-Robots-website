@@ -11,6 +11,7 @@ export default function TimelineSection() {
   const progressRef = useRef(0);
   const rafRef = useRef(null);
   const [isMobile, setIsMobile] = useState(false);
+  const [activeStep, setActiveStep] = useState(0);
 
   // Detect mobile
   useEffect(() => {
@@ -32,7 +33,13 @@ export default function TimelineSection() {
       scrub: isMobile ? 0.8 : 1.2,
       pin: true,
       onUpdate: (self) => {
-        progressRef.current = self.progress;
+        const p = self.progress;
+        progressRef.current = p;
+
+        // 4 steps for 4 divider points
+        const step = Math.min(3, Math.floor(p * 4));
+        setActiveStep(step);
+
         if (!rafRef.current) {
           rafRef.current = requestAnimationFrame(() => {
             setProgress(progressRef.current);
@@ -54,13 +61,13 @@ export default function TimelineSection() {
       className="relative w-full h-screen bg-black overflow-hidden"
     >
       {/* Blog Nodes Component */}
-      <BlogNodes progress={progress} isMobile={isMobile} />
+      <BlogNodes progress={progress} activeStep={activeStep} isMobile={isMobile} />
       
       {/* Center Grid Lines */}
       <CenterFeature isMobile={isMobile} />
       
       {/* Road Timeline with Car */}
-      <RoadTimeline progress={progress} isMobile={isMobile} />
+      <RoadTimeline progress={progress} activeStep={activeStep} isMobile={isMobile} />
       
       {/* Inline CSS */}
       <style jsx>{`
@@ -146,13 +153,36 @@ export default function TimelineSection() {
           transform-origin: top;
           pointer-events: none;
         }
+
+        @keyframes carEnter {
+          0% { transform: translateX(-100vw) translateY(-50%); }
+          100% { transform: translateX(0) translateY(-50%); }
+        }
+
+        @keyframes carExit {
+          0% { transform: translateX(0) translateY(-50%); }
+          100% { transform: translateX(100vw) translateY(-50%); }
+        }
+
+        @keyframes pointGlow {
+          0%, 100% { 
+            box-shadow: 0 0 0 0 rgba(255, 255, 255, 0.7);
+          }
+          50% { 
+            box-shadow: 0 0 20px 10px rgba(255, 255, 255, 0.7);
+          }
+        }
+
+        .active-point {
+          animation: pointGlow 1s ease-in-out;
+        }
       `}</style>
     </section>
   );
 }
 
 /* ================= BLOG NODES COMPONENT ================= */
-function BlogNodes({ progress, isMobile }) {
+function BlogNodes({ progress, activeStep, isMobile }) {
   const refs = useRef([]);
   const [centerIndex, setCenterIndex] = useState(null);
 
@@ -161,7 +191,6 @@ function BlogNodes({ progress, isMobile }) {
     "/images/Blogs/Homepage-1.webp",
     "/images/Blogs/Blog-1.webp",
     "/images/media/news/n1.webp",
-    "/images/Blogs/Homepage-1.webp",
   ];
 
   const CENTER_TEXTS = [
@@ -183,11 +212,11 @@ function BlogNodes({ progress, isMobile }) {
   useLayoutEffect(() => {
     const total = images.length;
     const CENTER_INDEX = Math.floor(total / 2);
-    const safeProgress = progress ?? 0;
-    const indexProgress = CENTER_INDEX + safeProgress * total;
+    const indexProgress = activeStep + CENTER_INDEX;
 
     refs.current.forEach((el, i) => {
       if (!el) return;
+      
       let offset = i - indexProgress;
       if (offset > total / 2) offset -= total;
       if (offset < -total / 2) offset += total;
@@ -201,13 +230,13 @@ function BlogNodes({ progress, isMobile }) {
         scale: slot.scale,
         opacity: slot.opacity,
         zIndex: slot.z,
-        duration: 0.45,
+        duration: 0.6,
         ease: "power3.out",
       });
 
       if (isCenter) setCenterIndex(i);
     });
-  }, [progress]);
+  }, [activeStep, progress]);
 
   return (
     <div className="absolute inset-0 z-10 pointer-events-none">
@@ -235,7 +264,6 @@ function BlogNodes({ progress, isMobile }) {
           className={`
             absolute
             sm:left-[38vw] 
-            
             left-[50vw]
             -translate-x-1/2
             ${isMobile ? 'top-[24vh]' : 'top-[18%]'}
@@ -243,9 +271,9 @@ function BlogNodes({ progress, isMobile }) {
         >
           <div className={`relative ${isMobile ? 'w-[85vw] h-[40vh]' : 'w-[25vw] mx-auto'} aspect-video`}>
             <div
-              className={`relative ${
+              className={`relative transition-all duration-500 ${
                 centerIndex === i
-                  ? "rounded-none"
+                  ? "rounded-none shadow-[0_0_50px_rgba(0,255,0,0.3)]"
                   : "rounded-[1vw] overflow-hidden"
               }`}
             >
@@ -336,7 +364,7 @@ function CenterFeature({ isMobile }) {
           <div className="absolute top-[5%] bottom-[18%] left-[35.5%] w-px bg-white/70 pointer-events-none" />
           <div className="absolute top-[5%] bottom-[16%] left-[66.4%]  w-px bg-white/70 pointer-events-none" />
           <div className="absolute left-0 top-[16.5%] w-full h-px bg-white/50 pointer-events-none" />
-          <div className="absolute left-0 top-[42.5%] w-full h-px bg-white/50 pointer-events-none" />
+          <div className="absolute left-0 top-[46.3%] w-full h-px bg-white/50 pointer-events-none" />
         </>
       )}
 
@@ -352,17 +380,19 @@ function CenterFeature({ isMobile }) {
 }
 
 /* ================= ROAD TIMELINE COMPONENT ================= */
-function RoadTimeline({ progress, isMobile }) {
+function RoadTimeline({ progress, activeStep, isMobile }) {
   const carRef = useRef(null);
   const wrapperRef = useRef(null);
   const [imageLoaded, setImageLoaded] = useState(false);
-  const prevProgressRef = useRef(null);
+  const prevActiveStepRef = useRef(-1);
+  const [isExiting, setIsExiting] = useState(false);
 
+  // 4 equal divider points
   const DIVIDERS = [
-    { left: "20%", date: "20 Aug 2025" },
-    { left: "35%", date: "30 Jul 2025" },
+    { left: "10%", date: "20 Aug 2025" },
+    { left: "38%", date: "30 Jul 2025" },
     { left: "65%", date: "08 Jul 2025" },
-    { left: "82%", date: "23 Apr 2025" },
+    { left: "92%", date: "23 Apr 2025" },
   ];
 
   // Image load handler
@@ -379,33 +409,81 @@ function RoadTimeline({ progress, isMobile }) {
     }
   }, []);
 
-  // Car animation
+  // Car animation - only moves when reaching divider points
   useEffect(() => {
     if (!carRef.current || !wrapperRef.current || !imageLoaded) return;
 
     const width = wrapperRef.current.offsetWidth;
-    const startX = 0;
-    const endX = width * 0.78;
-
-    if (
-      prevProgressRef.current !== null &&
-      progress < 0.1 &&
-      prevProgressRef.current > 0.1
-    ) {
-      gsap.set(carRef.current, { x: 0 });
+    
+    // Check if we should exit the screen
+    if (activeStep === 3 && progress > 0.85) {
+      // Car exits screen
+      setIsExiting(true);
+      gsap.to(carRef.current, {
+        x: width + 200,
+        duration: 1.5,
+        ease: "power2.in",
+        onComplete: () => {
+          // Hide car after exit
+          gsap.set(carRef.current, { opacity: 0 });
+        }
+      });
+      return;
     }
 
-    const safeProgress = gsap.utils.clamp(0, 1, progress ?? 0);
-    gsap.to(carRef.current, {
-      x: gsap.utils.interpolate(startX, endX, safeProgress),
-      duration: 0.35,
-      ease: "power3.out",
-    });
+    // Reset exit state if we're not at the end
+    if (isExiting && activeStep < 3) {
+      setIsExiting(false);
+      gsap.set(carRef.current, { opacity: 1 });
+    }
 
-    prevProgressRef.current = progress;
-  }, [progress, imageLoaded]);
+    // Only animate when step changes
+    if (prevActiveStepRef.current !== activeStep) {
+      // Enter animation for first step
+      if (prevActiveStepRef.current === -1 && activeStep === 0) {
+        gsap.fromTo(carRef.current,
+          { x: -200, opacity: 0 },
+          {
+            x: width * 0.1 - (carRef.current.offsetWidth * 0.3),
+            opacity: 1,
+            duration: 1.2,
+            ease: "power2.out"
+          }
+        );
+      } else if (activeStep >= 0 && activeStep < DIVIDERS.length) {
+        // Move to divider point
+        const targetLeft = parseFloat(DIVIDERS[activeStep].left) / 100;
+        const targetX = width * targetLeft - (carRef.current.offsetWidth * 0.3);
+        
+        gsap.to(carRef.current, {
+          x: targetX,
+          duration: 3,
+          ease: "power3.out",
+          onStart: () => {
+            // Highlight the current divider point
+            const dividerElements = document.querySelectorAll('.divider-point');
+            if (dividerElements[activeStep]) {
+              gsap.to(dividerElements[activeStep], {
+                scale: 1,
+                duration: 5,
+                yoyo: true,
+                repeat: 1
+              });
+            }
+          }
+        });
+      }
+      
+      prevActiveStepRef.current = activeStep;
+    }
 
-  if (isMobile) return null; // Hide road on mobile
+    // Keep car visible while animating
+    if (!isExiting) {
+      gsap.set(carRef.current, { opacity: 1 });
+    }
+  }, [activeStep, progress, imageLoaded, isExiting]);
+
+  if (isMobile) return null;
 
   return (
     <div
@@ -418,6 +496,7 @@ function RoadTimeline({ progress, isMobile }) {
         h-[22vh]
         z-40
         pointer-events-none
+        overflow-visible
       "
     >
       {/* Road Surface */}
@@ -431,7 +510,7 @@ function RoadTimeline({ progress, isMobile }) {
 
       {/* Black Area Below Road */}
       <div
-        className="absolute left-0 right-0 bg-black z-[5]"
+        className="absolute left-[-20px] right-0 bg-black z-[5]"
         style={{
           top: "12.5vh",
           height: "9.5vh",
@@ -442,33 +521,41 @@ function RoadTimeline({ progress, isMobile }) {
       {DIVIDERS.map((item, i) => (
         <div
           key={i}
+          className="divider-point"
           style={{
             position: "absolute",
             left: item.left,
             top: 0,
-            zIndex: 20,
+            zIndex: 25,
             pointerEvents: "none",
+            transform: activeStep >= i ? "scale(1)" : "scale(0.8)",
+            transition: "transform 0.3s ease",
           }}
         >
           <div
             style={{
               position: "relative",
-              height: "14vh",
-              width: "0.1vw",
+              height: "10vh",
+              width: "1px",
               transform: "rotate(25deg)",
               transformOrigin: "top",
             }}
           >
             {/* Main Line */}
             <div
+              className={`transition-all duration-500 ${
+                activeStep >= i ? "bg-white" : "bg-gray-600"
+              }`}
               style={{
                 position: "absolute",
                 inset: 0,
-                background: "white",
               }}
             />
-            {/* Joint */}
+            {/* Joint with active state */}
             <div
+              className={`${activeStep >= i ? "bg-white" : "bg-gray-600"} ${
+                activeStep === i ? "active-point" : ""
+              }`}
               style={{
                 position: "absolute",
                 bottom: "-0.3vh",
@@ -476,33 +563,38 @@ function RoadTimeline({ progress, isMobile }) {
                 width: "0.6vw",
                 height: "0.6vw",
                 borderRadius: "50%",
-                background: "white",
+                transition: "all 0.3s ease",
               }}
             />
             {/* Tilted Down Line */}
             <div
+              className={`transition-all duration-500 ${
+                activeStep >= i ? "bg-white" : "bg-gray-600"
+              }`}
               style={{
                 position: "absolute",
                 top: "100%",
                 left: 0,
-                width: "0.1vw",
+                width: "1px",
                 height: "5vh",
-                background: "white",
                 transform: "rotate(-24deg)",
                 transformOrigin: "top",
               }}
             />
             {/* Date */}
             <div
+              className={`transition-all duration-500 ${
+                activeStep >= i ? "text-white" : "text-gray-500"
+              }`}
               style={{
                 position: "absolute",
                 top: "calc(100% + 5vh)",
                 left: "3vw",
                 transform: "translateX(-50%) rotate(-24deg)",
                 transformOrigin: "top",
-                fontSize: "1.1vw",
-                color: "rgba(255,255,255,0.7)",
+                fontSize: "16px",
                 whiteSpace: "nowrap",
+                fontWeight: activeStep === i ? "bold" : "normal",
               }}
             >
               {item.date}
@@ -519,34 +611,20 @@ function RoadTimeline({ progress, isMobile }) {
         className="
           absolute
           top-[7vh]
-          -translate-y-1/2
           w-[22vw]
           max-w-[28vw]
-          z-40
+          z-50
         "
         style={{
-          opacity: imageLoaded ? 1 : 0,
-          transition: "opacity 0.2s ease-in-out",
-          transform: "translateY(-50%) translateX(0)",
+          opacity: 0,
+          transform: "translateY(-50%)",
           left: 0,
+          filter: "drop-shadow(0 0 10px rgba(255, 255, 255, 0.3))",
         }}
         alt="car"
       />
+
+     
     </div>
   );
-}
-
-/* ================= HOOK FOR MOBILE DETECTION ================= */
-function useIsMobile(breakpoint = 768) {
-  const [isMobile, setIsMobile] = useState(false);
-
-  useEffect(() => {
-    const media = window.matchMedia(`(max-width: ${breakpoint}px)`);
-    const update = () => setIsMobile(media.matches);
-    update();
-    media.addEventListener("change", update);
-    return () => media.removeEventListener("change", update);
-  }, [breakpoint]);
-
-  return isMobile;
 }

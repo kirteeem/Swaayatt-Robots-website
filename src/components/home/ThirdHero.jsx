@@ -36,11 +36,13 @@ const diamondPositions = ["-0.7%", "22.7%", "47.2%", "71.7%", "98%"]; // Added 5
 const diamondPositionsMobile = ["-9%", "28%", "66%", "105%"];
 
 const sectionColors = [
-  "linear-gradient(to bottom, #1d7e73ff 0%, #054927ff 40%, #000000 55%, #000000 100%)",
-  "linear-gradient(to bottom, #780f83ff 0%, #611923ff 40%, #000000 55%, #000000 100%)",
-  "linear-gradient(to bottom, #135086ff 0%, #0a5b5fff 40%, #000000 55%, #000000 100%)",
-  "linear-gradient(to bottom, #7a0aa3ff 0%, #530d6fff 40%, #000000 55%, #000000 100%)",
+  "linear-gradient( #242E23 0%, #000000 100%)",
+  "linear-gradient( #3D160A 0%, #000000 100%)",
+  "linear-gradient( #29143D 0%, #000000 100%)",
+  "linear-gradient( #332F07 0%, #000000 100%)",
+    "linear-gradient( #29143D 0%, #000000 100%)",
 ];
+
 
 export default function ThirdHero() {
   const [activeIndex, setActiveIndex] = useState(-1);
@@ -120,14 +122,13 @@ export default function ThirdHero() {
           } else if (progress < 0.6) {
             diamondIndex = 2; // Next 20% - position 3 (47.2%)
           } else if (progress < 0.8) {
-            diamondIndex = 3; // Next 20% - position 4 (71.7%) - यहाँ रुकेगा
+            diamondIndex = 3; // Next 20% - position 4 (71.7%) - 
           } else if (progress < 0.95) {
-            diamondIndex = 3; // 80-95% तक position 4 पर रहेगा
+            diamondIndex = 3; // 80-95%
           } else {
             diamondIndex = 4; // Last 5% - position 5 (98%) - end position
           }
 
-          // Image index logic: diamond से एक step पीछे
           let imageIndex;
           if (diamondIndex === 0) {
             imageIndex = -1; // No image for first diamond position
@@ -150,7 +151,7 @@ export default function ThirdHero() {
 
           // Update background (use modulo for colors since we have only 4 colors)
           if (bgRef.current) {
-            const colorIndex = diamondIndex === 4 ? 3 : diamondIndex;
+      const colorIndex = diamondIndex;
             gsap.to(bgRef.current, {
               background: sectionColors[colorIndex],
               duration: 1,
@@ -545,7 +546,7 @@ export default function ThirdHero() {
                 <img
                   ref={imageRef}
                   src={features[0].image}
-                  className="w-full object-cover opacity-0"
+                  className="w-full object-cover opacity-100"
                   alt=""
                 />
               </div>
