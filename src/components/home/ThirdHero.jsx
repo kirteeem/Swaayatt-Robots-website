@@ -31,7 +31,8 @@ const features = [
   },
 ];
 
-const diamondPositions = ["-0.7%", "22.7%", "47.2%", "71.7%"];
+// Diamond positions: 4 main positions + 1 extra for end
+const diamondPositions = ["-0.7%", "22.7%", "47.2%", "71.7%", "98%"]; // Added 5th position
 const diamondPositionsMobile = ["-9%", "28%", "66%", "105%"];
 
 const sectionColors = [
@@ -42,16 +43,18 @@ const sectionColors = [
 ];
 
 export default function ThirdHero() {
-  const [activeIndex, setActiveIndex] = useState(0);
+  const [activeIndex, setActiveIndex] = useState(-1);
   const [isMobile, setIsMobile] = useState(false);
   const [isTablet, setIsTablet] = useState(false);
   const sectionRef = useRef(null);
   const diamondRef = useRef(null);
   const bgRef = useRef(null);
   const imageRef = useRef(null);
-  const prevIndexRef = useRef(0);
+  const prevDiamondIndexRef = useRef(0);
+  const prevImageIndexRef = useRef(-1);
   const cardsRef = useRef([]);
   const imagesRef = useRef([]);
+  const scrollTriggerRef = useRef(null);
 
   // Detect screen size
   useEffect(() => {
@@ -71,99 +74,170 @@ export default function ThirdHero() {
     if (isMobile || isTablet) return;
 
     const ctx = gsap.context(() => {
-      // Initial animation setup for image
+      // Clean up previous ScrollTrigger
+      if (scrollTriggerRef.current) {
+        scrollTriggerRef.current.kill();
+      }
+
+      // Initial state
       if (imageRef.current) {
         gsap.set(imageRef.current, {
           opacity: 0,
-          y: 100,
           scale: 0.95,
         });
       }
 
-      ScrollTrigger.create({
+      if (diamondRef.current) {
+        gsap.set(diamondRef.current, {
+          left: diamondPositions[0],
+        });
+      }
+
+      if (bgRef.current) {
+        gsap.set(bgRef.current, {
+          background: sectionColors[0],
+        });
+      }
+
+      // Create ScrollTrigger with 5 sections (0-4)
+      scrollTriggerRef.current = ScrollTrigger.create({
         trigger: sectionRef.current,
         start: "top top+=80",
-        end: "+=300%",
-        pinSpacing: true,
+        end: "+=500%", // Increased for 5 sections
         pin: true,
+        pinSpacing: true,
         scrub: 1,
+        markers: false,
         onUpdate: (self) => {
           const progress = self.progress;
-          const index = Math.min(3, Math.floor(progress * 4));
+          
+          // Map progress to 5 diamond positions (0-4)
+          let diamondIndex;
+          if (progress < 0.2) {
+            diamondIndex = 0; // First 20% - position 1 (-0.7%)
+          } else if (progress < 0.4) {
+            diamondIndex = 1; // Next 20% - position 2 (22.7%)
+          } else if (progress < 0.6) {
+            diamondIndex = 2; // Next 20% - position 3 (47.2%)
+          } else if (progress < 0.8) {
+            diamondIndex = 3; // Next 20% - position 4 (71.7%) - यहाँ रुकेगा
+          } else if (progress < 0.95) {
+            diamondIndex = 3; // 80-95% तक position 4 पर रहेगा
+          } else {
+            diamondIndex = 4; // Last 5% - position 5 (98%) - end position
+          }
 
-          if (index !== prevIndexRef.current) {
-            setActiveIndex(index);
+          // Image index logic: diamond से एक step पीछे
+          let imageIndex;
+          if (diamondIndex === 0) {
+            imageIndex = -1; // No image for first diamond position
+          } else if (diamondIndex >= 1 && diamondIndex <= 3) {
+            imageIndex = diamondIndex - 1; // Show previous image
+          } else if (diamondIndex === 4) {
+            imageIndex = 3; // At end, show last image (index 3)
+          }
 
-            if (diamondRef.current) {
-              gsap.to(diamondRef.current, {
-                left: diamondPositions[index],
-                duration: 1,
-                ease: "power2.out",
-              });
-            }
+          // Update diamond position
+          if (diamondRef.current && diamondIndex !== prevDiamondIndexRef.current) {
+            gsap.to(diamondRef.current, {
+              left: diamondPositions[diamondIndex],
+              duration: 0.8,
+              ease: "power2.out",
+              overwrite: "auto"
+            });
+            prevDiamondIndexRef.current = diamondIndex;
+          }
 
-            // Animate background color change
-            if (bgRef.current) {
-              gsap.to(bgRef.current, {
-                background: sectionColors[index],
-                duration: 1.5,
-                ease: "power2.inOut",
-              });
-            }
+          // Update background (use modulo for colors since we have only 4 colors)
+          if (bgRef.current) {
+            const colorIndex = diamondIndex === 4 ? 3 : diamondIndex;
+            gsap.to(bgRef.current, {
+              background: sectionColors[colorIndex],
+              duration: 1,
+              ease: "power2.inOut",
+            });
+          }
 
-            // Image slide-up animation when diamond moves
-            if (imageRef.current) {
-              // First fade out and move down current image
+          // Update active index for text highlighting
+          const textHighlightIndex = diamondIndex === 4 ? 3 : diamondIndex;
+          setActiveIndex(textHighlightIndex);
+
+          // Handle image transitions
+          if (imageRef.current && imageIndex !== prevImageIndexRef.current) {
+            // Hide image when no image should be shown
+            if (imageIndex < 0) {
               gsap.to(imageRef.current, {
                 opacity: 0,
-                y: 100,
                 scale: 0.95,
-                duration: 0.5,
+                duration: 0.4,
+                ease: "power2.in",
+              });
+            } 
+            // Show image when moving to valid index
+            else {
+              // Fade out current image
+              gsap.to(imageRef.current, {
+                opacity: 0,
+                scale: 0.95,
+                duration: 0.3,
                 ease: "power2.in",
                 onComplete: () => {
                   // Change image source
-                  imageRef.current.src = features[index].image;
-                  
-                  // Animate new image from bottom
-                  gsap.fromTo(
-                    imageRef.current,
-                    {
-                      opacity: 0,
-                      y: 100,
-                      scale: 0.95,
-                    },
-                    {
-                      opacity: 1,
-                      y: 0,
-                      scale: 1,
-                      duration: 0.8,
-                      ease: "power3.out",
-                    }
-                  );
+                  imageRef.current.src = features[imageIndex].image;
+                  // Fade in new image
+                  gsap.to(imageRef.current, {
+                    opacity: 1,
+                    scale: 1,
+                    duration: 0.5,
+                    ease: "power3.out",
+                  });
                 }
               });
             }
-
-            prevIndexRef.current = index;
+            prevImageIndexRef.current = imageIndex;
           }
         },
         
-        // Animation for the first time when page loads
         onEnter: () => {
+          // Reset to initial state when entering section
+          prevDiamondIndexRef.current = 0;
+          prevImageIndexRef.current = -1;
+          setActiveIndex(-1);
+          
           if (imageRef.current) {
-            gsap.to(imageRef.current, {
-              opacity: 1,
-              y: 0,
-              scale: 1,
-              duration: 1.2,
-              ease: "power3.out",
+            gsap.set(imageRef.current, {
+              opacity: 0,
+              scale: 0.95,
             });
           }
+          
+          if (diamondRef.current) {
+            gsap.set(diamondRef.current, {
+              left: diamondPositions[0],
+            });
+          }
+          
+          if (bgRef.current) {
+            gsap.set(bgRef.current, {
+              background: sectionColors[0],
+            });
+          }
+        },
+        
+        onLeaveBack: () => {
+          // When scrolling back past the section
+          prevDiamondIndexRef.current = 0;
+          prevImageIndexRef.current = -1;
         }
       });
     }, sectionRef);
 
-    return () => ctx.revert();
+    return () => {
+      if (scrollTriggerRef.current) {
+        scrollTriggerRef.current.kill();
+      }
+      ctx.revert();
+    };
   }, [isMobile, isTablet]);
 
   // ================= MOBILE ANIMATION (CARD + IMAGE FIXED) =================
@@ -172,7 +246,7 @@ export default function ThirdHero() {
 
     const ctx = gsap.context(() => {
       const totalCards = features.length;
-      const sectionHeight = window.innerHeight * totalCards;
+      const sectionHeight = window.innerHeight * totalCards * 1.2;
 
       // Initial state
       gsap.set(cardsRef.current, {
@@ -209,29 +283,48 @@ export default function ThirdHero() {
         });
       }
 
-      ScrollTrigger.create({
+      // Set initial diamond position
+      if (diamondRef.current) {
+        gsap.set(diamondRef.current, {
+          left: diamondPositionsMobile[0],
+        });
+      }
+
+      const scrollTrigger = ScrollTrigger.create({
         trigger: sectionRef.current,
         start: "top top",
         end: `+=${sectionHeight}`,
         pin: true,
-        scrub: 0.6,
+        scrub: 0.8,
+        markers: false,
 
         onUpdate: (self) => {
-          const index = Math.min(
-            totalCards - 1,
-            Math.floor(self.progress * totalCards)
-          );
+          const progress = self.progress;
+          const sectionSize = 1 / totalCards;
+          
+          let currentIndex = 0;
+          for (let i = 0; i < totalCards; i++) {
+            if (progress >= i * sectionSize && progress < (i + 1) * sectionSize) {
+              currentIndex = i;
+              break;
+            }
+          }
+          
+          // For last section
+          if (progress >= (totalCards - 1) * sectionSize) {
+            currentIndex = totalCards - 1;
+          }
 
-          if (index === prevIndexRef.current) return;
+          if (currentIndex === prevDiamondIndexRef.current) return;
 
-          const prev = prevIndexRef.current;
-          const current = index;
+          const prev = prevDiamondIndexRef.current;
+          const current = currentIndex;
 
-          // 🔹 Diamond
+          // 🔹 Diamond moves
           if (diamondRef.current) {
             gsap.to(diamondRef.current, {
               left: diamondPositionsMobile[current],
-              duration: 0.4,
+              duration: 0.5,
               ease: "power2.out",
             });
           }
@@ -250,7 +343,7 @@ export default function ThirdHero() {
             gsap.to(cardsRef.current[prev], {
               y: "-40%",
               opacity: 0,
-              duration: 0.35,
+              duration: 0.4,
               ease: "power2.in",
               onComplete: () =>
                 gsap.set(cardsRef.current[prev], { display: "none" }),
@@ -268,7 +361,7 @@ export default function ThirdHero() {
             });
           }
 
-          // 🔹 Show current card (BOTTOM → CENTER)
+          // 🔹 Show current card
           if (cardsRef.current[current]) {
             gsap.fromTo(
               cardsRef.current[current],
@@ -280,13 +373,13 @@ export default function ThirdHero() {
               {
                 y: "0%",
                 opacity: 1,
-                duration: 0.55,
+                duration: 0.6,
                 ease: "power3.out",
               }
             );
           }
 
-          // 🔹 Show current image (FADE IN)
+          // 🔹 Show current image
           if (imagesRef.current[current]) {
             gsap.fromTo(
               imagesRef.current[current],
@@ -296,16 +389,19 @@ export default function ThirdHero() {
               },
               {
                 opacity: 1,
-                duration: 0.45,
+                duration: 0.5,
                 ease: "power2.out",
-                delay: 0.1,
+                delay: 0.15,
               }
             );
           }
 
-          prevIndexRef.current = current;
+          setActiveIndex(current);
+          prevDiamondIndexRef.current = current;
         },
       });
+
+      return () => scrollTrigger.kill();
     }, sectionRef);
 
     return () => ctx.revert();
@@ -329,14 +425,13 @@ export default function ThirdHero() {
       <section
         ref={sectionRef}
         className={`relative overflow-hidden sm:mt-0 mt-40 scrollbar-hide ${
-          isMobile || isTablet ? "h-[100vh]" : "min-h-screen"
+          isMobile || isTablet ? "h-[100vh]" : "h-[110vh]"
         }`}
       >
         {/* ================= ANIMATED BACKGROUND ================= */}
         <div 
           ref={bgRef}
           className="absolute inset-0 z-0 transition-all duration-1000 ease-in-out"
-          style={{ background: sectionColors[0] }}
         >
           <div className="absolute inset-0 bg-black/10" />
           <div className="absolute inset-x-0 bottom-0 h-[45%] bg-gradient-to-t from-black/40 via-black/20 to-transparent" />
@@ -382,11 +477,6 @@ export default function ThirdHero() {
               className="absolute bottom-[-8px] w-4 h-4 rotate-45 bg-white
                  shadow-[0_0_16px_rgba(255,255,255,0.95),0_0_30px_rgba(255,255,255,0.6)]
                  transition-all duration-500 ease-out z-30"
-              style={{
-                left: isMobile || isTablet
-                  ? diamondPositionsMobile[0]
-                  : diamondPositions[0],
-              }}
             />
           </div>
         </div>
@@ -450,12 +540,12 @@ export default function ThirdHero() {
             </div>
 
             {/* ================= DESKTOP IMAGE WITH SLIDE-UP ANIMATION ================= */}
-            <div className="relative z-40 max-w-[80vw] min-h-[105vh] mx-auto mt-20 pr-8 px-2 pb-32">
+            <div className="relative z-40 max-w-[80vw] min-h-[80vh] mx-auto mt-20 pr-8 px-2 pb-32">
               <div className="overflow-hidden rounded-md shadow-2xl">
                 <img
                   ref={imageRef}
-                  src={features[activeIndex].image}
-                  className="w-full object-cover"
+                  src={features[0].image}
+                  className="w-full object-cover opacity-0"
                   alt=""
                 />
               </div>
