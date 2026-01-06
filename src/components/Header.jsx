@@ -47,8 +47,7 @@ export default function Header({ variant = "default" }) {
         fixed top-0 left-0 w-full z-[1000] transition-all duration-300
         ${isHome
           ? scrolled
-            ? "bg-white/90 dark:bg-black/90 backdrop-blur "
-            : "bg-transparent"
+     
           : useDarkTheme
             ? "bg-black border-b border-white/10"
             : "bg-white"

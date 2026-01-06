@@ -210,34 +210,49 @@ function BlogNodes({ progress, activeStep, isMobile }) {
     { x: "39vw", scale: 0.32, opacity: 0.45, z: 4 },
   ];
 
-  useLayoutEffect(() => {
-    const total = images.length;
-    const CENTER_INDEX = Math.floor(total / 2);
-    const indexProgress = activeStep + CENTER_INDEX;
+useLayoutEffect(() => {
+  const total = images.length;
+  const CENTER_INDEX = Math.floor(total / 2);
+  const indexProgress = activeStep + CENTER_INDEX;
 
-    refs.current.forEach((el, i) => {
-      if (!el) return;
-      
-      let offset = i - indexProgress;
-      if (offset > total / 2) offset -= total;
-      if (offset < -total / 2) offset += total;
+  refs.current.forEach((el, i) => {
+    if (!el) return;
 
-      const slotIndex = ((Math.round(offset + CENTER_INDEX) % total) + total) % total;
-      const slot = SLOTS[slotIndex];
-      const isCenter = slotIndex === CENTER_INDEX;
+    let offset = i - indexProgress;
+    if (offset > total / 2) offset -= total;
+    if (offset < -total / 2) offset += total;
 
-      gsap.to(el, {
-        x: slot.x,
-        scale: slot.scale,
-        opacity: slot.opacity,
-        zIndex: slot.z,
-        duration: 0.6,
-        ease: "power3.out",
-      });
+    const slotIndex =
+      ((Math.round(offset + CENTER_INDEX) % total) + total) % total;
 
-      if (isCenter) setCenterIndex(i);
+    const slot = SLOTS[slotIndex];
+    const isCenter = slotIndex === CENTER_INDEX;
+
+    gsap.to(el, {
+      x: slot.x,
+      scale: slot.scale,
+      opacity: slot.opacity,
+      zIndex: slot.z,
+      duration: 0.6,
+      ease: "power3.out",
     });
-  }, [activeStep, progress]);
+
+    if (isCenter) setCenterIndex(i);
+  });
+
+  // 🔑 IMPORTANT FIX
+  ScrollTrigger.refresh();
+
+}, [activeStep, progress]);
+
+
+
+
+useEffect(() => {
+  window.addEventListener("load", ScrollTrigger.refresh);
+  return () => window.removeEventListener("load", ScrollTrigger.refresh);
+}, []);
+
 
   return (
     <div className="absolute inset-0 z-10 pointer-events-none">
@@ -443,7 +458,7 @@ function RoadTimeline({ progress, activeStep, isMobile }) {
       // Enter animation for first step
       if (prevActiveStepRef.current === -1 && activeStep === 0) {
         gsap.fromTo(carRef.current,
-          { x: -200, opacity: 0 },
+          { x: -300, opacity: 0 },
           {
             x: width * 0.1 - (carRef.current.offsetWidth * 0.3),
             opacity: 1,
