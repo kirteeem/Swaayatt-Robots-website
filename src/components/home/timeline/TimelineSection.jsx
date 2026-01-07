@@ -285,7 +285,7 @@ export default function TimelineSection() {
   return (
     <div className="absolute inset-0 overflow-hidden pointer-events-none">
       {/* GLOW */}
-      <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(0,255,0,0.18)_0%,rgba(0,0,0,1)_65%)]" />
+      <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(0, 255, 0, 0.25)_0%,rgba(0,0,0,1)_65%)]" />
 
       {/* CARDS */}
       <div className="absolute inset-0 flex items-center justify-center">
@@ -332,7 +332,7 @@ export default function TimelineSection() {
 
       {/* CENTER TEXT */}
       {centerIndex !== null && (
-        <div className="absolute bottom-[18%] left-1/2 -translate-x-1/2 text-center z-30 px-4">
+        <div className="absolute bottom-[30%] left-1/2 -translate-x-1/2 text-center z-30 px-4">
           <p className="font-mono text-white whitespace-pre-line text-sm sm:text-base lg:text-lg max-w-[520px] leading-[150%]">
             {CENTER_TEXTS[centerIndex]}
           </p>
