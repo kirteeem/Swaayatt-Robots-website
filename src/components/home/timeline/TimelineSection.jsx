@@ -274,6 +274,7 @@ export default function TimelineSection() {
         duration: 0.9,
         ease: "power4.out",
         force3D: true,
+         transformOrigin: "50% 50%",
       });
     });
 
@@ -288,15 +289,17 @@ export default function TimelineSection() {
 
       {/* CARDS */}
       <div className="absolute inset-0 flex items-center justify-center">
-        <div className="relative h-[340px] w-full flex items-center justify-center">
+    <div className="relative w-full h-[360px] flex items-center justify-center isolate">
+
           {images.map((src, i) => (
             <div
               key={i}
               ref={(el) => (refs.current[i] = el)}
-              className="absolute will-change-transform"
+              className="absolute will-change-transform mb-80"
               style={{
                 width: screenSize.isMobile ? 260 : 420,
                 height: screenSize.isMobile ? 160 : 260,
+                 transformOrigin: "50% 50%", 
               }}
             >
               <div
@@ -347,12 +350,12 @@ function CenterFeature({ screenSize }) {
       {/* Desktop Grid Lines */}
       {screenSize.isDesktop && (
         <>
-          <div className="absolute top-[5%] bottom-[18%] left-[35.5%] w-px bg-white/70 pointer-events-none" />
-          <div className="absolute top-[5%] bottom-[16%] left-[64.4%] w-px bg-white/70 pointer-events-none" />
+          <div className="absolute top-[5%] bottom-[18%] left-[35.5%] w-px bg-white/30 pointer-events-none" />
+          <div className="absolute top-[5%] bottom-[16%] left-[64.4%] w-px bg-white/30 pointer-events-none" />
 
 
-          <div className="absolute left-0 top-[16.5%] w-full h-px bg-white/50 pointer-events-none" />
-          <div className="absolute left-0 top-[49.5%] w-full h-px bg-white/50 pointer-events-none" />
+          <div className="absolute left-0 top-[16.5%] w-full h-px bg-white/20 pointer-events-none" />
+          <div className="absolute left-0 top-[49.5%] w-full h-px bg-white/20 pointer-events-none" />
         </>
       )}
 
