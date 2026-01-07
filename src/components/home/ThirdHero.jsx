@@ -107,7 +107,7 @@ export default function ThirdHero() {
       scrollTriggerRef.current = ScrollTrigger.create({
         trigger: sectionRef.current,
         start: "top top+=80",
-        end: `+=${TOTAL_SECTIONS * 120}%`, // Increased for 5 sections
+        end: `+=${TOTAL_SECTIONS * 180}%`, // Increased for 5 sections
         pin: true,
         pinSpacing: true,
         scrub: 1,

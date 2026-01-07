@@ -48,7 +48,8 @@ export default function TimelineSection() {
     const st = ScrollTrigger.create({
       trigger: sectionRef.current,
       start: "top top",
-      end: screenSize.isMobile ? "+=2500" : "+=3500",
+end: () => "+=" + window.innerHeight * 4.5,
+
       scrub: screenSize.isMobile ? 0.8 : 1.2,
       pin: true,
       onUpdate: (self) => {
@@ -192,9 +193,7 @@ export default function TimelineSection() {
           }
         }
 
-        .active-point {
-          animation: pointGlow 1s ease-in-out;
-        }
+        
       `}</style>
     </section>
   );
@@ -298,13 +297,13 @@ export default function TimelineSection() {
               className="absolute will-change-transform mb-80"
             style={{
   width: "100%",
-  maxWidth: screenSize.isMobile ? 260 : 420,
+  maxWidth: screenSize.isMobile ? 460 : 420,
   height: "auto",
 }}
 
             >
               <div
-                className={`relative w-full h-full rounded-xl overflow-hidden ${
+                className={`relative sm:w-full sm:h-full h-[60vh]  sm:mt-0 mt-[40vh] sm:p-0 p-1 rounded-xl overflow-hidden ${
                   centerIndex === i
                     ? "shadow-[0_0_80px_rgba(0,255,0,0.45)]"
                     : ""
@@ -312,11 +311,11 @@ export default function TimelineSection() {
               >
                 <img
                   src={src}
-                  className="w-full h-full object-cover"
+                  className="w-full h-full object-cover object-center"
                   draggable={false}
                 />
 
-                <div className="absolute inset-0 bg-black/30" />
+                <div className="absolute inset-0 bg-black/20" />
 
                 {/* PLAY */}
                 <div className="absolute inset-0 flex items-center justify-center">
@@ -332,8 +331,8 @@ export default function TimelineSection() {
 
       {/* CENTER TEXT */}
       {centerIndex !== null && (
-        <div className="absolute bottom-[30%] left-1/2 -translate-x-1/2 text-center z-30 px-4">
-          <p className="font-mono text-white whitespace-pre-line text-sm sm:text-base lg:text-lg max-w-[520px] leading-[150%]">
+        <div className="absolute sm:bottom-[35%] bottom-[5%]  sm:w-[30vw] md:w-[30vw]  w-[90vw]  left-1/2 -translate-x-1/2 text-center z-30 px-4">
+          <p className="font-mono text-white whitespace-pre-line text-sm sm:text-base lg:text-lg max-w-[620px] leading-[150%]">
             {CENTER_TEXTS[centerIndex]}
           </p>
         </div>
@@ -360,23 +359,6 @@ function CenterFeature({ screenSize }) {
         </>
       )}
 
-      {/* Tablet Grid Lines */}
-      {screenSize.isTablet && (
-        <>
-          <div className="absolute top-[10%] bottom-[20%] left-[30%] w-px bg-white/70 pointer-events-none" />
-          <div className="absolute top-[10%] bottom-[20%] left-[70%] w-px bg-white/70 pointer-events-none" />
-          <div className="absolute left-0 top-[20%] w-full h-px bg-white/50 pointer-events-none" />
-          <div className="absolute left-0 top-[45%] w-full h-px bg-white/50 pointer-events-none" />
-        </>
-      )}
-
-      {/* Mobile Grid Lines */}
-      {screenSize.isMobile && (
-        <>
-          <div className="absolute left-0 top-[20vh] w-full h-px bg-white/60 pointer-events-none" />
-          <div className="absolute left-0 top-[58vh] w-full h-px bg-white/60 pointer-events-none" />
-        </>
-      )}
     </>
   );
 }
@@ -431,66 +413,52 @@ function RoadTimeline({ progress, activeStep, screenSize }) {
     }
   }, []);
 
-  // Car animation - only moves when reaching divider points
-  useEffect(() => {
-    if (!carRef.current || !wrapperRef.current || !imageLoaded) return;
+ useEffect(() => {
+  if (!carRef.current || !wrapperRef.current || !imageLoaded) return;
 
-    const width = wrapperRef.current.offsetWidth;
-    
-    // Check if we should exit the screen
-    if (activeStep === 3 && progress > 0.85) {
-      setIsExiting(true);
-      carRef.current.style.transform = `translateX(${width + 200}px) translateY(-50%)`;
-      carRef.current.style.opacity = "0";
-      return;
-    }
+  const car = carRef.current;
+  const width = wrapperRef.current.offsetWidth;
 
-    // Reset exit state if we're not at the end
-    if (isExiting && activeStep < 3) {
-      setIsExiting(false);
-      carRef.current.style.opacity = "1";
-    }
+  // Start and end positions
+  const startX = -car.offsetWidth * 1.2;
+  const lastDivider =
+    parseFloat(DIVIDERS[DIVIDERS.length - 1].left) / 100;
+  const exitX = width + car.offsetWidth * 1.2;
 
-    // Only animate when step changes
-    if (prevActiveStepRef.current !== activeStep) {
-      // Enter animation for first step
-      if (prevActiveStepRef.current === -1 && activeStep === 0) {
-        carRef.current.style.transform = `translateX(-300px) translateY(-50%)`;
-        carRef.current.style.opacity = "0";
-        
-        setTimeout(() => {
-          const targetLeft = parseFloat(DIVIDERS[activeStep].left) / 100;
-          const targetX = width * targetLeft - (carRef.current.offsetWidth * 0.3);
-          carRef.current.style.transform = `translateX(${targetX}px) translateY(-50%)`;
-          carRef.current.style.opacity = "1";
-          carRef.current.style.transition = "transform 1.2s ease-out, opacity 1.2s ease-out";
-        }, 50);
-      } else if (activeStep >= 0 && activeStep < DIVIDERS.length) {
-        // Move to divider point
-        const targetLeft = parseFloat(DIVIDERS[activeStep].left) / 100;
-        const targetX = width * targetLeft - (carRef.current.offsetWidth * 0.3);
-        
-        carRef.current.style.transform = `translateX(${targetX}px) translateY(-50%)`;
-        carRef.current.style.transition = "transform 3s cubic-bezier(0.19, 1, 0.22, 1)";
-        
-        // Highlight current divider point
-        const dividerElements = document.querySelectorAll('.divider-point');
-        if (dividerElements[activeStep]) {
-          dividerElements[activeStep].classList.add('active-point');
-          setTimeout(() => {
-            dividerElements[activeStep].classList.remove('active-point');
-          }, 1000);
-        }
-      }
-      
-      prevActiveStepRef.current = activeStep;
-    }
+  let x;
 
-    // Keep car visible while animating
-    if (!isExiting) {
-      carRef.current.style.opacity = "1";
-    }
-  }, [activeStep, progress, imageLoaded, isExiting, screenSize]);
+  // 🚗 NORMAL DRIVE (0 → 90% scroll)
+  if (progress < 0.9) {
+    const driveProgress = gsap.utils.mapRange(
+      0,
+      0.9,
+      startX,
+      width * lastDivider,
+      progress
+    );
+    x = driveProgress;
+  }
+  // 🚗 EXIT DRIVE (90% → 100%)
+  else {
+    x = gsap.utils.mapRange(
+      0.9,
+      1,
+      width * lastDivider,
+      exitX,
+      progress
+    );
+  }
+
+  gsap.to(car, {
+    x,
+    duration: 0.6,
+    ease: progress > 0.9 ? "power2.in" : "power2.out",
+    overwrite: true,
+  });
+
+  car.style.opacity = "1";
+}, [progress, imageLoaded, screenSize]);
+
 
   if (screenSize.isMobile) return null;
 
