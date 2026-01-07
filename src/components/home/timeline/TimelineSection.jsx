@@ -10,17 +10,36 @@ export default function TimelineSection() {
   const [progress, setProgress] = useState(0);
   const progressRef = useRef(0);
   const rafRef = useRef(null);
-  const [isMobile, setIsMobile] = useState(false);
+  const [screenSize, setScreenSize] = useState({
+    width: 1920,
+    height: 1080,
+    isMobile: false,
+    isTablet: false,
+    isDesktop: true
+  });
   const [activeStep, setActiveStep] = useState(0);
 
-  // Detect mobile
+  // Detect screen size
   useEffect(() => {
-    const checkMobile = () => {
-      setIsMobile(window.innerWidth < 768);
+    const checkScreenSize = () => {
+      const width = window.innerWidth;
+      const height = window.innerHeight;
+      const isMobile = width < 768;
+      const isTablet = width >= 768 && width < 1024;
+      const isDesktop = width >= 1024;
+      
+      setScreenSize({
+        width,
+        height,
+        isMobile,
+        isTablet,
+        isDesktop
+      });
     };
-    checkMobile();
-    window.addEventListener("resize", checkMobile);
-    return () => window.removeEventListener("resize", checkMobile);
+    
+    checkScreenSize();
+    window.addEventListener("resize", checkScreenSize);
+    return () => window.removeEventListener("resize", checkScreenSize);
   }, []);
 
   useLayoutEffect(() => {
@@ -29,8 +48,8 @@ export default function TimelineSection() {
     const st = ScrollTrigger.create({
       trigger: sectionRef.current,
       start: "top top",
-      end: isMobile ? "+=2500" : "+=3500",
-      scrub: isMobile ? 0.8 : 1.2,
+      end: screenSize.isMobile ? "+=2500" : "+=3500",
+      scrub: screenSize.isMobile ? 0.8 : 1.2,
       pin: true,
       onUpdate: (self) => {
         const p = self.progress;
@@ -53,7 +72,7 @@ export default function TimelineSection() {
       st.kill();
       if (rafRef.current) cancelAnimationFrame(rafRef.current);
     };
-  }, [isMobile]);
+  }, [screenSize]);
 
   return (
     <section
@@ -61,13 +80,13 @@ export default function TimelineSection() {
       className="relative w-full h-screen bg-black overflow-hidden"
     >
       {/* Blog Nodes Component */}
-      <BlogNodes progress={progress} activeStep={activeStep} isMobile={isMobile} />
+      <BlogNodes progress={progress} activeStep={activeStep} screenSize={screenSize} />
       
       {/* Center Grid Lines */}
-      <CenterFeature isMobile={isMobile} />
+      <CenterFeature screenSize={screenSize} />
       
       {/* Road Timeline with Car */}
-      <RoadTimeline progress={progress} activeStep={activeStep} isMobile={isMobile} />
+      <RoadTimeline progress={progress} activeStep={activeStep} screenSize={screenSize} />
       
       {/* Inline CSS */}
       <style jsx>{`
@@ -181,17 +200,16 @@ export default function TimelineSection() {
   );
 }
 
-/* ================= BLOG NODES COMPONENT ================= */
-function BlogNodes({ progress, activeStep, isMobile }) {
+ function BlogNodes({ activeStep, screenSize }) {
   const refs = useRef([]);
-  const [centerIndex, setCenterIndex] = useState(null);
+  const [centerIndex, setCenterIndex] = useState(2);
 
   const images = [
     "/images/Blogs/Homepage-1.webp",
     "/images/Blogs/Homepage-1.webp",
     "/images/Blogs/Blog-1.webp",
     "/images/media/news/n1.webp",
-        "/images/media/news/n1.webp",
+    "/images/media/news/n1.webp",
   ];
 
   const CENTER_TEXTS = [
@@ -202,166 +220,147 @@ function BlogNodes({ progress, activeStep, isMobile }) {
     "Redefining the Future of\nAutonomous Vehicles with\nBidirectional Intelligence",
   ];
 
-  const SLOTS = [
-    { x: "-42vw", scale: 0.42, opacity: 0.45, z: 5 },
-    { x: "-24vw", scale: 0.65, opacity: 0.38, z: 10 },
-    { x: "0vw", scale: 1.1, opacity: 1, z: 30 },
-    { x: "24vw", scale: 0.65, opacity: 0.38, z: 10 },
-    { x: "39vw", scale: 0.32, opacity: 0.45, z: 4 },
-  ];
+  /* ================= SLOT DEFINITIONS ================= */
+  const getSlots = () => {
+    if (screenSize.isMobile) {
+      return [
+        { x: "-55vw", scale: 0.45, opacity: 0.35, z: 5 },
+        { x: "-28vw", scale: 0.7, opacity: 0.5, z: 10 },
+        { x: "0vw", scale: 1, opacity: 1, z: 30 },
+        { x: "28vw", scale: 0.7, opacity: 0.5, z: 10 },
+        { x: "55vw", scale: 0.45, opacity: 0.35, z: 5 },
+      ];
+    }
 
-useLayoutEffect(() => {
+    if (screenSize.isTablet) {
+      return [
+        { x: "-45vw", scale: 0.5, opacity: 0.4, z: 5 },
+        { x: "-22vw", scale: 0.75, opacity: 0.55, z: 10 },
+        { x: "0vw", scale: 1.1, opacity: 1, z: 30 },
+        { x: "22vw", scale: 0.75, opacity: 0.55, z: 10 },
+        { x: "45vw", scale: 0.5, opacity: 0.4, z: 5 },
+      ];
+    }
+
+    return [
+      { x: "-40vw", scale: 0.55, opacity: 0.4, z: 5 },
+      { x: "-24vw", scale: 0.8, opacity: 0.6, z: 10 },
+      { x: "0vw", scale: 1.15, opacity: 1, z: 30 },
+      { x: "26vw", scale: 0.8, opacity: 0.6, z: 10 },
+      { x: "42vw", scale: 0.55, opacity: 0.4, z: 5 },
+    ];
+  };
+
+  /* ================= ANIMATION ================= */
+ useLayoutEffect(() => {
   const total = images.length;
-  const CENTER_INDEX = Math.floor(total / 2);
-  const indexProgress = activeStep + CENTER_INDEX;
+  const CENTER = Math.floor(total / 2);
+  const slots = getSlots();
+
+  let newCenterIndex = centerIndex;
 
   refs.current.forEach((el, i) => {
     if (!el) return;
 
-    let offset = i - indexProgress;
-    if (offset > total / 2) offset -= total;
-    if (offset < -total / 2) offset += total;
+    // 🔴 Kill old tweens (prevents jitter)
+    gsap.killTweensOf(el);
 
-    const slotIndex =
-      ((Math.round(offset + CENTER_INDEX) % total) + total) % total;
+    let offset = i - activeStep;
+    if (offset > CENTER) offset -= total;
+    if (offset < -CENTER) offset += total;
 
-    const slot = SLOTS[slotIndex];
-    const isCenter = slotIndex === CENTER_INDEX;
+    const slotIndex = offset + CENTER;
+    const slot = slots[slotIndex];
+    if (!slot) return;
+
+    if (slotIndex === CENTER) {
+      newCenterIndex = i;
+    }
 
     gsap.to(el, {
       x: slot.x,
       scale: slot.scale,
       opacity: slot.opacity,
       zIndex: slot.z,
-      duration: 0.6,
-      ease: "power3.out",
-    });
 
-    if (isCenter) setCenterIndex(i);
+      duration: 1,               // ⬅ smoother
+      ease: "power3.inOut",         // ⬅ better curve
+      overwrite: "auto",            // ⬅ critical
+      force3D: true,                // ⬅ GPU acceleration
+    });
   });
 
-  // 🔑 IMPORTANT FIX
-  ScrollTrigger.refresh();
-
-}, [activeStep, progress]);
-
-
-
-
-useEffect(() => {
-  window.addEventListener("load", ScrollTrigger.refresh);
-  return () => window.removeEventListener("load", ScrollTrigger.refresh);
-}, []);
+  // ✅ Update state once
+  if (newCenterIndex !== centerIndex) {
+    setCenterIndex(newCenterIndex);
+  }
+}, [activeStep, screenSize]);
 
 
+  /* ================= JSX ================= */
   return (
-    <div className="absolute inset-0 z-10 pointer-events-none">
-      {/* Green Reflection Glow */}
+    <div className="absolute inset-0 z-10 pointer-events-none overflow-hidden">
+      {/* BACKGROUND GLOW */}
       <div
-        className="absolute inset-0 blur-[5vw] sm:blur-[5vw]"
+        className="absolute inset-0 blur-[6vw]"
         style={{
-          background: `
-            radial-gradient(
-              ellipse at 50% 35%,
-              rgba(47, 52, 37, 0.9) 0%,
-              rgba(47, 52, 37, 0.6) 20%,
-              rgba(0, 0, 0, 0.85) 40%,
-              rgba(0, 0, 0, 1) 100%
-            )
-          `,
+          background:
+            "radial-gradient(ellipse at 50% 35%, rgba(47,52,37,0.9) 0%, rgba(47,52,37,0.6) 25%, rgba(0,0,0,1) 65%)",
         }}
       />
 
-      {/* Blog Images */}
-      {images.map((src, i) => (
+    {/* CARDS ROW */}
+<div className="absolute inset-0 flex items-center justify-center">
+  <div className="relative w-full h-[60vh]  flex items-center justify-center">
+    {images.map((src, i) => (
+      <div
+        key={i}
+        ref={(el) => (refs.current[i] = el)}
+        className={`
+          absolute
+          transition-all
+          mb-80
+          
+          ${screenSize.isMobile
+            ? "w-[88vw] h-[48vh]"
+            : screenSize.isTablet
+            ? "w-[65vw] h-[36vh]"
+            : "w-[420px] h-[260px]"}
+        `}
+      >
         <div
-          key={i}
-          ref={(el) => (refs.current[i] = el)}
-          className={`
-            absolute
-            sm:left-[38vw] 
-            left-[50vw]
-            -translate-x-1/2
-            ${isMobile ? 'top-[24vh]' : 'top-[18%]'}
+          className={`relative w-full h-full rounded-xl overflow-hidden
+            ${
+              centerIndex === i
+                ? "shadow-[0_0_80px_rgba(0,255,0,0.35)]"
+                : "opacity-100 blur-[0.3px]"
+            }
           `}
         >
-          <div className={`relative ${isMobile ? 'w-[85vw] h-[40vh]' : 'w-[25vw] mx-auto'} aspect-video`}>
-            <div
-              className={`relative transition-all duration-500 ${
-                centerIndex === i
-                  ? "rounded-none shadow-[0_0_50px_rgba(0,255,0,0.3)]"
-                  : "rounded-[1vw] overflow-hidden"
-              }`}
-            >
-              <img
-                src={src}
-                alt=""
-                className="w-full h-full object-cover"
-              />
-              <div className="absolute inset-0 bg-black/15" />
-              <div className="absolute inset-0 flex items-center justify-center">
-                <div className="w-[8vw] max-w-[5vh] aspect-square rounded-full bg-[#FF0000] flex items-center justify-center shadow-xl">
-                  <div
-                    className="
-                      ml-[0.4vw]
-                      w-0 h-0
-                      border-t-[1.4vh]
-                      border-b-[1.4vh]
-                      border-l-[2.2vh]
-                      border-t-transparent
-                      border-b-transparent
-                      border-l-white
-                    "
-                  />
-                </div>
-              </div>
+          <img
+            src={src}
+            className="w-full h-full object-cover"
+          />
+
+          <div className="absolute inset-0 bg-black/25" />
+
+          {/* PLAY */}
+          <div className="absolute inset-0 flex items-center justify-center">
+            <div className="w-14 h-14 bg-red-600 rounded-full flex items-center justify-center">
+              <div className="ml-1 w-0 h-0 border-t-[10px] border-b-[10px] border-l-[16px] border-transparent border-l-white" />
             </div>
           </div>
         </div>
-      ))}
+      </div>
+    ))}
+  </div>
+</div>
 
-      {/* Mobile Green Glow Behind Text */}
-      {isMobile && (
-        <div
-          className="
-            absolute
-            left-1/2
-            -translate-x-1/2
-            pointer-events-none
-            top-[calc(24vh+75vw*0.5625+6vh)]
-            w-[140vw]
-            h-[35vh]
-            blur-[9vw]
-            opacity-85
-          "
-          style={{
-            background:
-              "radial-gradient(ellipse at center, rgba(47,52,37,0.9) 0%, rgba(47,52,37,0.55) 35%, rgba(0,0,0,0) 70%)",
-          }}
-        />
-      )}
 
-      {/* Center Text */}
+      {/* CENTER TEXT */}
       {centerIndex !== null && (
-        <div
-          className={`
-            absolute
-            left-1/2
-            -translate-x-1/2
-            z-30
-            ${isMobile ? 'px-[5vw] top-[calc(24vh+75vw*0.5625+8vh)]' : 'px-[2vw] top-[48%]'}
-            text-center
-          `}
-        >
-          <p className={`
-            font-mono
-            ${isMobile ? 'text-[3.6vw]' : 'text-[1.2vw]'}
-            leading-[135%]
-            tracking-[-0.02em]
-            text-white
-            ${isMobile ? 'max-w-[100vw]' : 'max-w-[38vw]'}
-            whitespace-pre-line
-          `}>
+        <div className="absolute bottom-[30%] left-1/2 -translate-x-1/2 z-30 text-center px-4">
+          <p className="font-mono text-white whitespace-pre-line text-sm sm:text-base lg:text-lg max-w-[90vw] sm:max-w-[60vw] leading-[140%]">
             {CENTER_TEXTS[centerIndex]}
           </p>
         </div>
@@ -370,22 +369,35 @@ useEffect(() => {
   );
 }
 
+
 /* ================= CENTER FEATURE (GRID LINES) ================= */
-function CenterFeature({ isMobile }) {
+function CenterFeature({ screenSize }) {
   return (
     <>
       {/* Desktop Grid Lines */}
-      {!isMobile && (
+      {screenSize.isDesktop && (
         <>
           <div className="absolute top-[5%] bottom-[18%] left-[35.5%] w-px bg-white/70 pointer-events-none" />
-          <div className="absolute top-[5%] bottom-[16%] left-[66.4%]  w-px bg-white/70 pointer-events-none" />
+          <div className="absolute top-[5%] bottom-[16%] left-[64.4%] w-px bg-white/70 pointer-events-none" />
+
+
           <div className="absolute left-0 top-[16.5%] w-full h-px bg-white/50 pointer-events-none" />
-          <div className="absolute left-0 top-[46.3%] w-full h-px bg-white/50 pointer-events-none" />
+          <div className="absolute left-0 top-[49.5%] w-full h-px bg-white/50 pointer-events-none" />
+        </>
+      )}
+
+      {/* Tablet Grid Lines */}
+      {screenSize.isTablet && (
+        <>
+          <div className="absolute top-[10%] bottom-[20%] left-[30%] w-px bg-white/70 pointer-events-none" />
+          <div className="absolute top-[10%] bottom-[20%] left-[70%] w-px bg-white/70 pointer-events-none" />
+          <div className="absolute left-0 top-[20%] w-full h-px bg-white/50 pointer-events-none" />
+          <div className="absolute left-0 top-[45%] w-full h-px bg-white/50 pointer-events-none" />
         </>
       )}
 
       {/* Mobile Grid Lines */}
-      {isMobile && (
+      {screenSize.isMobile && (
         <>
           <div className="absolute left-0 top-[20vh] w-full h-px bg-white/60 pointer-events-none" />
           <div className="absolute left-0 top-[58vh] w-full h-px bg-white/60 pointer-events-none" />
@@ -396,20 +408,40 @@ function CenterFeature({ isMobile }) {
 }
 
 /* ================= ROAD TIMELINE COMPONENT ================= */
-function RoadTimeline({ progress, activeStep, isMobile }) {
+function RoadTimeline({ progress, activeStep, screenSize }) {
   const carRef = useRef(null);
   const wrapperRef = useRef(null);
   const [imageLoaded, setImageLoaded] = useState(false);
   const prevActiveStepRef = useRef(-1);
   const [isExiting, setIsExiting] = useState(false);
 
-  // 4 equal divider points
-  const DIVIDERS = [
-    { left: "10%", date: "20 Aug 2025" },
-    { left: "38%", date: "30 Jul 2025" },
-    { left: "65%", date: "08 Jul 2025" },
-    { left: "92%", date: "23 Apr 2025" },
-  ];
+  // Responsive divider positions
+  const getDividers = () => {
+    if (screenSize.isMobile) {
+      return [
+        { left: "15%", date: "20 Aug 2025" },
+        { left: "40%", date: "30 Jul 2025" },
+        { left: "65%", date: "08 Jul 2025" },
+        { left: "90%", date: "23 Apr 2025" },
+      ];
+    } else if (screenSize.isTablet) {
+      return [
+        { left: "12%", date: "20 Aug 2025" },
+        { left: "38%", date: "30 Jul 2025" },
+        { left: "64%", date: "08 Jul 2025" },
+        { left: "90%", date: "23 Apr 2025" },
+      ];
+    } else {
+      return [
+        { left: "10%", date: "20 Aug 2025" },
+        { left: "38%", date: "30 Jul 2025" },
+        { left: "65%", date: "08 Jul 2025" },
+        { left: "92%", date: "23 Apr 2025" },
+      ];
+    }
+  };
+
+  const DIVIDERS = getDividers();
 
   // Image load handler
   useEffect(() => {
@@ -433,61 +465,48 @@ function RoadTimeline({ progress, activeStep, isMobile }) {
     
     // Check if we should exit the screen
     if (activeStep === 3 && progress > 0.85) {
-      // Car exits screen
       setIsExiting(true);
-      gsap.to(carRef.current, {
-        x: width + 200,
-        duration: 1.5,
-        ease: "power2.in",
-        onComplete: () => {
-          // Hide car after exit
-          gsap.set(carRef.current, { opacity: 0 });
-        }
-      });
+      carRef.current.style.transform = `translateX(${width + 200}px) translateY(-50%)`;
+      carRef.current.style.opacity = "0";
       return;
     }
 
     // Reset exit state if we're not at the end
     if (isExiting && activeStep < 3) {
       setIsExiting(false);
-      gsap.set(carRef.current, { opacity: 1 });
+      carRef.current.style.opacity = "1";
     }
 
     // Only animate when step changes
     if (prevActiveStepRef.current !== activeStep) {
       // Enter animation for first step
       if (prevActiveStepRef.current === -1 && activeStep === 0) {
-        gsap.fromTo(carRef.current,
-          { x: -300, opacity: 0 },
-          {
-            x: width * 0.1 - (carRef.current.offsetWidth * 0.3),
-            opacity: 1,
-            duration: 1.2,
-            ease: "power2.out"
-          }
-        );
+        carRef.current.style.transform = `translateX(-300px) translateY(-50%)`;
+        carRef.current.style.opacity = "0";
+        
+        setTimeout(() => {
+          const targetLeft = parseFloat(DIVIDERS[activeStep].left) / 100;
+          const targetX = width * targetLeft - (carRef.current.offsetWidth * 0.3);
+          carRef.current.style.transform = `translateX(${targetX}px) translateY(-50%)`;
+          carRef.current.style.opacity = "1";
+          carRef.current.style.transition = "transform 1.2s ease-out, opacity 1.2s ease-out";
+        }, 50);
       } else if (activeStep >= 0 && activeStep < DIVIDERS.length) {
         // Move to divider point
         const targetLeft = parseFloat(DIVIDERS[activeStep].left) / 100;
         const targetX = width * targetLeft - (carRef.current.offsetWidth * 0.3);
         
-        gsap.to(carRef.current, {
-          x: targetX,
-          duration: 3,
-          ease: "power3.out",
-          onStart: () => {
-            // Highlight the current divider point
-            const dividerElements = document.querySelectorAll('.divider-point');
-            if (dividerElements[activeStep]) {
-              gsap.to(dividerElements[activeStep], {
-                scale: 1,
-                duration: 5,
-                yoyo: true,
-                repeat: 1
-              });
-            }
-          }
-        });
+        carRef.current.style.transform = `translateX(${targetX}px) translateY(-50%)`;
+        carRef.current.style.transition = "transform 3s cubic-bezier(0.19, 1, 0.22, 1)";
+        
+        // Highlight current divider point
+        const dividerElements = document.querySelectorAll('.divider-point');
+        if (dividerElements[activeStep]) {
+          dividerElements[activeStep].classList.add('active-point');
+          setTimeout(() => {
+            dividerElements[activeStep].classList.remove('active-point');
+          }, 1000);
+        }
       }
       
       prevActiveStepRef.current = activeStep;
@@ -495,21 +514,21 @@ function RoadTimeline({ progress, activeStep, isMobile }) {
 
     // Keep car visible while animating
     if (!isExiting) {
-      gsap.set(carRef.current, { opacity: 1 });
+      carRef.current.style.opacity = "1";
     }
-  }, [activeStep, progress, imageLoaded, isExiting]);
+  }, [activeStep, progress, imageLoaded, isExiting, screenSize]);
 
-  if (isMobile) return null;
+  if (screenSize.isMobile) return null;
 
   return (
     <div
       ref={wrapperRef}
       className="
         absolute
-        bottom-[4vh]
+        bottom-0
         left-0
         right-0
-        h-[22vh]
+        h-[20vh]
         z-40
         pointer-events-none
         overflow-visible
@@ -608,7 +627,7 @@ function RoadTimeline({ progress, activeStep, isMobile }) {
                 left: "3vw",
                 transform: "translateX(-50%) rotate(-24deg)",
                 transformOrigin: "top",
-                fontSize: "16px",
+                fontSize: `${screenSize.isTablet ? '14px' : '16px'}`,
                 whiteSpace: "nowrap",
                 fontWeight: activeStep === i ? "bold" : "normal",
               }}
@@ -627,9 +646,10 @@ function RoadTimeline({ progress, activeStep, isMobile }) {
         className="
           absolute
           top-[7vh]
-          w-[22vw]
+          ${screenSize.isTablet ? 'w-[25vw]' : 'w-[22vw]'}
           max-w-[28vw]
           z-50
+          transition-transform duration-1000 ease-out
         "
         style={{
           opacity: 0,
@@ -639,8 +659,6 @@ function RoadTimeline({ progress, activeStep, isMobile }) {
         }}
         alt="car"
       />
-
-     
     </div>
   );
 }
