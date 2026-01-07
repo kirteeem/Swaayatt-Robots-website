@@ -296,11 +296,12 @@ export default function TimelineSection() {
               key={i}
               ref={(el) => (refs.current[i] = el)}
               className="absolute will-change-transform mb-80"
-              style={{
-                width: screenSize.isMobile ? 260 : 420,
-                height: screenSize.isMobile ? 160 : 260,
-                 transformOrigin: "50% 50%", 
-              }}
+            style={{
+  width: "100%",
+  maxWidth: screenSize.isMobile ? 260 : 420,
+  height: "auto",
+}}
+
             >
               <div
                 className={`relative w-full h-full rounded-xl overflow-hidden ${
