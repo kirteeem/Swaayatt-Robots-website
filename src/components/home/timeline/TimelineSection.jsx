@@ -200,6 +200,8 @@ export default function TimelineSection() {
   );
 }
 
+
+
  function BlogNodes({ activeStep, screenSize }) {
   const refs = useRef([]);
   const [centerIndex, setCenterIndex] = useState(2);
@@ -220,147 +222,114 @@ export default function TimelineSection() {
     "Redefining the Future of\nAutonomous Vehicles with\nBidirectional Intelligence",
   ];
 
-  /* ================= SLOT DEFINITIONS ================= */
+  /* ================= SLOT SYSTEM (FIGMA SAFE) ================= */
   const getSlots = () => {
     if (screenSize.isMobile) {
       return [
-        { x: "-55vw", scale: 0.45, opacity: 0.35, z: 5 },
-        { x: "-28vw", scale: 0.7, opacity: 0.5, z: 10 },
-        { x: "0vw", scale: 1, opacity: 1, z: 30 },
-        { x: "28vw", scale: 0.7, opacity: 0.5, z: 10 },
-        { x: "55vw", scale: 0.45, opacity: 0.35, z: 5 },
-      ];
-    }
-
-    if (screenSize.isTablet) {
-      return [
-        { x: "-45vw", scale: 0.5, opacity: 0.4, z: 5 },
-        { x: "-22vw", scale: 0.75, opacity: 0.55, z: 10 },
-        { x: "0vw", scale: 1.1, opacity: 1, z: 30 },
-        { x: "22vw", scale: 0.75, opacity: 0.55, z: 10 },
-        { x: "45vw", scale: 0.5, opacity: 0.4, z: 5 },
+        { x: -220, scale: 0.6, opacity: 0.25, z: 1 },
+        { x: -110, scale: 0.8, opacity: 0.5, z: 5 },
+        { x: 0, scale: 1, opacity: 1, z: 20 },
+        { x: 110, scale: 0.8, opacity: 0.5, z: 5 },
+        { x: 220, scale: 0.6, opacity: 0.25, z: 1 },
       ];
     }
 
     return [
-      { x: "-40vw", scale: 0.55, opacity: 0.4, z: 5 },
-      { x: "-24vw", scale: 0.8, opacity: 0.6, z: 10 },
-      { x: "0vw", scale: 1.15, opacity: 1, z: 30 },
-      { x: "26vw", scale: 0.8, opacity: 0.6, z: 10 },
-      { x: "42vw", scale: 0.55, opacity: 0.4, z: 5 },
+      { x: -760, scale: 0.6, opacity: 0.25, z: 1 },
+      { x: -450, scale: 0.8, opacity: 0.55, z: 5 },
+      { x: 0, scale: 1, opacity: 1, z: 20 },
+      { x: 450, scale: 0.8, opacity: 0.55, z: 5 },
+      { x: 760, scale: 0.6, opacity: 0.25, z: 1 },
     ];
   };
 
-  /* ================= ANIMATION ================= */
- useLayoutEffect(() => {
-  const total = images.length;
-  const CENTER = Math.floor(total / 2);
-  const slots = getSlots();
+  /* ================= GSAP ANIMATION ================= */
+  useLayoutEffect(() => {
+    const total = images.length;
+    const CENTER = Math.floor(total / 2);
+    const slots = getSlots();
 
-  let newCenterIndex = centerIndex;
+    let nextCenter = centerIndex;
 
-  refs.current.forEach((el, i) => {
-    if (!el) return;
+    refs.current.forEach((el, i) => {
+      if (!el) return;
 
-    // 🔴 Kill old tweens (prevents jitter)
-    gsap.killTweensOf(el);
+      gsap.killTweensOf(el);
 
-    let offset = i - activeStep;
-    if (offset > CENTER) offset -= total;
-    if (offset < -CENTER) offset += total;
+      let offset = i - activeStep;
+      if (offset > CENTER) offset -= total;
+      if (offset < -CENTER) offset += total;
 
-    const slotIndex = offset + CENTER;
-    const slot = slots[slotIndex];
-    if (!slot) return;
+      const slotIndex = offset + CENTER;
+      const slot = slots[slotIndex];
+      if (!slot) return;
 
-    if (slotIndex === CENTER) {
-      newCenterIndex = i;
-    }
+      if (slotIndex === CENTER) nextCenter = i;
 
-    gsap.to(el, {
-      x: slot.x,
-      scale: slot.scale,
-      opacity: slot.opacity,
-      zIndex: slot.z,
-
-      duration: 1,               // ⬅ smoother
-      ease: "power3.inOut",         // ⬅ better curve
-      overwrite: "auto",            // ⬅ critical
-      force3D: true,                // ⬅ GPU acceleration
+      gsap.to(el, {
+        x: slot.x,
+        scale: slot.scale,
+        opacity: slot.opacity,
+        zIndex: slot.z,
+        duration: 0.9,
+        ease: "power4.out",
+        force3D: true,
+      });
     });
-  });
 
-  // ✅ Update state once
-  if (newCenterIndex !== centerIndex) {
-    setCenterIndex(newCenterIndex);
-  }
-}, [activeStep, screenSize]);
-
+    if (nextCenter !== centerIndex) setCenterIndex(nextCenter);
+  }, [activeStep, screenSize]);
 
   /* ================= JSX ================= */
   return (
-    <div className="absolute inset-0 z-10 pointer-events-none overflow-hidden">
-      {/* BACKGROUND GLOW */}
-      <div
-        className="absolute inset-0 blur-[6vw]"
-        style={{
-          background:
-            "radial-gradient(ellipse at 50% 35%, rgba(47,52,37,0.9) 0%, rgba(47,52,37,0.6) 25%, rgba(0,0,0,1) 65%)",
-        }}
-      />
+    <div className="absolute inset-0 overflow-hidden pointer-events-none">
+      {/* GLOW */}
+      <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(0,255,0,0.18)_0%,rgba(0,0,0,1)_65%)]" />
 
-    {/* CARDS ROW */}
-<div className="absolute inset-0 flex items-center justify-center">
-  <div className="relative w-full h-[60vh]  flex items-center justify-center">
-    {images.map((src, i) => (
-      <div
-        key={i}
-        ref={(el) => (refs.current[i] = el)}
-        className={`
-          absolute
-          transition-all
-          mb-80
-          
-          ${screenSize.isMobile
-            ? "w-[88vw] h-[48vh]"
-            : screenSize.isTablet
-            ? "w-[65vw] h-[36vh]"
-            : "w-[420px] h-[260px]"}
-        `}
-      >
-        <div
-          className={`relative w-full h-full rounded-xl overflow-hidden
-            ${
-              centerIndex === i
-                ? "shadow-[0_0_80px_rgba(0,255,0,0.35)]"
-                : "opacity-100 blur-[0.3px]"
-            }
-          `}
-        >
-          <img
-            src={src}
-            className="w-full h-full object-cover"
-          />
+      {/* CARDS */}
+      <div className="absolute inset-0 flex items-center justify-center">
+        <div className="relative h-[340px] w-full flex items-center justify-center">
+          {images.map((src, i) => (
+            <div
+              key={i}
+              ref={(el) => (refs.current[i] = el)}
+              className="absolute will-change-transform"
+              style={{
+                width: screenSize.isMobile ? 260 : 420,
+                height: screenSize.isMobile ? 160 : 260,
+              }}
+            >
+              <div
+                className={`relative w-full h-full rounded-xl overflow-hidden ${
+                  centerIndex === i
+                    ? "shadow-[0_0_80px_rgba(0,255,0,0.45)]"
+                    : ""
+                }`}
+              >
+                <img
+                  src={src}
+                  className="w-full h-full object-cover"
+                  draggable={false}
+                />
 
-          <div className="absolute inset-0 bg-black/25" />
+                <div className="absolute inset-0 bg-black/30" />
 
-          {/* PLAY */}
-          <div className="absolute inset-0 flex items-center justify-center">
-            <div className="w-14 h-14 bg-red-600 rounded-full flex items-center justify-center">
-              <div className="ml-1 w-0 h-0 border-t-[10px] border-b-[10px] border-l-[16px] border-transparent border-l-white" />
+                {/* PLAY */}
+                <div className="absolute inset-0 flex items-center justify-center">
+                  <div className="w-14 h-14 bg-red-600 rounded-full flex items-center justify-center">
+                    <div className="ml-1 w-0 h-0 border-t-[10px] border-b-[10px] border-l-[16px] border-transparent border-l-white" />
+                  </div>
+                </div>
+              </div>
             </div>
-          </div>
+          ))}
         </div>
       </div>
-    ))}
-  </div>
-</div>
-
 
       {/* CENTER TEXT */}
       {centerIndex !== null && (
-        <div className="absolute bottom-[30%] left-1/2 -translate-x-1/2 z-30 text-center px-4">
-          <p className="font-mono text-white whitespace-pre-line text-sm sm:text-base lg:text-lg max-w-[90vw] sm:max-w-[60vw] leading-[140%]">
+        <div className="absolute bottom-[18%] left-1/2 -translate-x-1/2 text-center z-30 px-4">
+          <p className="font-mono text-white whitespace-pre-line text-sm sm:text-base lg:text-lg max-w-[520px] leading-[150%]">
             {CENTER_TEXTS[centerIndex]}
           </p>
         </div>
@@ -368,6 +337,7 @@ export default function TimelineSection() {
     </div>
   );
 }
+
 
 
 /* ================= CENTER FEATURE (GRID LINES) ================= */
