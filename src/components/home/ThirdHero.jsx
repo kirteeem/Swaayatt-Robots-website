@@ -243,6 +243,9 @@ export default function ThirdHero() {
     };
   }, [isMobile, isTablet]);
 
+
+
+
   // ================= MOBILE ANIMATION (CARD + IMAGE FIXED) =================
   useLayoutEffect(() => {
     if (!isMobile && !isTablet) return;
@@ -293,116 +296,89 @@ export default function ThirdHero() {
         });
       }
 
-      const scrollTrigger = ScrollTrigger.create({
-        trigger: sectionRef.current,
-        start: "top top",
-        end: `+=${sectionHeight}`,
-        pin: true,
-        scrub: 0.8,
-        markers: false,
 
-        onUpdate: (self) => {
-          const progress = self.progress;
-          const sectionSize = 1 / totalCards;
-          
-          let currentIndex = 0;
-          for (let i = 0; i < totalCards; i++) {
-            if (progress >= i * sectionSize && progress < (i + 1) * sectionSize) {
-              currentIndex = i;
-              break;
-            }
-          }
-          
-          // For last section
-          if (progress >= (totalCards - 1) * sectionSize) {
-            currentIndex = totalCards - 1;
-          }
 
-          if (currentIndex === prevDiamondIndexRef.current) return;
+   const scrollTrigger = ScrollTrigger.create({
+  trigger: sectionRef.current,
+  start: "top top",
+  end: `+=${sectionHeight}`,
+  pin: true,
+  scrub: true,
 
-          const prev = prevDiamondIndexRef.current;
-          const current = currentIndex;
+  // ⭐ ONE SCROLL = ONE CARD
+  snap: {
+    snapTo: 1 / (totalCards - 1),
+    duration: { min: 0.25, max: 0.6 },
+    ease: "power1.inOut",
+  },
 
-          // 🔹 Diamond moves
-          if (diamondRef.current) {
-            gsap.to(diamondRef.current, {
-              left: diamondPositionsMobile[current],
-              duration: 0.5,
-              ease: "power2.out",
-            });
-          }
+  markers: false,
 
-          // 🔹 Background color change
-          if (bgRef.current) {
-            gsap.to(bgRef.current, {
-              background: sectionColors[current],
-              duration: 0.8,
-              ease: "power2.inOut",
-            });
-          }
+  onUpdate: (self) => {
+    const progress = self.progress;
+    const sectionSize = 1 / totalCards;
 
-          // 🔹 Hide previous card
-          if (prev !== null && cardsRef.current[prev]) {
-            gsap.to(cardsRef.current[prev], {
-              y: "-40%",
-              opacity: 0,
-              duration: 0.4,
-              ease: "power2.in",
-              onComplete: () =>
-                gsap.set(cardsRef.current[prev], { display: "none" }),
-            });
-          }
+    let currentIndex = Math.floor(progress / sectionSize);
+    currentIndex = Math.min(currentIndex, totalCards - 1);
 
-          // 🔹 Hide previous image
-          if (prev !== null && imagesRef.current[prev]) {
-            gsap.to(imagesRef.current[prev], {
-              opacity: 0,
-              duration: 0.3,
-              ease: "power2.out",
-              onComplete: () =>
-                gsap.set(imagesRef.current[prev], { display: "none" }),
-            });
-          }
+    if (currentIndex === prevDiamondIndexRef.current) return;
 
-          // 🔹 Show current card
-          if (cardsRef.current[current]) {
-            gsap.fromTo(
-              cardsRef.current[current],
-              {
-                y: "100%",
-                opacity: 0,
-                display: "block",
-              },
-              {
-                y: "0%",
-                opacity: 1,
-                duration: 0.6,
-                ease: "power3.out",
-              }
-            );
-          }
+    const prev = prevDiamondIndexRef.current;
+    const current = currentIndex;
 
-          // 🔹 Show current image
-          if (imagesRef.current[current]) {
-            gsap.fromTo(
-              imagesRef.current[current],
-              {
-                opacity: 0,
-                display: "block",
-              },
-              {
-                opacity: 1,
-                duration: 0.5,
-                ease: "power2.out",
-                delay: 0.15,
-              }
-            );
-          }
+    // 🔹 Diamond move
+    gsap.to(diamondRef.current, {
+      left: diamondPositionsMobile[current],
+      duration: 0.4,
+      ease: "power2.out",
+    });
 
-          setActiveIndex(current);
-          prevDiamondIndexRef.current = current;
-        },
+    // 🔹 Background change
+    gsap.to(bgRef.current, {
+      background: sectionColors[current],
+      duration: 0.6,
+      ease: "power2.inOut",
+    });
+
+    // 🔹 Hide previous card
+    if (prev !== null && cardsRef.current[prev]) {
+      gsap.to(cardsRef.current[prev], {
+        y: "-40%",
+        opacity: 0,
+        duration: 0.3,
+        onComplete: () =>
+          gsap.set(cardsRef.current[prev], { display: "none" }),
       });
+    }
+
+    // 🔹 Show current card
+    gsap.fromTo(
+      cardsRef.current[current],
+      { y: "100%", opacity: 0, display: "block" },
+      { y: "0%", opacity: 1, duration: 0.45, ease: "power3.out" }
+    );
+
+    // 🔹 Images
+    if (prev !== null && imagesRef.current[prev]) {
+      gsap.to(imagesRef.current[prev], {
+        opacity: 0,
+        duration: 0.25,
+        onComplete: () =>
+          gsap.set(imagesRef.current[prev], { display: "none" }),
+      });
+    }
+
+    gsap.fromTo(
+      imagesRef.current[current],
+      { opacity: 0, display: "block" },
+      { opacity: 1, duration: 0.4, delay: 0.1 }
+    );
+
+    setActiveIndex(current);
+    prevDiamondIndexRef.current = current;
+  },
+});
+
 
       return () => scrollTrigger.kill();
     }, sectionRef);
@@ -453,9 +429,9 @@ export default function ThirdHero() {
 
         <div className="absolute top-[120px] left-0 right-0 z-20">
           {/* ===== MAIN LINE (DESKTOP + MOBILE SAME) ===== */}
-          <div className="h-[1px] bg-white/40 w-full relative">
+          <div className="h-[1px] bg-white/40 w-full sm:block hidden  relative">
             {/* ===== MOBILE ONLY MARKS ===== */}
-            {(isMobile || isTablet) && (
+            {( isTablet) && (
               <>
                 <div className="absolute left-0 top-1/2 w-1 h-1 
                         -translate-x-1/2 -translate-y-1/2 
@@ -474,7 +450,7 @@ export default function ThirdHero() {
           </div>
 
           {/* ===== DIAMOND CONTAINER ===== */}
-          <div className="max-w-[85vw] mx-auto px-6 relative">
+          <div className="max-w-[85vw] mx-auto sm:block hidden px-6 relative">
             <div
               ref={diamondRef}
               className="absolute sm:bottom-[-8px] bottom-[-4px] sm:w-5 sm:h-5  w-2 h-2 rotate-45 bg-white

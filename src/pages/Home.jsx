@@ -9,6 +9,7 @@ import ThirdHero from "../components/home/ThirdHero";
 import TimelineSection from "../components/home/timeline/TimelineSection";
 import BrandFeaturedOn from "../components/Brandfeature/BrandFeaturedOn";
 import FeaturedImageReveal from "../components/Brandfeature/FeaturedImageReveal";
+import HomeHeroSec from "../components/home/HomeHeroSec";
 
 
 
@@ -20,10 +21,14 @@ export default function Home() {
       {/* ================= FIRST HERO ================= */}
       <HomeHero />
 
-      {/* ================= SECOND HERO ================= */}
-      <section className="relative bg-black z-20">
-        <SecondHero />
+      <section>
+        <HomeHeroSec/>
       </section>
+
+      {/* ================= SECOND HERO ================= */}
+      {/* <section className="relative bg-black z-20">
+        <SecondHero />
+      </section> */}
 
       {/* ================= THIRD HERO ================= */}
       <section className="relative bg-black z-20 -mt-[35vh]">

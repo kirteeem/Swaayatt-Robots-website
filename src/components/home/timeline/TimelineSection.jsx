@@ -27,7 +27,7 @@ export default function TimelineSection() {
       const isMobile = width < 768;
       const isTablet = width >= 768 && width < 1024;
       const isDesktop = width >= 1024;
-      
+
       setScreenSize({
         width,
         height,
@@ -36,7 +36,7 @@ export default function TimelineSection() {
         isDesktop
       });
     };
-    
+
     checkScreenSize();
     window.addEventListener("resize", checkScreenSize);
     return () => window.removeEventListener("resize", checkScreenSize);
@@ -44,11 +44,11 @@ export default function TimelineSection() {
 
   useLayoutEffect(() => {
     if (!sectionRef.current) return;
-    
+
     const st = ScrollTrigger.create({
       trigger: sectionRef.current,
       start: "top top",
-end: () => "+=" + window.innerHeight * 4.5,
+      end: () => "+=" + window.innerHeight * 4.5,
 
       scrub: screenSize.isMobile ? 0.8 : 1.2,
       pin: true,
@@ -82,13 +82,13 @@ end: () => "+=" + window.innerHeight * 4.5,
     >
       {/* Blog Nodes Component */}
       <BlogNodes progress={progress} activeStep={activeStep} screenSize={screenSize} />
-      
+
       {/* Center Grid Lines */}
       <CenterFeature screenSize={screenSize} />
-      
+
       {/* Road Timeline with Car */}
       <RoadTimeline progress={progress} activeStep={activeStep} screenSize={screenSize} />
-      
+
       {/* Inline CSS */}
       <style jsx>{`
         @keyframes slideUp {
@@ -201,9 +201,10 @@ end: () => "+=" + window.innerHeight * 4.5,
 
 
 
- function BlogNodes({ activeStep, screenSize }) {
+function BlogNodes({ activeStep, screenSize }) {
   const refs = useRef([]);
   const [centerIndex, setCenterIndex] = useState(2);
+  const mobileRefs = useRef([]);
 
   const images = [
     "/images/Blogs/Homepage-1.webp",
@@ -212,6 +213,17 @@ end: () => "+=" + window.innerHeight * 4.5,
     "/images/media/news/n1.webp",
     "/images/media/news/n1.webp",
   ];
+
+
+
+  const MOBILE_DATES = [
+    "20 Aug 2025",
+    "30 Jul 2025",
+    "08 Jul 2025",
+    "23 Apr 2025",
+     "11 Sep 2025",
+  ];
+
 
   const CENTER_TEXTS = [
     "Introducing Bidirectional Negotiation to\nthe World of Autonomous Driving:\nBiologically Inspired Model",
@@ -273,49 +285,171 @@ end: () => "+=" + window.innerHeight * 4.5,
         duration: 0.9,
         ease: "power4.out",
         force3D: true,
-         transformOrigin: "50% 50%",
+        transformOrigin: "50% 50%",
       });
     });
 
     if (nextCenter !== centerIndex) setCenterIndex(nextCenter);
   }, [activeStep, screenSize]);
 
+
+
+  //mobile view
+
+useLayoutEffect(() => {
+  if (!screenSize.isMobile) return;
+
+  const cards = mobileRefs.current;
+  const total = cards.length;
+
+  // Initial state
+  gsap.set(cards, {
+    y: 120,
+    opacity: 0,
+  });
+
+  // First card visible
+  gsap.set(cards[0], {
+    y: 0,
+    opacity: 1,
+  });
+
+  const tl = gsap.timeline({
+    scrollTrigger: {
+      trigger: cards[0].parentElement,
+      start: "top top",
+      end: `+=${total * 100}%`,
+      pin: true,
+      scrub: 1,
+      snap: 1 / (total - 1),
+      anticipatePin: 1,
+    },
+  });
+
+  cards.forEach((card, i) => {
+    if (i === 0) return;
+
+    // Show current card
+    tl.to(card, {
+      y: 0,
+      opacity: 1,
+      duration: 1,
+      ease: "power3.out",
+    });
+
+    // Hide previous card
+    tl.to(
+      cards[i - 1],
+      {
+        opacity: 0,
+        duration: 0.5,
+        ease: "power2.out",
+      },
+      "<" // same time start
+    );
+  });
+
+}, [screenSize]);
+
+
+
+
+  // mobile screen
+
+  if (screenSize.isMobile) {
+    return (
+      <div className="relative w-full">
+        {/* Vertical Line */}
+        <div className="fixed left-6 top-40 h-[60vh] w-[2px] bg-green-500/40 z-0" />
+
+        <div className="relative h-screen flex items-center">
+          {images.map((src, i) => (
+            <div
+              key={i}
+              ref={(el) => (mobileRefs.current[i] = el)}
+              className="absolute w-full flex flex-col items-start px-4"
+              style={{ zIndex: i + 1 }}
+            >
+              {/* Date Row */}
+              <div className="relative flex items-center mb-3">
+                {/* Connector */}
+
+                {/* Date */}
+                <div className="ml-4 mb-4 bg-gray-800 px-4 py-1 text-xs text-gray-100 font-mono whitespace-nowrap rounded">
+                  {MOBILE_DATES[i]}
+                </div>
+              </div>
+
+              {/* Card */}
+              <div className="ml-8 mb-10 w-[80vw] min-w-[80vw] rounded-xl overflow-hidden shadow-[0_0_40px_rgba(0,255,0,0.25)]">
+                <img
+                  src={src}
+                  className="w-full h-[420px] object-cover"
+                  draggable={false}
+                />
+
+
+
+                  <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+    <div
+      className="w-14 h-14 rounded-full bg-red-600
+      flex items-center justify-center
+      shadow-[0_0_30px_rgba(255,0,0,0.6)]"
+    >
+      <div
+        className="ml-1 w-0 h-0
+        border-t-[8px] border-t-transparent
+        border-b-[8px] border-b-transparent
+        border-l-[14px] border-l-white"
+      />
+    </div>
+  </div>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    );
+  }
+
+
+
+
   /* ================= JSX ================= */
   return (
     <div className="absolute inset-0 overflow-hidden pointer-events-none">
       {/* GLOW */}
-      <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(0, 255, 0, 0.25)_0%,rgba(0,0,0,1)_65%)]" />
+      <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(0, 255, 0, 0.13)_0%,rgba(0,0,0,1)_65%)]" />
 
       {/* CARDS */}
       <div className="absolute inset-0 flex items-center justify-center">
-    <div className="relative w-full h-[360px] flex items-center justify-center isolate">
+        <div className="relative w-full h-[360px] flex items-center justify-center isolate">
 
           {images.map((src, i) => (
             <div
               key={i}
               ref={(el) => (refs.current[i] = el)}
               className="absolute will-change-transform mb-80"
-            style={{
-  width: "100%",
-  maxWidth: screenSize.isMobile ? 460 : 420,
-  height: "auto",
-}}
+              style={{
+                width: "100%",
+                maxWidth: screenSize.isMobile ? 460 : 420,
+                height: "auto",
+              }}
 
             >
               <div
-                className={`relative sm:w-full sm:h-full h-[60vh]  sm:mt-0 mt-[40vh] sm:p-0 p-1 rounded-xl overflow-hidden ${
-                  centerIndex === i
+                className={`relative sm:w-full sm:h-full h-[50vh]  sm:mt-0 mt-[40vh] sm:p-0 p-2 rounded-xl overflow-hidden ${centerIndex === i
                     ? "shadow-[0_0_80px_rgba(0,255,0,0.45)]"
                     : ""
-                }`}
+                  }`}
               >
                 <img
                   src={src}
-                  className="w-full h-full object-cover object-center"
+                  className="w-full h-full object-cover object-fit object-center"
                   draggable={false}
                 />
 
-                <div className="absolute inset-0 bg-black/20" />
+                <div className="absolute inset-0 bg-black/10" />
 
                 {/* PLAY */}
                 <div className="absolute inset-0 flex items-center justify-center">
@@ -329,9 +463,14 @@ end: () => "+=" + window.innerHeight * 4.5,
         </div>
       </div>
 
+
+
+
+
+
       {/* CENTER TEXT */}
       {centerIndex !== null && (
-        <div className="absolute sm:bottom-[35%] bottom-[5%]  sm:w-[30vw] md:w-[30vw]  w-[90vw]  left-1/2 -translate-x-1/2 text-center z-30 px-4">
+        <div className="absolute sm:bottom-[35%] bottom-[10%]  sm:w-[30vw] md:w-[30vw]  w-[90vw]  left-1/2 -translate-x-1/2 text-center z-30 px-4">
           <p className="font-mono text-white whitespace-pre-line text-sm sm:text-base lg:text-lg max-w-[620px] leading-[150%]">
             {CENTER_TEXTS[centerIndex]}
           </p>
@@ -413,51 +552,51 @@ function RoadTimeline({ progress, activeStep, screenSize }) {
     }
   }, []);
 
- useEffect(() => {
-  if (!carRef.current || !wrapperRef.current || !imageLoaded) return;
+  useEffect(() => {
+    if (!carRef.current || !wrapperRef.current || !imageLoaded) return;
 
-  const car = carRef.current;
-  const width = wrapperRef.current.offsetWidth;
+    const car = carRef.current;
+    const width = wrapperRef.current.offsetWidth;
 
-  // Start and end positions
-  const startX = -car.offsetWidth * 1.2;
-  const lastDivider =
-    parseFloat(DIVIDERS[DIVIDERS.length - 1].left) / 100;
-  const exitX = width + car.offsetWidth * 1.2;
+    // Start and end positions
+    const startX = -car.offsetWidth * 1.2;
+    const lastDivider =
+      parseFloat(DIVIDERS[DIVIDERS.length - 1].left) / 100;
+    const exitX = width + car.offsetWidth * 1.2;
 
-  let x;
+    let x;
 
-  // 🚗 NORMAL DRIVE (0 → 90% scroll)
-  if (progress < 0.9) {
-    const driveProgress = gsap.utils.mapRange(
-      0,
-      0.9,
-      startX,
-      width * lastDivider,
-      progress
-    );
-    x = driveProgress;
-  }
-  // 🚗 EXIT DRIVE (90% → 100%)
-  else {
-    x = gsap.utils.mapRange(
-      0.9,
-      1,
-      width * lastDivider,
-      exitX,
-      progress
-    );
-  }
+    // 🚗 NORMAL DRIVE (0 → 90% scroll)
+    if (progress < 0.9) {
+      const driveProgress = gsap.utils.mapRange(
+        0,
+        0.9,
+        startX,
+        width * lastDivider,
+        progress
+      );
+      x = driveProgress;
+    }
+    // 🚗 EXIT DRIVE (90% → 100%)
+    else {
+      x = gsap.utils.mapRange(
+        0.9,
+        1,
+        width * lastDivider,
+        exitX,
+        progress
+      );
+    }
 
-  gsap.to(car, {
-    x,
-    duration: 0.6,
-    ease: progress > 0.9 ? "power2.in" : "power2.out",
-    overwrite: true,
-  });
+    gsap.to(car, {
+      x,
+      duration: 0.6,
+      ease: progress > 0.9 ? "power2.in" : "power2.out",
+      overwrite: true,
+    });
 
-  car.style.opacity = "1";
-}, [progress, imageLoaded, screenSize]);
+    car.style.opacity = "1";
+  }, [progress, imageLoaded, screenSize]);
 
 
   if (screenSize.isMobile) return null;
@@ -520,9 +659,8 @@ function RoadTimeline({ progress, activeStep, screenSize }) {
           >
             {/* Main Line */}
             <div
-              className={`transition-all duration-500 ${
-                activeStep >= i ? "bg-white" : "bg-gray-600"
-              }`}
+              className={`transition-all duration-500 ${activeStep >= i ? "bg-white" : "bg-gray-600"
+                }`}
               style={{
                 position: "absolute",
                 inset: 0,
@@ -530,9 +668,8 @@ function RoadTimeline({ progress, activeStep, screenSize }) {
             />
             {/* Joint with active state */}
             <div
-              className={`${activeStep >= i ? "bg-white" : "bg-gray-600"} ${
-                activeStep === i ? "active-point" : ""
-              }`}
+              className={`${activeStep >= i ? "bg-white" : "bg-gray-600"} ${activeStep === i ? "active-point" : ""
+                }`}
               style={{
                 position: "absolute",
                 bottom: "-0.3vh",
@@ -545,9 +682,8 @@ function RoadTimeline({ progress, activeStep, screenSize }) {
             />
             {/* Tilted Down Line */}
             <div
-              className={`transition-all duration-500 ${
-                activeStep >= i ? "bg-white" : "bg-gray-600"
-              }`}
+              className={`transition-all duration-500 ${activeStep >= i ? "bg-white" : "bg-gray-600"
+                }`}
               style={{
                 position: "absolute",
                 top: "100%",
@@ -560,9 +696,8 @@ function RoadTimeline({ progress, activeStep, screenSize }) {
             />
             {/* Date */}
             <div
-              className={`transition-all duration-500 ${
-                activeStep >= i ? "text-white" : "text-gray-500"
-              }`}
+              className={`transition-all duration-500 ${activeStep >= i ? "text-white" : "text-gray-500"
+                }`}
               style={{
                 position: "absolute",
                 top: "calc(100% + 5vh)",

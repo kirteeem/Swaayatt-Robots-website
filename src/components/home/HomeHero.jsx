@@ -1,27 +1,22 @@
 export default function HomeHero() {
   return (
-    <section className="relative min-h-screen w-full overflow-hidden  bg-gradient-to-br
-    from-[#0d4748]
-    via-[#0b1e1d]
-    to-black pb-[120px] sm:pb-[160px] lg:pb-[260px]">
+    <section className="relative min-h-screen w-full overflow-hidden bg-black/10">
 
       {/* ================= BACKGROUND IMAGE ================= */}
       <img
-        src="/images/Home/head.webp"
+        src="/images/Home/hero-2.webp"
         alt="Autonomous Vehicles"
         className="
           absolute inset-0
           w-full h-full
-          object-cover
-          object-center
+          object-cover object-center
           z-0
+          saturate-[0.85]
+          contrast-[1.05]
+          brightness-[0.85]
         "
       />
-
-      {/* Dark cinematic overlay */}
-
-
-
+     
 
       {/* ================= CONTENT ================= */}
       <div
@@ -30,25 +25,23 @@ export default function HomeHero() {
           max-w-[93vw]
           mx-auto
           px-5 sm:px-8 lg:px-16
-          flex
-          items-center
+          flex items-center
           min-h-screen
           text-center lg:text-left
         "
       >
-        <div className="w-full mb-60 lg:max-w-[620px] sm:mx-auto  lg:mx-0">
+        <div className="w-full lg:max-w-[620px] mt-[15vh] sm:mt-[18vh] lg:mt-0">
 
           {/* AUTONOMOUS */}
           <h1
             className="
               font-extrabold uppercase
-              text-[35px]
+              text-[34px]
               sm:text-[56px]
               lg:text-[80px]
               leading-[100%]
               tracking-[-0.02em]
               text-white
-              
             "
             style={{ fontFamily: "Montserrat, sans-serif" }}
           >
@@ -59,14 +52,14 @@ export default function HomeHero() {
           <h2
             className="
               font-extralight uppercase
-              text-[40px]
+              text-[36px]
               sm:text-[56px]
               lg:text-[80px]
-              leading-[130%]
-              lg:leading-[160%]
+              leading-[120%]
+              lg:leading-[150%]
               tracking-[-0.02em]
               text-white
-              mt-[-4px] lg:mt-[-10px]
+              -mt-1 lg:-mt-2
             "
             style={{ fontFamily: "Montserrat, sans-serif" }}
           >
@@ -77,13 +70,13 @@ export default function HomeHero() {
           <p
             className="
               mt-4 sm:mt-5 lg:mt-6
-              text-[16px]
+              text-[15px]
               sm:text-[16px]
               lg:text-[20px]
-              leading-[130%]
+              leading-[135%]
               tracking-[-0.02em]
-              text-white/60
-              max-w-[90%]
+              text-white/65
+              max-w-[92%]
               mx-auto lg:mx-0
             "
             style={{ fontFamily: "Rethink Sans, sans-serif" }}
@@ -94,23 +87,7 @@ export default function HomeHero() {
         </div>
       </div>
 
-      {/* ================= CENTER GREEN LIGHT ================= */}
-      <div
-        className="
-          absolute inset-0 z-[20] pointer-events-none
-          bg-[radial-gradient(
-            120%_70%_at_50%_60%,
-            rgba(40,190,160,0.35),
-            rgba(25,120,100,0.25)_45%,
-            rgba(0,0,0,0.2)_70%,
-            transparent_85%
-          )]
-          mix-blend-screen
-        "
-      />
-
-      {/* ================= BOTTOM GRADIENT ================= */}
-      <div className="absolute inset-0 z-[15] bg-gradient-to-b from-transparent via-black/40 to-black" />
+      {/* ================= BOTTOM FADE ================= */}
 
     </section>
   );
