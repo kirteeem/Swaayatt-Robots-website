@@ -29,7 +29,6 @@ function AppLayout() {
   return (
     <>
       <Header variant={headerVariant} />
-      <ScrollToTop />
 
       <Routes>
         {/* MAIN PAGES */}

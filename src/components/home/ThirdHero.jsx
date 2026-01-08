@@ -103,7 +103,7 @@ export default function ThirdHero() {
 
       scrollTriggerRef.current = ScrollTrigger.create({
         trigger: sectionRef.current,
-        start: "top top+=80",
+        start: "top top",
         end: `+=${TOTAL_SECTIONS * 180}%`,
         pin: true,
         pinSpacing: true,
@@ -433,7 +433,7 @@ export default function ThirdHero() {
           </div>
         )}
 
-        <div className="absolute top-[120px] left-0 right-0 z-20">
+        <div className="absolute top-[60px] left-0 right-0 z-20">
           {/* ===== MAIN LINE ===== */}
           <div className="h-[1px] bg-white/40 w-full sm:block hidden relative">
             {/* ===== MOBILE ONLY MARKS ===== */}
@@ -511,7 +511,7 @@ export default function ThirdHero() {
                 {features.map((item, i) => (
                   <div key={i} className="px-4 sm:px-6 lg:px-10">
                     <h3
-                      className={`text-[22px] sm:text-[26px] lg:text-[32px] font-Rethink Sans mb-1 py-4 transition-colors duration-400 drop-shadow-lg
+                      className={`text-[22px] sm:text-[26px] lg:text-[32px] font-Rethink Sans mt-[-6vh] py-4 transition-colors duration-400 drop-shadow-lg
                         ${activeIndex === i ? "text-white" : "text-white/80"}`}
                     >
                       {item.title}
@@ -529,12 +529,13 @@ export default function ThirdHero() {
             </div>
 
             {/* ================= DESKTOP VIDEO ================= */}
-            <div className="relative z-40 max-w-[80vw] min-h-[80vh] mx-auto mt-3 pr-8 px-2 pb-32">
+            <div className="relative z-40 max-w-[85vw]   min-h-[10vh] mx-auto mt-3 pr-8 px-6 pb-32">
+
               <div className="overflow-hidden rounded-md shadow-2xl">
                 <video
                   ref={videoRef}
                   src={features[0].video}
-                  className="w-full object-cover opacity-100"
+                  className="w-full h-[610px] object-cover opacity-100"
                   muted
                   playsInline
                   preload="auto"

@@ -20,6 +20,21 @@ export default function Header({ variant = "default" }) {
   const ref = useRef(null);
   const { isDarkMode, toggleTheme } = useTheme();
 
+  // Handle scroll effect
+  useEffect(() => {
+    const handleScroll = () => {
+      if (window.scrollY > 20) {
+        setScrolled(true);
+      } else {
+        setScrolled(false);
+      }
+    };
+
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
+  // Close dropdown when clicking outside
   useEffect(() => {
     const handler = (e) => {
       if (ref.current && !ref.current.contains(e.target)) {
@@ -30,20 +45,18 @@ export default function Header({ variant = "default" }) {
     return () => document.removeEventListener("mousedown", handler);
   }, []);
 
-
-
   const isHome = variant === "home";
   const isDarkVariant = variant === "dark";
   const useDarkTheme = isDarkMode || isDarkVariant || (isHome && !scrolled);
 
   return (
-  <header
-  className="
-    fixed top-0 left-0 w-full z-[1000]
-    bg-transparent
-  "
->
-
+    <header
+      className={`fixed top-0 left-0 right-0 z-[1000] transition-all duration-300 ${
+        scrolled 
+          ? "translate-y-[-100%]" 
+          : "translate-y-0"
+      }`}
+    >
       <div className="max-w-[93vw] mx-auto py-3 px-6 sm:px-10 lg:px-16">
         <div className="h-[70px] flex items-center justify-between">
           {/* LOGO */}
@@ -54,12 +67,11 @@ export default function Header({ variant = "default" }) {
               alt="Swaayatt Robots"
             />
             <div
-              className={`font-semibold text-[16px] leading-tight ${useDarkTheme ? "text-white" : "text-[#1C1C1C]"
-                }`}
+              className={`font-semibold text-[16px] leading-tight ${
+                useDarkTheme ? "text-white" : "text-[#1C1C1C]"
+              }`}
             >
-              <div className="font-rethink tracking-[0.1em]">
-                SWAAYATT
-              </div>
+              <div className="font-rethink tracking-[0.1em]">SWAAYATT</div>
               <div className="font-rethink leading-tight tracking-[0.15em]">
                 ROBOTS
               </div>
@@ -68,8 +80,9 @@ export default function Header({ variant = "default" }) {
 
           {/* DESKTOP NAV */}
           <nav
-            className={`hidden lg:flex items-center gap-10 text-[18px] font-semibold ${useDarkTheme ? "text-white" : "text-[#1C1C1C]"
-              }`}
+            className={`hidden lg:flex items-center gap-10 text-[18px] font-semibold ${
+              useDarkTheme ? "text-white" : "text-[#1C1C1C]"
+            }`}
           >
             {/* RESEARCH - Modified Section */}
             <div ref={ref} className="relative">
@@ -119,9 +132,9 @@ export default function Header({ variant = "default" }) {
                         </span>
                       </div>
                       <p className="mt-[0.75vw] max-w-[17vw] text-[0.85vw] font-normal tracking-[-0.02em] leading-none opacity-90">
-                        Dive into the challenges, breakthroughs, and the potential
-                        of self-driving cars in one of the world's most complex
-                        driving environments.
+                        Dive into the challenges, breakthroughs, and the
+                        potential of self-driving cars in one of the world's
+                        most complex driving environments.
                       </p>
                     </div>
                   </div>
@@ -177,16 +190,30 @@ export default function Header({ variant = "default" }) {
               aria-label="Toggle theme"
             >
               {isDarkMode ? (
-                <Sun size={20} className={useDarkTheme ? "text-yellow-500" : "text-gray-700"} />
+                <Sun
+                  size={20}
+                  className={
+                    useDarkTheme ? "text-yellow-500" : "text-gray-700"
+                  }
+                />
               ) : (
-                <Moon size={20} className={useDarkTheme ? "text-white" : "text-gray-700"} />
+                <Moon
+                  size={20}
+                  className={useDarkTheme ? "text-white" : "text-gray-700"}
+                />
               )}
             </button>
             <button onClick={() => setMobileOpen(!mobileOpen)}>
               {mobileOpen ? (
-                <X size={26} className={useDarkTheme ? "text-white" : "text-gray-800"} />
+                <X
+                  size={26}
+                  className={useDarkTheme ? "text-white" : "text-gray-800"}
+                />
               ) : (
-                <Menu size={26} className={useDarkTheme ? "text-white" : "text-gray-800"} />
+                <Menu
+                  size={26}
+                  className={useDarkTheme ? "text-white" : "text-gray-800"}
+                />
               )}
             </button>
           </div>
@@ -195,7 +222,13 @@ export default function Header({ variant = "default" }) {
 
       {/* MOBILE NAV - Fixed Section */}
       {mobileOpen && (
-        <div className="lg:hidden bg-white dark:bg-gray-900 border-t border-gray-200 dark:border-gray-800">
+        <div
+          className={`lg:hidden ${
+            useDarkTheme
+              ? "bg-gray-900 border-gray-800"
+              : "bg-white border-gray-200"
+          } border-t transition-colors duration-300`}
+        >
           <div className="px-6 py-4 space-y-4">
             {/* Research Page Link for Mobile */}
             <div className="flex justify-between items-center">
@@ -205,7 +238,11 @@ export default function Header({ variant = "default" }) {
                   setMobileOpen(false);
                   setMobileResearchOpen(false);
                 }}
-                className="py-2 text-gray-800 dark:text-gray-200 hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
+                className={`py-2 transition-colors ${
+                  useDarkTheme
+                    ? "text-gray-200 hover:text-blue-400"
+                    : "text-gray-800 hover:text-blue-600"
+                }`}
               >
                 Research
               </Link>
@@ -215,8 +252,8 @@ export default function Header({ variant = "default" }) {
                 onClick={() => setMobileResearchOpen(!mobileResearchOpen)}
                 className="p-2"
               >
-                <ChevronDown 
-                  size={20} 
+                <ChevronDown
+                  size={20}
                   className={`transition-transform duration-300 ${
                     mobileResearchOpen ? "rotate-180" : ""
                   } ${useDarkTheme ? "text-white" : "text-gray-800"}`}
@@ -225,7 +262,11 @@ export default function Header({ variant = "default" }) {
             </div>
 
             {mobileResearchOpen && (
-              <div className="pl-4 space-y-2 border-l-2 border-gray-200 dark:border-gray-700">
+              <div
+                className={`pl-4 space-y-2 border-l-2 ${
+                  useDarkTheme ? "border-gray-700" : "border-gray-200"
+                }`}
+              >
                 {researchMenu.map((item) => (
                   <Link
                     key={item.label}
@@ -234,7 +275,11 @@ export default function Header({ variant = "default" }) {
                       setMobileOpen(false);
                       setMobileResearchOpen(false);
                     }}
-                    className="block py-2 text-gray-600 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
+                    className={`block py-2 transition-colors ${
+                      useDarkTheme
+                        ? "text-gray-400 hover:text-blue-400"
+                        : "text-gray-600 hover:text-blue-600"
+                    }`}
                   >
                     {item.label}
                   </Link>
@@ -248,7 +293,11 @@ export default function Header({ variant = "default" }) {
                 setMobileOpen(false);
                 setMobileResearchOpen(false);
               }}
-              className="block py-2 text-gray-800 dark:text-gray-200 hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
+              className={`block py-2 transition-colors ${
+                useDarkTheme
+                  ? "text-gray-200 hover:text-blue-400"
+                  : "text-gray-800 hover:text-blue-600"
+              }`}
             >
               Media
             </Link>
@@ -258,7 +307,11 @@ export default function Header({ variant = "default" }) {
                 setMobileOpen(false);
                 setMobileResearchOpen(false);
               }}
-              className="block py-2 text-gray-800 dark:text-gray-200 hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
+              className={`block py-2 transition-colors ${
+                useDarkTheme
+                  ? "text-gray-200 hover:text-blue-400"
+                  : "text-gray-800 hover:text-blue-600"
+              }`}
             >
               Blogs
             </Link>
@@ -268,7 +321,11 @@ export default function Header({ variant = "default" }) {
                 setMobileOpen(false);
                 setMobileResearchOpen(false);
               }}
-              className="block py-2 text-gray-800 dark:text-gray-200 hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
+              className={`block py-2 transition-colors ${
+                useDarkTheme
+                  ? "text-gray-200 hover:text-blue-400"
+                  : "text-gray-800 hover:text-blue-600"
+              }`}
             >
               Career
             </Link>
@@ -278,7 +335,11 @@ export default function Header({ variant = "default" }) {
                 setMobileOpen(false);
                 setMobileResearchOpen(false);
               }}
-              className="block py-2 text-gray-800 dark:text-gray-200 hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
+              className={`block py-2 transition-colors ${
+                useDarkTheme
+                  ? "text-gray-200 hover:text-blue-400"
+                  : "text-gray-800 hover:text-blue-600"
+              }`}
             >
               Contact
             </Link>

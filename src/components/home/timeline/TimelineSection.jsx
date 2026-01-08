@@ -221,7 +221,7 @@ function BlogNodes({ activeStep, screenSize }) {
     "30 Jul 2025",
     "08 Jul 2025",
     "23 Apr 2025",
-     "11 Sep 2025",
+    "11 Sep 2025",
   ];
 
 
@@ -296,60 +296,60 @@ function BlogNodes({ activeStep, screenSize }) {
 
   //mobile view
 
-useLayoutEffect(() => {
-  if (!screenSize.isMobile) return;
+  useLayoutEffect(() => {
+    if (!screenSize.isMobile) return;
 
-  const cards = mobileRefs.current;
-  const total = cards.length;
+    const cards = mobileRefs.current;
+    const total = cards.length;
 
-  // Initial state
-  gsap.set(cards, {
-    y: 120,
-    opacity: 0,
-  });
-
-  // First card visible
-  gsap.set(cards[0], {
-    y: 0,
-    opacity: 1,
-  });
-
-  const tl = gsap.timeline({
-    scrollTrigger: {
-      trigger: cards[0].parentElement,
-      start: "top top",
-      end: `+=${total * 100}%`,
-      pin: true,
-      scrub: 1,
-      snap: 1 / (total - 1),
-      anticipatePin: 1,
-    },
-  });
-
-  cards.forEach((card, i) => {
-    if (i === 0) return;
-
-    // Show current card
-    tl.to(card, {
-      y: 0,
-      opacity: 1,
-      duration: 1,
-      ease: "power3.out",
+    // Initial state
+    gsap.set(cards, {
+      y: 420,
+      opacity: 0,
     });
 
-    // Hide previous card
-    tl.to(
-      cards[i - 1],
-      {
-        opacity: 0,
-        duration: 0.5,
-        ease: "power2.out",
-      },
-      "<" // same time start
-    );
-  });
+    // First card visible
+    gsap.set(cards[0], {
+      y: 0,
+      opacity: 1,
+    });
 
-}, [screenSize]);
+    const tl = gsap.timeline({
+      scrollTrigger: {
+        trigger: cards[0].parentElement,
+        start: "top top",
+        end: `+=${total * 100}%`,
+        pin: true,
+        scrub: 1,
+        snap: 1 / (total - 1),
+        anticipatePin: 1,
+      },
+    });
+
+    cards.forEach((card, i) => {
+      if (i === 0) return;
+
+      // Show current card
+      tl.to(card, {
+        y: 0,
+        opacity: 1,
+        duration: 1,
+        ease: "power3.out",
+      });
+
+      // Hide previous card
+      tl.to(
+        cards[i - 1],
+        {
+          opacity: 0,
+          duration: 0.5,
+          ease: "power2.out",
+        },
+        "<" // same time start
+      );
+    });
+
+  }, [screenSize]);
 
 
 
@@ -381,32 +381,46 @@ useLayoutEffect(() => {
               </div>
 
               {/* Card */}
-              <div className="ml-8 mb-10 w-[80vw] min-w-[80vw] rounded-xl overflow-hidden shadow-[0_0_40px_rgba(0,255,0,0.25)]">
+              <div className="ml-4 mb-10 w-[85vw] min-w-[80vw] rounded-xl overflow-hidden shadow-[0_0_40px_rgba(0,255,0,0.25)]">
                 <img
                   src={src}
                   className="w-full h-[420px] object-cover"
                   draggable={false}
                 />
 
+          <div className="ml-2 mt-2 w-[80vw] text-center">
+  <p className="text-white text-md leading-relaxed whitespace-pre-line opacity-90">
+    {CENTER_TEXTS[i]}
+  </p>
+</div>
 
 
-                  <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-    <div
-      className="w-14 h-14 rounded-full bg-red-600
+
+                <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+                  <div
+                    className="w-14 h-14 rounded-full bg-red-600
       flex items-center justify-center
       shadow-[0_0_30px_rgba(255,0,0,0.6)]"
-    >
-      <div
-        className="ml-1 w-0 h-0
+                  >
+                    <div
+                      className="ml-1 w-0 h-0
         border-t-[8px] border-t-transparent
         border-b-[8px] border-b-transparent
         border-l-[14px] border-l-white"
-      />
-    </div>
-  </div>
+                    />
+                  </div>
+                </div>
               </div>
             </div>
+
+
+
+
+
+  
           ))}
+
+
         </div>
       </div>
     );
@@ -439,8 +453,8 @@ useLayoutEffect(() => {
             >
               <div
                 className={`relative sm:w-full sm:h-full h-[50vh]  sm:mt-0 mt-[40vh] sm:p-0 p-2 rounded-xl overflow-hidden ${centerIndex === i
-                    ? "shadow-[0_0_80px_rgba(0,255,0,0.45)]"
-                    : ""
+                  ? "shadow-[0_0_80px_rgba(0,255,0,0.45)]"
+                  : ""
                   }`}
               >
                 <img
@@ -470,7 +484,7 @@ useLayoutEffect(() => {
 
       {/* CENTER TEXT */}
       {centerIndex !== null && (
-        <div className="absolute sm:bottom-[35%] bottom-[10%]  sm:w-[30vw] md:w-[30vw]  w-[90vw]  left-1/2 -translate-x-1/2 text-center z-30 px-4">
+        <div className="absolute sm:bottom-[35%] bottom-[0%]  sm:w-[30vw] md:w-[30vw]  w-[90vw]  left-1/2 -translate-x-1/2 text-center z-30 px-4">
           <p className="font-mono text-white whitespace-pre-line text-sm sm:text-base lg:text-lg max-w-[620px] leading-[150%]">
             {CENTER_TEXTS[centerIndex]}
           </p>
