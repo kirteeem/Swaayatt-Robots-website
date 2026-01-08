@@ -71,8 +71,9 @@ export default function Header({ variant = "default" }) {
                 useDarkTheme ? "text-white" : "text-[#1C1C1C]"
               }`}
             >
-              <div className="font-rethink tracking-[0.1em]">SWAAYATT</div>
-              <div className="font-rethink leading-tight tracking-[0.15em]">
+              {/* Fixed font class names */}
+              <div className="font-rethink-sans tracking-[0.1em]">SWAAYATT</div>
+              <div className="font-rethink-sans leading-tight tracking-[0.15em]">
                 ROBOTS
               </div>
             </div>
@@ -80,7 +81,7 @@ export default function Header({ variant = "default" }) {
 
           {/* DESKTOP NAV */}
           <nav
-            className={`hidden lg:flex items-center gap-10 text-[18px] font-semibold ${
+            className={`hidden lg:flex items-center gap-10 text-[18px] tracking-[0.03em] font-semibold font-rethink-sans ${
               useDarkTheme ? "text-white" : "text-[#1C1C1C]"
             }`}
           >
@@ -124,14 +125,14 @@ export default function Header({ variant = "default" }) {
                     </div>
                     <div className="absolute bottom-[1.3vw] left-[1.3vw] text-white">
                       <div className="flex items-end gap-[0.8vw] translate-y-[-0.25vw]">
-                        <h3 className="text-[2vw] font-medium tracking-[-0.02em] leading-none">
+                        <h3 className="text-[2vw] font-medium tracking-[-0.02em] leading-none font-rethink-sans">
                           Research
                         </h3>
                         <span className="w-[1.8vw] h-[1.8vw] rounded-full flex items-center justify-center backdrop-blur-[0.6vw] bg-white/20 border border-white/30 text-[1vw] font-medium translate-y-[0.15vw]">
                           ›
                         </span>
                       </div>
-                      <p className="mt-[0.75vw] max-w-[17vw] text-[0.85vw] font-normal tracking-[-0.02em] leading-none opacity-90">
+                      <p className="mt-[0.75vw] max-w-[17vw] text-[0.85vw] font-normal tracking-[-0.02em] leading-none opacity-90 font-rethink-sans">
                         Dive into the challenges, breakthroughs, and the
                         potential of self-driving cars in one of the world's
                         most complex driving environments.
@@ -139,7 +140,7 @@ export default function Header({ variant = "default" }) {
                     </div>
                   </div>
                   {/* RIGHT MENU */}
-                  <div className="flex-1 px-1 py-10 flex flex-col justify-center">
+                  <div className="flex-1 px-1 py-10 flex flex-col justify-center font-rethink-sans">
                     {researchMenu.map((item) => (
                       <Link
                         key={item.label}
@@ -223,7 +224,7 @@ export default function Header({ variant = "default" }) {
       {/* MOBILE NAV - Fixed Section */}
       {mobileOpen && (
         <div
-          className={`lg:hidden ${
+          className={`lg:hidden font-rethink-sans ${
             useDarkTheme
               ? "bg-gray-900 border-gray-800"
               : "bg-white border-gray-200"

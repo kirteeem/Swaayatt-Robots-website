@@ -358,7 +358,7 @@ function BlogNodes({ activeStep, screenSize }) {
 
   if (screenSize.isMobile) {
     return (
-      <div className="relative w-full">
+      <div className="relative w-full  bg-[#87ggf6]">
         {/* Vertical Line */}
         <div className="fixed left-6 top-40 h-[60vh] w-[2px] bg-green-500/40 z-0" />
 

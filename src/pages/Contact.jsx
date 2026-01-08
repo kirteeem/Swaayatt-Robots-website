@@ -5,10 +5,10 @@ export default function Contact() {
   const { isDarkMode } = useTheme();
   
   return (
-    <div className={`${isDarkMode ? 'bg-black' : 'bg-white'} mt-20 transition-colors duration-300`}>
+    <div className={`${isDarkMode ? 'bg-black' : 'bg-white'}  transition-colors duration-300`}>
       <main className="py-12 sm:py-16">
 
-        <div className="sm:max-w-[93vw] max-w-[100vw] mx-auto px-4 sm:px-10 lg:px-16">
+        <div className="sm:max-w-[93vw]m mt-20 max-w-[100vw] mx-auto px-4 sm:px-10 lg:px-16">
 
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-stretch">
 

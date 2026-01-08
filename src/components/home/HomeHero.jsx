@@ -3,12 +3,13 @@ export default function HomeHero() {
     <section className="relative min-h-screen w-full overflow-hidden bg-black/10">
 
       {/* ================= BACKGROUND IMAGE ================= */}
-    <video
+ <video
   className="
     absolute inset-0
     w-full h-full
     object-cover object-center
     z-0
+    scale-[1.20]        /* 👈 zoom level */
     saturate-[0.85]
     contrast-[1.05]
     brightness-[0.85]

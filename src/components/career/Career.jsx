@@ -133,10 +133,10 @@ const texts = [
     <main className={`w-full min-h-screen  transition-colors duration-300 ${isDarkMode ? "bg-black text-gray-100" : "bg-white text-gray-900"
       }`}>
 
-     <section className="py-6 sm:py-8 mt-8">
+     <section className="py-6 sm:py-8 ">
   <div className="sm:max-w-[93vw]  max-w-[130vw] mx-auto px-4 sm:px-10 lg:px-16">
 
-import gsap from "gsap";
+
     <div className="relative rounded-2xl mt-20 overflow-hidden">
       <div className="relative">
         <img

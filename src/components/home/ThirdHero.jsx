@@ -33,6 +33,8 @@ const features = [
 
 // Diamond positions: 4 main positions + 1 extra for end
 const diamondPositions = ["-0.7%", "22.7%", "47.2%", "71.7%", "98%"];
+
+
 const diamondPositionsMobile = ["-9%", "28%", "66%", "105%"];
 
 const sectionColors = [
@@ -50,8 +52,12 @@ export default function ThirdHero() {
   const sectionRef = useRef(null);
   const diamondRef = useRef(null);
   const bgRef = useRef(null);
+
+
   const videoRef = useRef(null); // Changed from imageRef to videoRef
   const prevDiamondIndexRef = useRef(0);
+
+
   const prevVideoIndexRef = useRef(-1); // Changed from prevImageIndexRef
   const cardsRef = useRef([]);
   const videosRef = useRef([]); // Changed from imagesRef
@@ -70,176 +76,176 @@ export default function ThirdHero() {
     return () => window.removeEventListener("resize", checkScreenSize);
   }, []);
 
-  // ================= GSAP SCROLL LOGIC (Desktop only) =================
-  useLayoutEffect(() => {
-    if (isMobile || isTablet) return;
+ // ================= GSAP SCROLL LOGIC (Desktop only) =================
+useLayoutEffect(() => {
+  if (isMobile || isTablet) return;
 
-    const ctx = gsap.context(() => {
-      if (scrollTriggerRef.current) {
-        scrollTriggerRef.current.kill();
-      }
+  const ctx = gsap.context(() => {
+    if (scrollTriggerRef.current) {
+      scrollTriggerRef.current.kill();
+    }
 
-      // Initial state
-      if (videoRef.current) {
-        gsap.set(videoRef.current, {
-          opacity: 0,
-          scale: 0.95,
-        });
-      }
-
-      if (diamondRef.current) {
-        gsap.set(diamondRef.current, {
-          left: diamondPositions[0],
-        });
-      }
-
-      if (bgRef.current) {
-        gsap.set(bgRef.current, {
-          background: sectionColors[0],
-        });
-      }
-
-      const TOTAL_SECTIONS = 5;
-
-      scrollTriggerRef.current = ScrollTrigger.create({
-        trigger: sectionRef.current,
-        start: "top top",
-        end: `+=${TOTAL_SECTIONS * 180}%`,
-        pin: true,
-        pinSpacing: true,
-        scrub: 1,
-        markers: false,
-        onUpdate: (self) => {
-          const progress = self.progress;
-
-          let diamondIndex;
-          if (progress < 0.2) {
-            diamondIndex = 0;
-          } else if (progress < 0.4) {
-            diamondIndex = 1;
-          } else if (progress < 0.6) {
-            diamondIndex = 2;
-          } else if (progress < 0.8) {
-            diamondIndex = 3;
-          } else if (progress < 0.95) {
-            diamondIndex = 3;
-          } else {
-            diamondIndex = 4;
-          }
-
-          let videoIndex;
-          if (diamondIndex === 0) {
-            videoIndex = -1;
-          } else if (diamondIndex >= 1 && diamondIndex <= 3) {
-            videoIndex = diamondIndex - 1;
-          } else if (diamondIndex === 4) {
-            videoIndex = 3;
-          }
-
-          // Update diamond position
-          if (diamondRef.current && diamondIndex !== prevDiamondIndexRef.current) {
-            gsap.to(diamondRef.current, {
-              left: diamondPositions[diamondIndex],
-              duration: 0.8,
-              ease: "power2.out",
-              overwrite: "auto"
-            });
-            prevDiamondIndexRef.current = diamondIndex;
-          }
-
-          // Update background
-          if (bgRef.current) {
-            const colorIndex = diamondIndex;
-            gsap.to(bgRef.current, {
-              background: sectionColors[colorIndex],
-              duration: 1,
-              ease: "power2.inOut",
-            });
-          }
-
-          const textHighlightIndex = diamondIndex === 4 ? 3 : diamondIndex;
-          setActiveIndex(textHighlightIndex);
-
-          // Handle video transitions - FIXED THIS PART
-          if (videoRef.current && videoIndex !== prevVideoIndexRef.current) {
-            if (videoIndex < 0) {
-              gsap.to(videoRef.current, {
-                opacity: 0,
-                scale: 0.95,
-                duration: 0.4,
-                ease: "power2.in",
-                onComplete: () => {
-                  videoRef.current.pause();
-                }
-              });
-            } else {
-              // Fade out current video
-              gsap.to(videoRef.current, {
-                opacity: 0,
-                scale: 0.95,
-                duration: 0.3,
-                ease: "power2.in",
-                onComplete: () => {
-                  // Change video source
-                  videoRef.current.src = features[videoIndex].video;
-                  
-                  // Load and play new video
-                  videoRef.current.load();
-                  videoRef.current.oncanplay = () => {
-                    videoRef.current.play().catch(e => console.log("Auto-play prevented:", e));
-                    gsap.to(videoRef.current, {
-                      opacity: 1,
-                      scale: 1,
-                      duration: 0.5,
-                      ease: "power3.out",
-                    });
-                  };
-                }
-              });
-            }
-            prevVideoIndexRef.current = videoIndex;
-          }
-        },
-
-        onEnter: () => {
-          prevDiamondIndexRef.current = 0;
-          prevVideoIndexRef.current = -1;
-          setActiveIndex(-1);
-
-          if (videoRef.current) {
-            gsap.set(videoRef.current, {
-              opacity: 0,
-              scale: 0.95,
-            });
-          }
-
-          if (diamondRef.current) {
-            gsap.set(diamondRef.current, {
-              left: diamondPositions[0],
-            });
-          }
-
-          if (bgRef.current) {
-            gsap.set(bgRef.current, {
-              background: sectionColors[0],
-            });
-          }
-        },
-
-        onLeaveBack: () => {
-          prevDiamondIndexRef.current = 0;
-          prevVideoIndexRef.current = -1;
-        }
+    // Initial state
+    if (videoRef.current) {
+      gsap.set(videoRef.current, {
+        opacity: 1, // Changed from 0 to 1
+        scale: 1, // Changed from 0.95 to 1
       });
-    }, sectionRef);
+      // Play first video immediately
+      videoRef.current.src = features[0].video;
+      videoRef.current.play().catch(e => console.log("Auto-play prevented:", e));
+    }
 
-    return () => {
-      if (scrollTriggerRef.current) {
-        scrollTriggerRef.current.kill();
+    if (diamondRef.current) {
+      gsap.set(diamondRef.current, {
+        left: diamondPositions[0],
+      });
+    }
+
+    if (bgRef.current) {
+      gsap.set(bgRef.current, {
+        background: sectionColors[0],
+      });
+    }
+
+    const TOTAL_SECTIONS = 5;
+
+    scrollTriggerRef.current = ScrollTrigger.create({
+      trigger: sectionRef.current,
+      start: "top top",
+      end: `+=${TOTAL_SECTIONS * 180}%`,
+      pin: true,
+      pinSpacing: true,
+      scrub: 1,
+      markers: false,
+      onUpdate: (self) => {
+        const progress = self.progress;
+
+        let diamondIndex;
+        if (progress < 0.2) {
+          diamondIndex = 0;
+        } else if (progress < 0.4) {
+          diamondIndex = 1;
+        } else if (progress < 0.6) {
+          diamondIndex = 2;
+        } else if (progress < 0.8) {
+          diamondIndex = 3;
+        } else if (progress < 0.95) {
+          diamondIndex = 3;
+        } else {
+          diamondIndex = 4;
+        }
+
+        // NEW: Set videoIndex based on diamond position
+        let videoIndex;
+        if (diamondIndex === 0) {
+          videoIndex = 0; // First point shows first video
+        } else if (diamondIndex === 1) {
+          videoIndex = 1; // Second point shows second video
+        } else if (diamondIndex === 2) {
+          videoIndex = 2; // Third point shows third video
+        } else if (diamondIndex === 3 || diamondIndex === 4) {
+          videoIndex = 3; // Fourth and fifth points show fourth video
+        }
+
+        // Update diamond position
+        if (diamondRef.current && diamondIndex !== prevDiamondIndexRef.current) {
+          gsap.to(diamondRef.current, {
+            left: diamondPositions[diamondIndex],
+            duration: 0.8,
+            ease: "power2.out",
+            overwrite: "auto"
+          });
+          prevDiamondIndexRef.current = diamondIndex;
+        }
+
+        // Update background
+        if (bgRef.current) {
+          const colorIndex = diamondIndex;
+          gsap.to(bgRef.current, {
+            background: sectionColors[colorIndex],
+            duration: 1,
+            ease: "power2.inOut",
+          });
+        }
+
+        // Update active text index
+        const textHighlightIndex = diamondIndex === 4 ? 3 : diamondIndex;
+        setActiveIndex(textHighlightIndex);
+
+        // Handle video transitions - SIMPLIFIED VERSION
+        if (videoRef.current && videoIndex !== prevVideoIndexRef.current) {
+          // Fade out current video
+          gsap.to(videoRef.current, {
+            opacity: 0,
+            scale: 0.95,
+            duration: 0.4,
+            ease: "power2.in",
+            onComplete: () => {
+              // Change video source
+              videoRef.current.src = features[videoIndex].video;
+              
+              // Load and play new video
+              videoRef.current.load();
+              videoRef.current.oncanplay = () => {
+                videoRef.current.play().catch(e => console.log("Auto-play prevented:", e));
+                // Fade in new video
+                gsap.to(videoRef.current, {
+                  opacity: 1,
+                  scale: 1,
+                  duration: 0.6,
+                  ease: "power3.out",
+                });
+              };
+            }
+          });
+          prevVideoIndexRef.current = videoIndex;
+        }
+      },
+
+      onEnter: () => {
+        prevDiamondIndexRef.current = 0;
+        prevVideoIndexRef.current = 0; // Changed from -1 to 0
+        setActiveIndex(0); // Changed from -1 to 0
+
+        if (videoRef.current) {
+          // Set first video and play it
+          videoRef.current.src = features[0].video;
+          gsap.set(videoRef.current, {
+            opacity: 1, // Changed from 0 to 1
+            scale: 1, // Changed from 0.95 to 1
+          });
+          videoRef.current.play().catch(e => console.log("Auto-play prevented:", e));
+        }
+
+        if (diamondRef.current) {
+          gsap.set(diamondRef.current, {
+            left: diamondPositions[0],
+          });
+        }
+
+        if (bgRef.current) {
+          gsap.set(bgRef.current, {
+            background: sectionColors[0],
+          });
+        }
+      },
+
+      onLeaveBack: () => {
+        prevDiamondIndexRef.current = 0;
+        prevVideoIndexRef.current = 0; // Changed from -1 to 0
+        setActiveIndex(0); // Reset to first item
       }
-      ctx.revert();
-    };
-  }, [isMobile, isTablet]);
+    });
+  }, sectionRef);
+
+  return () => {
+    if (scrollTriggerRef.current) {
+      scrollTriggerRef.current.kill();
+    }
+    ctx.revert();
+  };
+}, [isMobile, isTablet]);
 
   // ================= MOBILE ANIMATION (CARD + VIDEO FIXED) =================
   useLayoutEffect(() => {
@@ -468,7 +474,7 @@ export default function ThirdHero() {
 
         {/* ================= MOBILE & TABLET VIEW ================= */}
         {(isMobile || isTablet) ? (
-          <div className="relative z-30 w-full px-4 pt-52 pb-40">
+          <div className="relative z-30 w-full px-4 pt-20 pb-40">
             <div className="relative w-full min-h-[70vh] overflow-hidden">
               {features.map((item, i) => (
                 <div
@@ -529,7 +535,7 @@ export default function ThirdHero() {
             </div>
 
             {/* ================= DESKTOP VIDEO ================= */}
-            <div className="relative z-40 max-w-[85vw]   min-h-[10vh] mx-auto mt-3 pr-8 px-6 pb-32">
+            <div className="relative z-40 max-w-[85vw]   min-h-[10vh] mx-auto mt-3 pr-8 px-2 pb-32">
 
               <div className="overflow-hidden rounded-md shadow-2xl">
                 <video

@@ -39,9 +39,9 @@ export default function Blogs() {
     <main className={`${isDarkMode ? 'bg-black' : 'bg-white'} transition-colors duration-300 min-h-screen`}>
 
       {/* ================= INTRO ================= */}
-      <section className="sm:max-w-[93vw] max-w-[100vw] mt-20 mx-auto px-4 sm:px-10 lg:px-16 pt-16 pb-14">
+      <section className="sm:max-w-[93vw] max-w-[100vw]  mx-auto px-4 sm:px-10 lg:px-16 pt-16 pb-14">
         <div className="text-center max-w-[572px] mx-auto">
-          <h1 className={`font-rethink font-medium text-[36px] sm:text-[44px] md:text-[56px] lg:text-[68px] leading-[1.05] tracking-[-0.02em] mb-4 transition-colors duration-300 ${
+          <h1 className={`font-rethink font-medium text-[36px] mt-10 sm:text-[44px] md:text-[56px] lg:text-[68px] leading-[1.05] tracking-[-0.02em] mb-4 transition-colors duration-300 ${
             isDarkMode ? 'text-white' : 'text-[#1A212F]'
           }`}>
             Discover and Learn
