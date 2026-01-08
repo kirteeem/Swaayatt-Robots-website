@@ -3,19 +3,24 @@ export default function HomeHero() {
     <section className="relative min-h-screen w-full overflow-hidden bg-black/10">
 
       {/* ================= BACKGROUND IMAGE ================= */}
-      <img
-        src="/images/Home/hero-2.webp"
-        alt="Autonomous Vehicles"
-        className="
-          absolute inset-0
-          w-full h-full
-          object-cover object-center
-          z-0
-          saturate-[0.85]
-          contrast-[1.05]
-          brightness-[0.85]
-        "
-      />
+    <video
+  className="
+    absolute inset-0
+    w-full h-full
+    object-cover object-center
+    z-0
+    saturate-[0.85]
+    contrast-[1.05]
+    brightness-[0.85]
+  "
+  autoPlay
+  muted
+  loop
+  playsInline
+>
+  <source src="/images/Home/hero.mov" type="video/webm" />
+</video>
+
      
 
       {/* ================= CONTENT ================= */}

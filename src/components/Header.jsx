@@ -30,30 +30,20 @@ export default function Header({ variant = "default" }) {
     return () => document.removeEventListener("mousedown", handler);
   }, []);
 
-  useEffect(() => {
-    if (variant !== "home") return;
-    const onScroll = () => setScrolled(window.scrollY > 60);
-    window.addEventListener("scroll", onScroll);
-    return () => window.removeEventListener("scroll", onScroll);
-  }, [variant]);
+
 
   const isHome = variant === "home";
   const isDarkVariant = variant === "dark";
   const useDarkTheme = isDarkMode || isDarkVariant || (isHome && !scrolled);
 
   return (
-    <header
-      className={`
-        fixed top-0 left-0 w-full z-[1000] transition-all duration-300
-        ${isHome
-          ? scrolled
-     
-          : useDarkTheme
-            ? "bg-black border-b border-white/10"
-            : "bg-white"
-        }
-      `}
-    >
+  <header
+  className="
+    fixed top-0 left-0 w-full z-[1000]
+    bg-transparent
+  "
+>
+
       <div className="max-w-[93vw] mx-auto py-3 px-6 sm:px-10 lg:px-16">
         <div className="h-[70px] flex items-center justify-between">
           {/* LOGO */}

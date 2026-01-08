@@ -9,30 +9,30 @@ const features = [
     title: "Planning & Decision",
     desc:
       "Our state-of-the-art planning algorithms, powered by unsupervised learning, reinforcement learning, and (inverse-)reinforcement learning, excel at mastering unknown and unseen on- and off-road environments.",
-    image: "/images/Home/head-3.webp"
+    video: "/images/Home/Planning.mp4"
   },
   {
     title: "Localization",
     desc:
       "Our state-of-the-art localization technology achieves pin point accuracy with sparse maps, eliminating the need for dense HD maps.",
-    image: "/images/Home/hero-2.webp"
+    video: "/images/Home/Perception.mp4"
   },
   {
     title: "Perception",
     desc:
       "Our computationally efficient deep neural networks deliver ultra-high FPS on edge computing platforms.",
-    image: "/images/Home/head-3.webp"
+    video: "/images/Home/Localisation.mp4"
   },
   {
     title: "Controls",
     desc:
       "Our reinforcement learning based control systems translate high-level plans into smooth, precise movements, ensuring unparalleled safety, efficiency on every journey.",
-    image: "/images/Home/hero-2.webp"
+    video: "/images/Home/Controls.mp4"
   },
 ];
 
 // Diamond positions: 4 main positions + 1 extra for end
-const diamondPositions = ["-0.7%", "22.7%", "47.2%", "71.7%", "98%"]; // Added 5th position
+const diamondPositions = ["-0.7%", "22.7%", "47.2%", "71.7%", "98%"];
 const diamondPositionsMobile = ["-9%", "28%", "66%", "105%"];
 
 const sectionColors = [
@@ -40,9 +40,8 @@ const sectionColors = [
   "linear-gradient( #3D160A 0%, #000000 100%)",
   "linear-gradient( #29143D 0%, #000000 100%)",
   "linear-gradient( #332F07 0%, #000000 100%)",
-    "linear-gradient( #29143D 0%, #000000 100%)",
+  "linear-gradient( #29143D 0%, #000000 100%)",
 ];
-
 
 export default function ThirdHero() {
   const [activeIndex, setActiveIndex] = useState(-1);
@@ -51,11 +50,11 @@ export default function ThirdHero() {
   const sectionRef = useRef(null);
   const diamondRef = useRef(null);
   const bgRef = useRef(null);
-  const imageRef = useRef(null);
+  const videoRef = useRef(null); // Changed from imageRef to videoRef
   const prevDiamondIndexRef = useRef(0);
-  const prevImageIndexRef = useRef(-1);
+  const prevVideoIndexRef = useRef(-1); // Changed from prevImageIndexRef
   const cardsRef = useRef([]);
-  const imagesRef = useRef([]);
+  const videosRef = useRef([]); // Changed from imagesRef
   const scrollTriggerRef = useRef(null);
 
   // Detect screen size
@@ -76,14 +75,13 @@ export default function ThirdHero() {
     if (isMobile || isTablet) return;
 
     const ctx = gsap.context(() => {
-      // Clean up previous ScrollTrigger
       if (scrollTriggerRef.current) {
         scrollTriggerRef.current.kill();
       }
 
       // Initial state
-      if (imageRef.current) {
-        gsap.set(imageRef.current, {
+      if (videoRef.current) {
+        gsap.set(videoRef.current, {
           opacity: 0,
           scale: 0.95,
         });
@@ -103,41 +101,39 @@ export default function ThirdHero() {
 
       const TOTAL_SECTIONS = 5;
 
-      // Create ScrollTrigger with 5 sections (0-4)
       scrollTriggerRef.current = ScrollTrigger.create({
         trigger: sectionRef.current,
         start: "top top+=80",
-        end: `+=${TOTAL_SECTIONS * 180}%`, // Increased for 5 sections
+        end: `+=${TOTAL_SECTIONS * 180}%`,
         pin: true,
         pinSpacing: true,
         scrub: 1,
         markers: false,
         onUpdate: (self) => {
           const progress = self.progress;
-          
-          // Map progress to 5 diamond positions (0-4)
+
           let diamondIndex;
           if (progress < 0.2) {
-            diamondIndex = 0; // First 20% - position 1 (-0.7%)
+            diamondIndex = 0;
           } else if (progress < 0.4) {
-            diamondIndex = 1; // Next 20% - position 2 (22.7%)
+            diamondIndex = 1;
           } else if (progress < 0.6) {
-            diamondIndex = 2; // Next 20% - position 3 (47.2%)
+            diamondIndex = 2;
           } else if (progress < 0.8) {
-            diamondIndex = 3; // Next 20% - position 4 (71.7%) - 
+            diamondIndex = 3;
           } else if (progress < 0.95) {
-            diamondIndex = 3; // 80-95%
+            diamondIndex = 3;
           } else {
-            diamondIndex = 4; // Last 5% - position 5 (98%) - end position
+            diamondIndex = 4;
           }
 
-          let imageIndex;
+          let videoIndex;
           if (diamondIndex === 0) {
-            imageIndex = -1; // No image for first diamond position
+            videoIndex = -1;
           } else if (diamondIndex >= 1 && diamondIndex <= 3) {
-            imageIndex = diamondIndex - 1; // Show previous image
+            videoIndex = diamondIndex - 1;
           } else if (diamondIndex === 4) {
-            imageIndex = 3; // At end, show last image (index 3)
+            videoIndex = 3;
           }
 
           // Update diamond position
@@ -151,9 +147,9 @@ export default function ThirdHero() {
             prevDiamondIndexRef.current = diamondIndex;
           }
 
-          // Update background (use modulo for colors since we have only 4 colors)
+          // Update background
           if (bgRef.current) {
-      const colorIndex = diamondIndex;
+            const colorIndex = diamondIndex;
             gsap.to(bgRef.current, {
               background: sectionColors[colorIndex],
               duration: 1,
@@ -161,76 +157,78 @@ export default function ThirdHero() {
             });
           }
 
-          // Update active index for text highlighting
           const textHighlightIndex = diamondIndex === 4 ? 3 : diamondIndex;
           setActiveIndex(textHighlightIndex);
 
-          // Handle image transitions
-          if (imageRef.current && imageIndex !== prevImageIndexRef.current) {
-            // Hide image when no image should be shown
-            if (imageIndex < 0) {
-              gsap.to(imageRef.current, {
+          // Handle video transitions - FIXED THIS PART
+          if (videoRef.current && videoIndex !== prevVideoIndexRef.current) {
+            if (videoIndex < 0) {
+              gsap.to(videoRef.current, {
                 opacity: 0,
                 scale: 0.95,
                 duration: 0.4,
                 ease: "power2.in",
+                onComplete: () => {
+                  videoRef.current.pause();
+                }
               });
-            } 
-            // Show image when moving to valid index
-            else {
-              // Fade out current image
-              gsap.to(imageRef.current, {
+            } else {
+              // Fade out current video
+              gsap.to(videoRef.current, {
                 opacity: 0,
                 scale: 0.95,
                 duration: 0.3,
                 ease: "power2.in",
                 onComplete: () => {
-                  // Change image source
-                  imageRef.current.src = features[imageIndex].image;
-                  // Fade in new image
-                  gsap.to(imageRef.current, {
-                    opacity: 1,
-                    scale: 1,
-                    duration: 0.5,
-                    ease: "power3.out",
-                  });
+                  // Change video source
+                  videoRef.current.src = features[videoIndex].video;
+                  
+                  // Load and play new video
+                  videoRef.current.load();
+                  videoRef.current.oncanplay = () => {
+                    videoRef.current.play().catch(e => console.log("Auto-play prevented:", e));
+                    gsap.to(videoRef.current, {
+                      opacity: 1,
+                      scale: 1,
+                      duration: 0.5,
+                      ease: "power3.out",
+                    });
+                  };
                 }
               });
             }
-            prevImageIndexRef.current = imageIndex;
+            prevVideoIndexRef.current = videoIndex;
           }
         },
-        
+
         onEnter: () => {
-          // Reset to initial state when entering section
           prevDiamondIndexRef.current = 0;
-          prevImageIndexRef.current = -1;
+          prevVideoIndexRef.current = -1;
           setActiveIndex(-1);
-          
-          if (imageRef.current) {
-            gsap.set(imageRef.current, {
+
+          if (videoRef.current) {
+            gsap.set(videoRef.current, {
               opacity: 0,
               scale: 0.95,
             });
           }
-          
+
           if (diamondRef.current) {
             gsap.set(diamondRef.current, {
               left: diamondPositions[0],
             });
           }
-          
+
           if (bgRef.current) {
             gsap.set(bgRef.current, {
               background: sectionColors[0],
             });
           }
         },
-        
+
         onLeaveBack: () => {
-          // When scrolling back past the section
           prevDiamondIndexRef.current = 0;
-          prevImageIndexRef.current = -1;
+          prevVideoIndexRef.current = -1;
         }
       });
     }, sectionRef);
@@ -243,10 +241,7 @@ export default function ThirdHero() {
     };
   }, [isMobile, isTablet]);
 
-
-
-
-  // ================= MOBILE ANIMATION (CARD + IMAGE FIXED) =================
+  // ================= MOBILE ANIMATION (CARD + VIDEO FIXED) =================
   useLayoutEffect(() => {
     if (!isMobile && !isTablet) return;
 
@@ -261,12 +256,12 @@ export default function ThirdHero() {
         display: "none",
       });
 
-      gsap.set(imagesRef.current, {
+      gsap.set(videosRef.current, {
         opacity: 0,
         display: "none",
       });
 
-      // First card + image
+      // First card + video
       if (cardsRef.current[0]) {
         gsap.set(cardsRef.current[0], {
           y: "0%",
@@ -275,11 +270,13 @@ export default function ThirdHero() {
         });
       }
 
-      if (imagesRef.current[0]) {
-        gsap.set(imagesRef.current[0], {
+      if (videosRef.current[0]) {
+        gsap.set(videosRef.current[0], {
           opacity: 1,
           display: "block",
         });
+        // Play first video
+        videosRef.current[0].play().catch(e => console.log("Auto-play prevented:", e));
       }
 
       // Set initial background color
@@ -296,89 +293,98 @@ export default function ThirdHero() {
         });
       }
 
+      const scrollTrigger = ScrollTrigger.create({
+        trigger: sectionRef.current,
+        start: "top top",
+        end: `+=${sectionHeight}`,
+        pin: true,
+        scrub: true,
+        snap: {
+          snapTo: 1 / (totalCards - 1),
+          duration: { min: 0.25, max: 0.6 },
+          ease: "power1.inOut",
+        },
+        markers: false,
+        onUpdate: (self) => {
+          const progress = self.progress;
+          const sectionSize = 1 / totalCards;
 
+          let currentIndex = Math.floor(progress / sectionSize);
+          currentIndex = Math.min(currentIndex, totalCards - 1);
 
-   const scrollTrigger = ScrollTrigger.create({
-  trigger: sectionRef.current,
-  start: "top top",
-  end: `+=${sectionHeight}`,
-  pin: true,
-  scrub: true,
+          if (currentIndex === prevDiamondIndexRef.current) return;
 
-  // ⭐ ONE SCROLL = ONE CARD
-  snap: {
-    snapTo: 1 / (totalCards - 1),
-    duration: { min: 0.25, max: 0.6 },
-    ease: "power1.inOut",
-  },
+          const prev = prevDiamondIndexRef.current;
+          const current = currentIndex;
 
-  markers: false,
+          // Diamond move
+          gsap.to(diamondRef.current, {
+            left: diamondPositionsMobile[current],
+            duration: 0.4,
+            ease: "power2.out",
+          });
 
-  onUpdate: (self) => {
-    const progress = self.progress;
-    const sectionSize = 1 / totalCards;
+          // Background change
+          gsap.to(bgRef.current, {
+            background: sectionColors[current],
+            duration: 0.6,
+            ease: "power2.inOut",
+          });
 
-    let currentIndex = Math.floor(progress / sectionSize);
-    currentIndex = Math.min(currentIndex, totalCards - 1);
+          // Hide previous card
+          if (prev !== null && cardsRef.current[prev]) {
+            gsap.to(cardsRef.current[prev], {
+              y: "-40%",
+              opacity: 0,
+              duration: 0.3,
+              onComplete: () => {
+                gsap.set(cardsRef.current[prev], { display: "none" });
+                // Pause previous video
+                if (videosRef.current[prev]) {
+                  videosRef.current[prev].pause();
+                }
+              },
+            });
+          }
 
-    if (currentIndex === prevDiamondIndexRef.current) return;
+          // Show current card
+          gsap.fromTo(
+            cardsRef.current[current],
+            { y: "100%", opacity: 0, display: "block" },
+            { y: "0%", opacity: 1, duration: 0.45, ease: "power3.out" }
+          );
 
-    const prev = prevDiamondIndexRef.current;
-    const current = currentIndex;
+          // Videos transition
+          if (prev !== null && videosRef.current[prev]) {
+            gsap.to(videosRef.current[prev], {
+              opacity: 0,
+              duration: 0.25,
+              onComplete: () => {
+                gsap.set(videosRef.current[prev], { display: "none" });
+              },
+            });
+          }
 
-    // 🔹 Diamond move
-    gsap.to(diamondRef.current, {
-      left: diamondPositionsMobile[current],
-      duration: 0.4,
-      ease: "power2.out",
-    });
+          gsap.fromTo(
+            videosRef.current[current],
+            { opacity: 0, display: "block" },
+            { 
+              opacity: 1, 
+              duration: 0.4, 
+              delay: 0.1,
+              onStart: () => {
+                // Play the current video
+                if (videosRef.current[current]) {
+                  videosRef.current[current].play().catch(e => console.log("Auto-play prevented:", e));
+                }
+              }
+            }
+          );
 
-    // 🔹 Background change
-    gsap.to(bgRef.current, {
-      background: sectionColors[current],
-      duration: 0.6,
-      ease: "power2.inOut",
-    });
-
-    // 🔹 Hide previous card
-    if (prev !== null && cardsRef.current[prev]) {
-      gsap.to(cardsRef.current[prev], {
-        y: "-40%",
-        opacity: 0,
-        duration: 0.3,
-        onComplete: () =>
-          gsap.set(cardsRef.current[prev], { display: "none" }),
+          setActiveIndex(current);
+          prevDiamondIndexRef.current = current;
+        },
       });
-    }
-
-    // 🔹 Show current card
-    gsap.fromTo(
-      cardsRef.current[current],
-      { y: "100%", opacity: 0, display: "block" },
-      { y: "0%", opacity: 1, duration: 0.45, ease: "power3.out" }
-    );
-
-    // 🔹 Images
-    if (prev !== null && imagesRef.current[prev]) {
-      gsap.to(imagesRef.current[prev], {
-        opacity: 0,
-        duration: 0.25,
-        onComplete: () =>
-          gsap.set(imagesRef.current[prev], { display: "none" }),
-      });
-    }
-
-    gsap.fromTo(
-      imagesRef.current[current],
-      { opacity: 0, display: "block" },
-      { opacity: 1, duration: 0.4, delay: 0.1 }
-    );
-
-    setActiveIndex(current);
-    prevDiamondIndexRef.current = current;
-  },
-});
-
 
       return () => scrollTrigger.kill();
     }, sectionRef);
@@ -403,12 +409,11 @@ export default function ThirdHero() {
 
       <section
         ref={sectionRef}
-        className={`relative overflow-hidden sm:mt-0 mt-40 scrollbar-hide ${
-          isMobile || isTablet ? "h-[100vh]" : "h-[110vh]"
-        }`}
+        className={`relative overflow-hidden sm:mt-0 mt-40 scrollbar-hide ${isMobile || isTablet ? "h-[100vh]" : "h-[110vh]"
+          }`}
       >
         {/* ================= ANIMATED BACKGROUND ================= */}
-        <div 
+        <div
           ref={bgRef}
           className="absolute inset-0 z-0 transition-all duration-1000 ease-in-out"
         >
@@ -419,6 +424,7 @@ export default function ThirdHero() {
         {/* ================= GRID LINES (Desktop only) ================= */}
         {!isMobile && !isTablet && (
           <div className="absolute top-0 left-0 right-0 h-[80vh] pointer-events-none z-10">
+            
             <div className="absolute left-32 top-0 h-full w-px bg-gradient-to-b from-white/40 via-white/30 to-transparent" />
             <div className="absolute right-[150px] top-0 h-full w-px bg-gradient-to-b from-white/40 via-white/30 to-transparent" />
             <div className="absolute left-[27%] top-0 h-full w-px bg-gradient-to-b from-white/40 via-white/30 to-transparent" />
@@ -428,10 +434,10 @@ export default function ThirdHero() {
         )}
 
         <div className="absolute top-[120px] left-0 right-0 z-20">
-          {/* ===== MAIN LINE (DESKTOP + MOBILE SAME) ===== */}
-          <div className="h-[1px] bg-white/40 w-full sm:block hidden  relative">
+          {/* ===== MAIN LINE ===== */}
+          <div className="h-[1px] bg-white/40 w-full sm:block hidden relative">
             {/* ===== MOBILE ONLY MARKS ===== */}
-            {( isTablet) && (
+            {(isTablet) && (
               <>
                 <div className="absolute left-0 top-1/2 w-1 h-1 
                         -translate-x-1/2 -translate-y-1/2 
@@ -453,7 +459,7 @@ export default function ThirdHero() {
           <div className="max-w-[85vw] mx-auto sm:block hidden px-6 relative">
             <div
               ref={diamondRef}
-              className="absolute sm:bottom-[-8px] bottom-[-4px] sm:w-5 sm:h-5  w-2 h-2 rotate-45 bg-white
+              className="absolute sm:bottom-[-8px] bottom-[-4px] sm:w-5 sm:h-5 w-2 h-2 rotate-45 bg-white
                  shadow-[0_0_16px_rgba(255,255,255,0.95),0_0_30px_rgba(255,255,255,0.6)]
                  transition-all duration-500 ease-out z-30"
             />
@@ -481,11 +487,15 @@ export default function ThirdHero() {
                   </div>
 
                   <div className="overflow-hidden rounded-xl mt-6 shadow-2xl">
-                    <img
-                      ref={el => imagesRef.current[i] = el}
-                      src={item.image}
+                    <video
+                      ref={el => (videosRef.current[i] = el)}
+                      src={item.video}
                       className="w-full h-[350px] object-cover"
-                      alt={item.title}
+                      muted
+                      loop
+                      playsInline
+                      preload="auto"
+                      autoPlay
                       style={{ opacity: i === 0 ? 1 : 0 }}
                     />
                   </div>
@@ -518,14 +528,18 @@ export default function ThirdHero() {
               </div>
             </div>
 
-            {/* ================= DESKTOP IMAGE WITH SLIDE-UP ANIMATION ================= */}
-            <div className="relative z-40 max-w-[80vw] min-h-[80vh] mx-auto mt-20 pr-8 px-2 pb-32">
+            {/* ================= DESKTOP VIDEO ================= */}
+            <div className="relative z-40 max-w-[80vw] min-h-[80vh] mx-auto mt-3 pr-8 px-2 pb-32">
               <div className="overflow-hidden rounded-md shadow-2xl">
-                <img
-                  ref={imageRef}
-                  src={features[0].image}
+                <video
+                  ref={videoRef}
+                  src={features[0].video}
                   className="w-full object-cover opacity-100"
-                  alt=""
+                  muted
+                  playsInline
+                  preload="auto"
+                  autoPlay
+                  loop
                 />
               </div>
             </div>
