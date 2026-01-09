@@ -9,7 +9,7 @@ export default function HomeHero() {
     w-full h-full
     object-cover object-center
     z-0
-    scale-[1.20]        /* 👈 zoom level */
+    sm:scale-[1.24]    scale-[1.32]   md:scale-[1.32]     /* 👈 zoom level */
     saturate-[0.85]
     contrast-[1.05]
     brightness-[0.85]

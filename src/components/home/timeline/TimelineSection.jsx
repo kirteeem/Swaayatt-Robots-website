@@ -254,7 +254,7 @@ function BlogNodes({ activeStep, screenSize }) {
     ];
   };
 
-  /* ================= GSAP ANIMATION ================= */
+  /* ================= desktop  GSAP ANIMATION ================= */
   useLayoutEffect(() => {
     const total = images.length;
     const CENTER = Math.floor(total / 2);
@@ -293,142 +293,127 @@ function BlogNodes({ activeStep, screenSize }) {
   }, [activeStep, screenSize]);
 
 
+useLayoutEffect(() => {
+  if (!screenSize.isMobile) return;
 
-  //mobile view
+  const items = mobileRefs.current;
+  const total = items.length;
+  const GAP = 360;
 
-  useLayoutEffect(() => {
-    if (!screenSize.isMobile) return;
-
-    const cards = mobileRefs.current;
-    const total = cards.length;
-
-    // Initial state
-    gsap.set(cards, {
-      y: 420,
-      opacity: 0,
+  items.forEach((el, i) => {
+    gsap.set(el, {
+      y: i * GAP,
+      position: "absolute",
     });
+  });
 
-    // First card visible
-    gsap.set(cards[0], {
-      y: 0,
-      opacity: 1,
+  const tl = gsap.timeline({
+    scrollTrigger: {
+      trigger: ".timeline-wrapper",
+      start: "top top",
+      end: `+=${(total - 1) * 160}%`,
+      pin: true,
+      scrub: 1,
+      anticipatePin: 1,
+      invalidateOnRefresh: true,
+    },
+  });
+
+  // Cards slide UP and go BEHIND header
+  for (let i = 0; i < total - 1; i++) {
+    tl.to(items, {
+      y: `-=${GAP}`,
+      ease: "none",
+      duration: 1,
     });
+  }
 
-    const tl = gsap.timeline({
-      scrollTrigger: {
-        trigger: cards[0].parentElement,
-        start: "top top",
-        end: `+=${total * 100}%`,
-        pin: true,
-        scrub: 1,
-        snap: 1 / (total - 1),
-        anticipatePin: 1,
-      },
-    });
-
-    cards.forEach((card, i) => {
-      if (i === 0) return;
-
-      // Show current card
-      tl.to(card, {
-        y: 0,
-        opacity: 1,
-        duration: 1,
-        ease: "power3.out",
-      });
-
-      // Hide previous card
-      tl.to(
-        cards[i - 1],
-        {
-          opacity: 0,
-          duration: 0.5,
-          ease: "power2.out",
-        },
-        "<" // same time start
-      );
-    });
-
-  }, [screenSize]);
+  return () => ScrollTrigger.getAll().forEach(t => t.kill());
+}, [screenSize]);
 
 
 
+////////////////////////////////////////////////////////////////
+// MOBILE COMPONENT - SIMPLE VERSION
+////////////////////////////////////////////////////////////////
 
-  // mobile screen
+if (screenSize.isMobile) {
+  return (
+  <section className="relative w-full h-screen bg-[#0b0f0c] timeline-wrapper overflow-hidden">
 
-  if (screenSize.isMobile) {
-    return (
-      <div className="relative w-full  bg-[#87ggf6]">
-        {/* Vertical Line */}
-        <div className="fixed left-6 top-40 h-[60vh] w-[2px] bg-green-500/40 z-0" />
-
-        <div className="relative h-screen flex items-center">
-          {images.map((src, i) => (
-            <div
-              key={i}
-              ref={(el) => (mobileRefs.current[i] = el)}
-              className="absolute w-full flex flex-col items-start px-4"
-              style={{ zIndex: i + 1 }}
-            >
-              {/* Date Row */}
-              <div className="relative flex items-center mb-3">
-                {/* Connector */}
-
-                {/* Date */}
-                <div className="ml-4 mb-4 bg-gray-800 px-4 py-1 text-xs text-gray-100 font-mono whitespace-nowrap rounded">
-                  {MOBILE_DATES[i]}
-                </div>
-              </div>
-
-              {/* Card */}
-              <div className="ml-4 mb-10 w-[85vw] min-w-[80vw] rounded-xl overflow-hidden shadow-[0_0_40px_rgba(0,255,0,0.25)]">
-                <img
-                  src={src}
-                  className="w-full h-[420px] object-cover"
-                  draggable={false}
-                />
-
-          <div className="ml-2 mt-2 w-[80vw] text-center">
-  <p className="text-white text-md leading-relaxed whitespace-pre-line opacity-90">
-    {CENTER_TEXTS[i]}
-  </p>
+     {/* HEADER (FIXED & ABOVE CARDS) */}
+<div className="sticky top-0 z-30 bg-[#0b0f0c] pt-10 pb-6">
+  <div className="px-6">
+    <h1 className="text-white text-2xl font-bold">
+      Research Updates
+    </h1>
+    <p className="text-white/60 text-sm mt-2">
+      Latest developments in autonomous driving
+    </p>
+  </div>
 </div>
 
 
+      {/* Timeline on Left - Simple */}
+      <div className="absolute left-6 top-32 bottom-0 w-[2px] bg-white/30">
+      
+      </div>
 
-                <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-                  <div
-                    className="w-14 h-14 rounded-full bg-red-600
-      flex items-center justify-center
-      shadow-[0_0_30px_rgba(255,0,0,0.6)]"
-                  >
-                    <div
-                      className="ml-1 w-0 h-0
-        border-t-[8px] border-t-transparent
-        border-b-[8px] border-b-transparent
-        border-l-[14px] border-l-white"
-                    />
-                  </div>
-                </div>
-              </div>
-            </div>
+    
 
 
+      
+{/* TIMELINE ITEMS */}
+<div className="absolute left-0 right-0 top-40 bottom-20">
+  {images.slice(0, 5).map((src, i) => (
+    <div
+      key={i}
+      ref={(el) => (mobileRefs.current[i] = el)}
+      className="absolute left-0 right-0"
+    >
+      {/* DOT */}
+      <div className="absolute left-6 top-2 w-4 h-4 rounded-full bg-[#0b0f0c] border-2 border-white z-10" />
 
+      {/* DATE */}
+      <div className="ml-12 text-white text-sm font-medium mb-3">
+        {MOBILE_DATES[i]}
+      </div>
 
+      {/* CARD */}
+      <div className="ml-12 mr-6 bg-black/50 rounded-xl overflow-hidden border border-white/20">
+        <div className="relative">
+          <img
+            src={src}
+            className="w-full h-[200px] object-cover"
+            draggable={false}
+          />
+        </div>
 
-  
-          ))}
-
-
+        <div className="p-4">
+          <h3 className="text-white text-base font-medium">
+            {CENTER_TEXTS[i]}
+          </h3>
         </div>
       </div>
-    );
-  }
+    </div>
+  ))}
+</div>
+
+
+      
+    </section>
+  );
+}
 
 
 
 
+
+
+
+
+
+// desktop view animation and ui ////////////////////////////////////////////
   /* ================= JSX ================= */
   return (
     <div className="absolute inset-0 overflow-hidden pointer-events-none">
@@ -493,6 +478,14 @@ function BlogNodes({ activeStep, screenSize }) {
     </div>
   );
 }
+
+
+
+
+
+
+
+
 
 
 
