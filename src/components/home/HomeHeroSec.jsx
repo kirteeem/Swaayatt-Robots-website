@@ -1,16 +1,25 @@
 export default function HomeHero() {
   return (
-    <section className="relative w-full mb-[40vh] min-h-screen overflow-hidden bg-[#020707]">
+    <section className="relative w-full mb-[60vh] min-h-screen overflow-hidden bg-black">
 
       {/* ================= BACKGROUND IMAGE ================= */}
       <div className="absolute inset-0 z-0">
         <img
           src="/images/Home/mission.png"
           alt="Autonomous vehicles"
-          className="w-full h-full object-cover  object-bottom scale-[1.05]"
+          className="w-full h-full  object-cover  object-bottom scale-[1.05]"
         />
         {/* Dark overlay */}
       </div>
+
+
+
+
+      {/* Top blur/fade overlay */}
+      <div className="absolute top-0 left-0 w-full h-32 sm:h-40 lg:h-48 bg-gradient-to-b from-black via-black/90 to-transparent z-0" />
+      
+      {/* Bottom blur/fade overlay */}
+      {/* <div className="absolute bottom-0 left-0 w-full h-32 sm:h-40 lg:h-48 bg-gradient-to-t from-[#020707] via-[#020707]/60 to-transparent z-5" /> */}
 
       {/* ================= CONTENT ================= */}
       <div

@@ -2,28 +2,32 @@ import { ArrowRight } from "lucide-react";
 
 const Index = () => {
   return (
-    <main className="h-[80vh] overflow-hidden bg-black">
-      <section className="relative h-[80vh] flex flex-col sm:flex-row sm:items-center">
+    <main className="h-[100vh] overflow-hidden bg-black">
+      <section className="relative h-[100vh] flex flex-col sm:flex-row sm:items-center">
         {/* MAIN BACKGROUND */}
-        <div className="absolute inset-0 bg-gradient-to-br from-[#052f1d] via-[#0a1a12] to-[#0c1210]" />
+        <div className="absolute inset-0 bg-gradient-to-b from-black via-[#0e2e1e] to-black" />
 
         <div className="absolute inset-0 z-[5] bg-[radial-gradient(60%_80%_at_20%_50%,[#092909],transparent_80%)] blur-[20px]" />
 
         {/* CONTENT - Top on mobile, left on desktop */}
-        <div className="relative z-20 w-full px-4 sm:px-6 md:px-8 lg:px-16 xl:px-32 order-1  sm:order-1">
+        <div className="relative z-20 w-full  sm:mt-0 mt-32 px-4 sm:px-6 md:px-8 lg:px-16 xl:px-32 order-1  sm:order-1">
           <div className="max-w-[89vw] mx-auto pt-8 sm:pt-0">
             <div className="max-w-[650px] lg:max-w-[750px] xl:max-w-[800px]">
               {/* INTRODUCING */}
-              <p className="text-white/90 font-Montserrat tracking-[0.025em] text-xl sm:text-xl md:text-2xl lg:text-3xl xl:text-4xl font-bold mb-2 sm:mb-3 md:mb-4">
+              <p style={{ fontFamily: "'Chivo Mono', monospace" }} className="text-white/90 font-Montserrat tracking-[0.025em] text-xl sm:text-xl md:text-2xl lg:text-3xl xl:text-4xl font-bold mb-2 sm:mb-3 md:mb-4">
                 INTRODUCING
               </p>
 
               {/* TITLE */}
               <h1
+
+                style={{ fontFamily: "'Chivo Mono', monospace" }}
                 className="
-                  text-[#3BBE7E]
-                  font-bold
-                  font-Montserrat
+                  text-[#329351]
+                  font-[900]
+                  font-Chivo
+                    uppercase
+                    italic
                   text-4xl
                   sm:text-6xl
                   md:text-7xl
@@ -39,15 +43,29 @@ const Index = () => {
                   md:mb-6
                 "
               >
-                PROJECT THARX
+                VANGAURD
               </h1>
 
               {/* DESCRIPTION */}
-              <p className="text-white/90 text-sm sm:text-lg md:text-xl leading-relaxed max-w-full sm:max-w-xl md:max-w-2xl mb-6 sm:mb-8 md:mb-10">
-                Leveraging the rugged Mahindra Thar platform, Swaayatt Robots
-                introduces the next generation of unmanned ground vehicles (UGV).
-                Deep learning navigation in unstructured terrain.
+              <p
+                style={{ fontFamily: "'Chivo Mono', monospace" }}
+                className="
+              
+  chivo-italic
+  text-white/90
+  text-sm
+  sm:text-lg
+  md:text-xl
+  leading-[1.6]
+  tracking-[0.01em]
+  max-w-2xl
+  mb-10
+">
+                Leveraging the rugged Mahindra Thar platform, Swaayatt Robots introduces the next
+                generation of unmanned ground vehicles (UGV). Deep learning navigation in
+                unstructured terrain.
               </p>
+
 
               {/* CTA */}
               <button

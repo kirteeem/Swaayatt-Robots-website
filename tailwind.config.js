@@ -10,6 +10,8 @@ export default {
       fontFamily: {
         rethink: ["Rethink Sans", "sans-serif"],
         montserrat: ["Montserrat", "sans-serif"],
+        chivo: ['"Chivo Mono"', 'monospace'],
+        
       },
     },
   },

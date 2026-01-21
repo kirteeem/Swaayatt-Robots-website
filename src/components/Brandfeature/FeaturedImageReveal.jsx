@@ -36,8 +36,8 @@ export default function FeaturedVideoReveal() {
           videoWrapperRef.current,
           { width: "75vw", height: "40vh" },
           {
-            width: "96vw",
-            height: "50vh",
+            width: "95vw",
+            height: "70vh",
             duration: 1.2,
             ease: "power3.out",
             scrollTrigger: {
@@ -94,7 +94,7 @@ export default function FeaturedVideoReveal() {
   return (
     <section
       ref={sectionRef}
-      className="w-full sm:min-h-screen   bg-white flex items-center"
+      className="w-full sm:min-h-screen   bg-black flex items-center"
     >
       <div className="relative w-full h-screen flex items-center justify-center">
         <div
@@ -109,7 +109,7 @@ export default function FeaturedVideoReveal() {
         >
           {/* 🎥 Video */}
           <video
-            src="/images/media/news/video.mp4"
+            src="/images/footer/video-f.mp4"
             autoPlay
             muted
             loop

@@ -1,6 +1,6 @@
 export default function HomeHero() {
   return (
-    <section className="relative min-h-screen w-full overflow-hidden bg-black/10">
+    <section className="relative min-h-screen w-full overflow-hidden bg-black">
 
       {/* ================= BACKGROUND IMAGE ================= */}
  <video
@@ -92,6 +92,9 @@ export default function HomeHero() {
           </p>
         </div>
       </div>
+
+      {/* Bottom blur gradient */}
+      <div className="absolute bottom-0 left-0 w-full h-56 sm:h-14 lg:h-72 bg-gradient-to-t from-black via-black/0 to-transparent z-20 pointer-events-none" />
 
       {/* ================= BOTTOM FADE ================= */}
 

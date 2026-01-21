@@ -1,9 +1,11 @@
 import { useEffect, useRef } from "react";
 import gsap from "gsap";
 import brandFeaturedData from "./BrandImages";
+import { useTheme } from "../../context/ThemeContext";
 
 export default function BrandFeaturedOn() {
   const marqueeRef = useRef(null);
+  const { isDarkMode } = useTheme();
 
   useEffect(() => {
     const el = marqueeRef.current;
@@ -13,7 +15,7 @@ export default function BrandFeaturedOn() {
 
     gsap.to(el, {
       x: -totalWidth,
-      duration: window.innerWidth < 768 ? 18 : 28, // faster on mobile
+      duration: window.innerWidth < 768 ? 18 : 12, // faster on mobile
       ease: "none",
       repeat: -1,
       modifiers: {
@@ -25,7 +27,7 @@ export default function BrandFeaturedOn() {
   return (
     <section
       className="
-        relative w-full overflow-hidden bg-white
+        relative w-full overflow-hidden bg-black
         py-12 sm:py-14 md:py-16 lg:py-20
       "
     >
@@ -76,9 +78,80 @@ export default function BrandFeaturedOn() {
         </div>
       </div>
 
-      {/* ================= EDGE FADE ================= */}
-      <div className="pointer-events-none absolute left-0 top-0 h-full w-12 sm:w-16 bg-gradient-to-r from-white to-transparent z-10" />
-      <div className="pointer-events-none absolute right-0 top-0 h-full w-12 sm:w-16 bg-gradient-to-l from-white to-transparent z-10" />
+
+      <div className="w-full px-4 sm:px-6 md:px-8 mt-20 sm:mt-24 md:mt-32 bg-black">
+        <div className="max-w-6xl mx-auto">
+          <h1 className="text-center font-semibold text-lg sm:text-xl md:text-2xl text-gray-300 mb-8 sm:mb-10 md:mb-12">Funded and Supported by</h1>
+
+          <div className="w-full">
+            {/* ===== LOGOS GRID ===== */}
+            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-4 sm:gap-6 md:gap-8 lg:gap-10 text-center">
+
+              {/* AXILOR */}
+              <div className="space-y-2 sm:space-y-3">
+                <img
+                  src="/images/footer/footer.png"
+                  alt="Axilor"
+                  className="mx-auto h-12 sm:h-16 md:h-20 w-auto object-contain"
+                />
+                <p className={`text-xs sm:text-sm ${isDarkMode ? 'text-gray-400' : 'text-gray-500'}`}>
+                  INR 100K Prize<br />Jan, 2018
+                </p>
+              </div>
+
+              {/* MEITY */}
+              <div className="space-y-2 sm:space-y-3">
+                <img
+                  src="/images/footer/footer2.png"
+                  alt="MeitY"
+                  className="mx-auto h-12 sm:h-16 md:h-20 w-auto object-contain"
+                />
+                <p className={`text-xs sm:text-sm ${isDarkMode ? 'text-gray-400' : 'text-gray-500'}`}>
+                  INR 1M<br />Research Grant<br />March 22
+                </p>
+              </div>
+
+              {/* SEED FUND */}
+              <div className="space-y-2 sm:space-y-3">
+                <img
+                  src="/images/footer/footer1.jpg"
+                  alt="Seed Fund"
+                  className="mx-auto h-12 sm:h-16 md:h-20 w-auto object-contain"
+                />
+                <p className={`text-xs sm:text-sm ${isDarkMode ? 'text-gray-400' : 'text-gray-500'}`}>
+                  $3M Seed<br />July, 21
+                </p>
+              </div>
+
+              {/* POST SEED */}
+              <div className="space-y-2 sm:space-y-3">
+                <img
+                  src="/images/footer/footer2.png"
+                  alt="Post Seed"
+                  className="mx-auto h-12 sm:h-16 md:h-20 w-auto object-contain"
+                />
+                <p className={`text-xs sm:text-sm ${isDarkMode ? 'text-gray-400' : 'text-gray-500'}`}>
+                  $4M Post Seed<br />June, 24
+                </p>
+              </div>
+
+              {/* NVIDIA */}
+              <div className="space-y-2 sm:space-y-3">
+                <img
+                  src="/images/footer/footer3.jpg"
+                  alt="Nvidia"
+                  className="mx-auto h-12 sm:h-16 md:h-20 w-auto object-contain"
+                />
+                <p className={`text-xs sm:text-sm ${isDarkMode ? 'text-gray-400' : 'text-gray-500'}`}>
+                  $100,000<br />June, 22
+                </p>
+              </div>
+
+            </div>
+          </div>
+        </div>
+      </div>
+
     </section>
   );
 }

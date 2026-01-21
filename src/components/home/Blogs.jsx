@@ -38,111 +38,128 @@ const blogs = [
 ];
 
 const Blogs = () => {
-  const [index, setIndex] = useState(0);
-  const [visibleCards, setVisibleCards] = useState(4);
-  const sliderRef = useRef(null);
-  const [cardWidth, setCardWidth] = useState(0); // dynamic pixel width
-
-  // Detect screen size and visible cards
-  useEffect(() => {
-    const handleResize = () => {
-      if (window.innerWidth < 640) {
-        setVisibleCards(1); // mobile
-      } else if (window.innerWidth < 1024) {
-        setVisibleCards(2); // tablet
-      } else {
-        setVisibleCards(4); // desktop
-      }
-
-      // Calculate card width dynamically
-      if (sliderRef.current) {
-        const card = sliderRef.current.querySelector("article");
-        if (card) setCardWidth(card.offsetWidth + parseInt(getComputedStyle(card).marginRight)); // include margin if any
-      }
-    };
-
-    handleResize(); // initial
-    window.addEventListener("resize", handleResize);
-    return () => window.removeEventListener("resize", handleResize);
-  }, []);
-
-  const handleNext = () => {
-    if (index < blogs.length - visibleCards) setIndex((prev) => prev + 1);
-  };
-
-  const handlePrev = () => {
-    if (index > 0) setIndex((prev) => prev - 1);
-  };
-
   return (
-    <main className="min-h-screen bg-gradient-to-br from-[#052f1d] via-[#0a1a12] to-[#0c1210] py-8 sm:py-12 lg:py-16">
-      <div className="max-w-[100vw] sm:max-w-[90vw] lg:max-w-[87vw] mx-auto px-4 sm:px-6 lg:px-0">
+    <main className="min-h-screen bg-black py-6 sm:py-12 lg:py-16">
+      <div className="w-full px-4 sm:px-6   lg:max-w-[94vw] lg:mx-auto">
 
         {/* HEADER */}
-        <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between mb-10">
-          <p className="text-3xl sm:text-4xl lg:text-5xl font-[550] text-white">
+        <div className="flex flex sm:flex-row items-start sm:items-center justify-between gap-4 sm:gap-0 mb-8 sm:mb-10">
+          <p className="text-2xl sm:text-4xl lg:text-5xl font-[550] text-white">
             Blogs
           </p>
 
-          <div className="flex gap-3 mt-4 sm:mt-0">
-            <button
-              onClick={handlePrev}
-              disabled={index === 0}
-              className="w-10 h-10 sm:w-12 sm:h-12 border border-white/30 rounded-full flex items-center justify-center disabled:opacity-40"
-            >
-              <ChevronLeft className="text-white" />
-            </button>
+          {/* ALL BLOGS BUTTON */}
+          <div className="flex items-center justify-between gap-3 sm:gap-6">
+            <button className="group relative flex items-center border border-white h-8 sm:h-14 overflow-hidden">
 
-            <button
-              onClick={handleNext}
-              disabled={index >= blogs.length - visibleCards}
-              className="w-10 h-10 sm:w-12 sm:h-12 border border-white/30 rounded-full flex items-center justify-center disabled:opacity-40"
-            >
-              <ChevronRight className="text-white" />
+              {/* WHITE SLIDE BACKGROUND */}
+              <span
+                className="
+                  absolute right-0 top-0
+                  h-10 sm:mt-1.5 sm:mr-1.5 w-8 sm:w-12
+
+
+
+                  bg-white
+                  transition-all duration-300 ease-in-out
+                  group-hover:w-full
+                  group-hover:h-full 
+                  group-hover:mt-0 group-hover:mr-0
+                  z-0
+                "
+              />
+
+              {/* TEXT */}
+              <span
+                className="
+                  relative z-10
+                  px-3 sm:px-8
+                  text-xs sm:text-lg
+                  text-white
+                  group-hover:text-black
+                  transition-colors duration-300
+                "
+              >
+                ALL BLOGS
+              </span>
+
+              {/* ARROW */}
+              <span
+                className="
+                  relative z-10
+                  flex items-center justify-center
+                  w-8 sm:w-12 h-full
+                  text-black 
+                "
+              >
+                <i className="ri-arrow-right-fill transition-transform duration-300 group-hover:translate-x-1" />
+              </span>
+
             </button>
           </div>
+
         </div>
 
         {/* SLIDER */}
-        <div className="overflow-hidden" ref={sliderRef}>
-          <div
-            className="flex transition-transform duration-500 ease-in-out"
-            style={{ transform: `translateX(-${index * cardWidth}px)` }}
-          >
-            {blogs.map((post) => (
+        <div className="overflow-hidden w-full">
+          <div className="flex animate-slide-left w-max">
+            {[...blogs, ...blogs].map((post, i) => (
               <article
-                key={post.id}
-                className="w-full sm:w-1/2 lg:w-1/4 flex-shrink-0 h-[500px] lg:h-[720px] relative overflow-hidden bg-black border border-white/10 rounded-lg mr-2"
+                key={i}
+                className="w-[85vw] sm:w-[75vw] md:w-[45vw] lg:w-[25vw]
+                flex-shrink-0 h-[550px] sm:h-[450px] md:h-[550px] lg:h-[720px]
+                relative overflow-hidden bg-black border border-white/10  mr-4"
               >
                 <img
                   src={post.image}
                   alt={post.title}
-                  className="absolute inset-0 w-full h-full object-cover"
+                  className="absolute inset-0 w-full h-full object-cover border border-white/10"
                 />
 
-                <div className="relative h-full flex items-end p-5">
-                  <p className="text-lg lg:text-xl font-semibold text-white">
+                <div className="relative h-full flex items-end p-4 sm:p-6 lg:p-8">
+                  <p className="text-sm sm:text-base lg:text-xl text-white line-clamp-3">
                     {post.title}
                   </p>
                 </div>
+
               </article>
             ))}
           </div>
         </div>
 
-        {/* DOTS – mobile/tablet only */}
-        <div className="flex justify-center mt-8 lg:hidden">
-          {Array.from({ length: blogs.length - visibleCards + 1 }).map((_, i) => (
-            <button
-              key={i}
-              onClick={() => setIndex(i)}
-              className={`w-2 h-2 mx-1 rounded-full ${
-                i === index ? "bg-white" : "bg-white/30"
-              }`}
-            />
-          ))}
-        </div>
       </div>
+
+
+      <>
+        <style>
+          {`
+      @keyframes slide-left {
+        0% {
+          transform: translateX(0);
+        }
+        100% {
+          transform: translateX(-50%);
+        }
+      }
+
+      .animate-slide-left {
+        animation: slide-left 25s linear infinite;
+      }
+
+      /* Mobile optimizations */
+      @media (max-width: 640px) {
+        .line-clamp-3 {
+          display: -webkit-box;
+          -webkit-line-clamp: 2;
+          -webkit-box-orient: vertical;
+          overflow: hidden;
+        }
+      }
+    `}
+        </style>
+
+      </>
+
     </main>
   );
 };

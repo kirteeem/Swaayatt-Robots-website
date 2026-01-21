@@ -1,6 +1,6 @@
 export default function SecondHero() {
   return (
-    <section className="relative w-full min-h-screen lg:min-h-[135vh] overflow-hidden">
+    <section className="relative w-full min-h-screen lg:min-h-[135vh] overflow-hidden bg-black">
       
       {/* IMAGE */}
       <img
@@ -10,7 +10,7 @@ export default function SecondHero() {
       />
 
       {/* OVERLAY */}
-      <div className="absolute inset-0 bg-black/20 backdrop-blur-[0.5px]" />
+      <div className="absolute inset-0 bg-black/30" />
 
       {/* CONTENT */}
       <div
@@ -57,6 +57,9 @@ export default function SecondHero() {
           </p>
         </div>
       </div>
+
+      {/* Bottom blur gradient */}
+      <div className="absolute bottom-0 left-0 w-full h-56 sm:h-64 lg:h-72 bg-gradient-to-t from-black via-black/80 to-transparent z-20 pointer-events-none" />
     </section>
   );
 }

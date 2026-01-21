@@ -8,12 +8,11 @@ export default function Footer() {
 
   return (
     <footer
-  className={`${
-    isDarkMode
-      ? "bg-gradient-to-b from-black to-[#093436] text-gray-300"
-      : "bg-[#F3F4F6] text-[#3A3A3A]"
-  }`}
->
+      className={`${isDarkMode
+          ? "bg-gradient-to-b from-black to-[#093436] text-gray-300"
+          : "bg-[#F3F4F6] text-[#3A3A3A]"
+        }`}
+    >
 
       <div className="max-w-[90vw] mx-auto px-6 py-14">
 
@@ -36,21 +35,9 @@ export default function Footer() {
               Autonomous Driving and ADAS
             </p>
 
-            <div className={`text-sm ${isDarkMode ? 'text-gray-400' : 'text-gray-600'} leading-relaxed`}>
-              <p>Swaayatt Robots Pvt. Ltd.</p>
-              <p>
-                1/3D, DRM Rd, Saket Nagar, Habib Ganj,<br />
-                Bhopal, Madhya Pradesh–462026
-              </p>
-              <p className="mt-2">Phone: +91 755 494 7025</p>
-            </div>
 
-            <div className={`flex items-center gap-4 ${isDarkMode ? 'text-gray-400' : 'text-gray-600'}`}>
-              <Phone size={16} />
-              <Mail size={16} />
-              <Linkedin size={16} />
-              <Facebook size={16} />
-            </div>
+
+           
           </div>
 
           {/* ===== COMPANY ===== */}
@@ -88,79 +75,29 @@ export default function Footer() {
           </div>
 
           {/* ===== FUNDED ===== */}
-       <div className="space-y-6">
-  <p className={`text-md font-bold ${isDarkMode ? 'text-white' : 'text-[#3A3A3A]'} tracking-wide`}>
-    FUNDED AND SUPPORTED BY
-  </p>
+          <div className="space-y-6">
 
-  {/* ===== LOGOS GRID ===== */}
-  <div className="grid grid-cols-3 gap-x-10 gap-y-8 text-center">
-    
-    {/* AXILOR */}
-    <div className="space-y-2">
-      <img
-        src="/images/footer/footer.png"
-        alt="Axilor"
-        className="mx-auto h-10 object-contain"
-      />
-      <p className={`text-xs ${isDarkMode ? 'text-gray-400' : 'text-gray-600'}`}>
-        INR 100K Prize<br />Jan, 2018
-      </p>
-    </div>
+            <div className={`text-sm ${isDarkMode ? 'text-gray-400' : 'text-gray-600'} leading-relaxed`}>
+              <p>Swaayatt Robots Pvt. Ltd.</p>
+              <br />
+              <p>
+                1/3D, DRM Rd, Saket Nagar, Habib Ganj,<br />
+                Bhopal, Madhya Pradesh–462026
+              </p>
+              <p className="mt-2">Phone: +91 755 494 7025</p>
+            </div>
 
-  
 
-    {/* MEITY */}
-    <div className="space-y-2">
-      <img
-        src="/images/footer/footer2.png"
-        alt="MeitY"
-        className="mx-auto h-10 object-contain"
-      />
-      <p className={`text-xs ${isDarkMode ? 'text-gray-400' : 'text-gray-600'}`}>
-        INR 1M<br />Research Grant<br />March 22
-      </p>
-    </div>
 
-      {/* SEED FUND */}
-    <div className="space-y-2">
-      <img
-        src="/images/footer/footer1.jpg"
-        alt="Seed Fund"
-        className="mx-auto h-10 object-contain"
-      />
-      <p className={`text-xs ${isDarkMode ? 'text-gray-400' : 'text-gray-600'}`}>
-        $3M Seed<br />July, 21
-      </p>
-    </div>
 
-    <div className="space-y-2 col-span-2 sm:col-span-1 sm:col-start-1 lg:col-span-1">
-      <img
-        src="/images/footer/footer2.png"
-        alt="Post Seed"
-        className="mx-auto h-10 object-contain"
-      />
-      <p className={`text-xs ${isDarkMode ? 'text-gray-400' : 'text-gray-600'}`}>
-        $4M Post Seed<br />June, 24
-      </p>
-    </div>
+            <div className={`flex items-center gap-4 ${isDarkMode ? 'text-gray-400' : 'text-gray-600'}`}>
+              <Phone size={16} />
+              <Mail size={16} />
+              <Linkedin size={16} />
+              <Facebook size={16} />
+            </div>
 
-    {/* NVIDIA */}
-    <div className="space-y-2">
-      <img
-        src="/images/footer/footer3.jpg"
-        alt="Nvidia"
-        className="mx-auto h-10 object-contain"
-      />
-      <p className={`text-xs ${isDarkMode ? 'text-gray-400' : 'text-gray-600'}`}>
-        $100,000<br />June, 22
-      </p>
-    </div>
-
-    {/* POST SEED */}
-    
-  </div>
-</div>
+          </div>
 
         </div>
 
