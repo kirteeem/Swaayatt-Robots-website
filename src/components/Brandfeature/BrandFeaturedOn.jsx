@@ -33,15 +33,15 @@ export default function BrandFeaturedOn() {
     >
       {/* ================= FEATURED ON TEXT ================= */}
       <div className="flex flex-col items-center mb-8 z-20">
-        <p
+        <h5
           className="
-            font-montserrat font-semibold text-gray-500
-            text-sm sm:text-base md:text-lg
+             font-[550] text-gray-500
+            text-sm sm:text-2xl md:text-lg
             tracking-tight whitespace-nowrap
           "
         >
           Featured on
-        </p>
+        </h5>
         <span className="mt-3 w-32 sm:w-40 md:w-48 h-[2px] bg-gray-300" />
       </div>
 
@@ -80,8 +80,9 @@ export default function BrandFeaturedOn() {
 
 
       <div className="w-full px-4 sm:px-6 md:px-8 mt-20 sm:mt-24 md:mt-32 bg-black">
-        <div className="max-w-6xl mx-auto">
-          <h1 className="text-center font-semibold text-lg sm:text-xl md:text-2xl text-gray-300 mb-8 sm:mb-10 md:mb-12">Funded and Supported by</h1>
+        <div className="max-w-8xl mx-auto">
+          <h5 className="text-center font-[500] text-lg sm:text-xl md:text-2xl text-gray-500 mb-8 sm:mb-10 md:mb-12">Funded and Supported by</h5>
+          <div className="h-[1px] w-[18vw] mb-10 mt-[-25px] bg-white mx-auto"></div>
 
           <div className="w-full">
             {/* ===== LOGOS GRID ===== */}
@@ -90,62 +91,64 @@ export default function BrandFeaturedOn() {
               {/* AXILOR */}
               <div className="space-y-2 sm:space-y-3">
                 <img
-                  src="/images/footer/footer.png"
+                  src="/images/founded/Axilor.svg"
                   alt="Axilor"
                   className="mx-auto h-12 sm:h-16 md:h-20 w-auto object-contain"
                 />
-                <p className={`text-xs sm:text-sm ${isDarkMode ? 'text-gray-400' : 'text-gray-500'}`}>
-                  INR 100K Prize<br />Jan, 2018
+                <p className={`text-xs sm:text-sm ${isDarkMode ? 'text-gray-400' : 'text-gray-400'}`}>
+                  <span className="text-xm sm:text-xl">  INR 100K Prize</span> <br />Jan, 2018
+                </p>
+              </div>
+
+
+               <div className="space-y-2 sm:space-y-3">
+                <img
+                  src="/images/founded/Seed Fund.svg"
+                  alt="Nvidia"
+                  className="mx-auto h-12 sm:h-16 md:h-20 w-auto object-contain"
+                />
+                <p className={`text-xs sm:text-sm ${isDarkMode ? 'text-gray-400' : 'text-gray-400'}`}>
+                  <span className="text-xm sm:text-xl">  $3M Speed</span> <br />Jult, 2021
                 </p>
               </div>
 
               {/* MEITY */}
               <div className="space-y-2 sm:space-y-3">
                 <img
-                  src="/images/footer/footer2.png"
+                  src="/images/founded/MEITY.svg"
                   alt="MeitY"
                   className="mx-auto h-12 sm:h-16 md:h-20 w-auto object-contain"
                 />
-                <p className={`text-xs sm:text-sm ${isDarkMode ? 'text-gray-400' : 'text-gray-500'}`}>
-                  INR 1M<br />Research Grant<br />March 22
+                <p className={`text-xs sm:text-sm ${isDarkMode ? 'text-gray-400' : 'text-gray-400'}`}>
+                 <span className="text-xm sm:text-xl">  INR 3M Research Grant</span> <br />March, 2022
                 </p>
               </div>
 
               {/* SEED FUND */}
               <div className="space-y-2 sm:space-y-3">
                 <img
-                  src="/images/footer/footer1.jpg"
+                  src="/images/founded/NVIDIA.svg"
                   alt="Seed Fund"
                   className="mx-auto h-12 sm:h-16 md:h-20 w-auto object-contain"
                 />
-                <p className={`text-xs sm:text-sm ${isDarkMode ? 'text-gray-400' : 'text-gray-500'}`}>
-                  $3M Seed<br />July, 21
+                <p className={`text-xs sm:text-sm ${isDarkMode ? 'text-gray-400' : 'text-gray-400'}`}>
+                  <span className="text-xm sm:text-xl">  $110,000</span> <br />June, 2022
                 </p>
               </div>
 
               {/* POST SEED */}
               <div className="space-y-2 sm:space-y-3">
                 <img
-                  src="/images/footer/footer2.png"
+                  src="/images/founded/POST SEED.svg"
                   alt="Post Seed"
                   className="mx-auto h-12 sm:h-16 md:h-20 w-auto object-contain"
                 />
-                <p className={`text-xs sm:text-sm ${isDarkMode ? 'text-gray-400' : 'text-gray-500'}`}>
-                  $4M Post Seed<br />June, 24
+                <p className={`text-xs sm:text-sm ${isDarkMode ? 'text-gray-400' : 'text-gray-400'}`}>
+                  <span className="text-xm sm:text-xl">  $4M Post Seed</span> <br />June, 2024
                 </p>
               </div>
 
-              {/* NVIDIA */}
-              <div className="space-y-2 sm:space-y-3">
-                <img
-                  src="/images/footer/footer3.jpg"
-                  alt="Nvidia"
-                  className="mx-auto h-12 sm:h-16 md:h-20 w-auto object-contain"
-                />
-                <p className={`text-xs sm:text-sm ${isDarkMode ? 'text-gray-400' : 'text-gray-500'}`}>
-                  $100,000<br />June, 22
-                </p>
-              </div>
+              
 
             </div>
           </div>

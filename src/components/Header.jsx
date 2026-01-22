@@ -90,8 +90,9 @@ export default function Header({ variant = "default" }) {
               <div className="flex items-center">
                 {/* Research Page Link */}
                 <Link
+                  style={{ fontFamily: '"Rethink Sans", "sans-serif"' }}
                   to="/research"
-                  className="hover:opacity-80 transition-opacity"
+                  className="hover:opacity-80 font-[500] transition-opacity"
                   onClick={() => setOpen(false)}
                 >
                   Research
@@ -125,7 +126,7 @@ export default function Header({ variant = "default" }) {
                     </div>
                     <div className="absolute bottom-[1.3vw] left-[1.3vw] text-white">
                       <div className="flex items-end gap-[0.8vw] translate-y-[-0.25vw]">
-                        <h3 className="text-[2vw] font-medium tracking-[-0.02em] leading-none font-rethink-sans">
+                        <h3   className="text-[2vw] font-medium tracking-[-0.02em] leading-none font-rethink-sans">
                           Research
                         </h3>
                         <span className="w-[1.8vw] h-[1.8vw] rounded-full flex items-center justify-center backdrop-blur-[0.6vw] bg-white/20 border border-white/30 text-[1vw] font-medium translate-y-[0.15vw]">
@@ -156,16 +157,16 @@ export default function Header({ variant = "default" }) {
               )}
             </div>
 
-            <Link to="/media" className="hover:opacity-80 transition-opacity">
+            <Link to="/media" style={{ fontFamily: '"Rethink Sans", "sans-serif"' }} className="hover:opacity-80 font-[500] transition-opacity">
               Media
             </Link>
-            <Link to="/blogs" className="hover:opacity-80 transition-opacity">
+            <Link to="/blogs" style={{ fontFamily: '"Rethink Sans", "sans-serif"' }}className="hover:opacity-80 font-[500] transition-opacity">
               Blogs
             </Link>
-            <Link to="/career" className="hover:opacity-80 transition-opacity">
+            <Link to="/career" style={{ fontFamily: '"Rethink Sans", "sans-serif"' }}className="hover:opacity-80 font-[500] transition-opacity">
               Career
             </Link>
-            <Link to="/contact" className="hover:opacity-80 transition-opacity">
+            <Link to="/contact" style={{ fontFamily: '"Rethink Sans", "sans-serif"' }}  className="hover:opacity-80 font-[500] transition-opacity">
               Contact
             </Link>
 

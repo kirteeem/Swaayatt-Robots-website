@@ -17,7 +17,7 @@ export default function TimelineSection() {
     isDesktop: true
   });
   const [activeStep, setActiveStep] = useState(0);
-
+  const TOTAL_STEPS = 6;
   // Detect screen size
   useEffect(() => {
     const checkScreenSize = () => {
@@ -56,7 +56,10 @@ export default function TimelineSection() {
         progressRef.current = p;
 
         // 4 steps for 4 divider points
-        const step = Math.min(3, Math.floor(p * 4));
+        const step = Math.min(
+          TOTAL_STEPS - 1,
+          Math.floor(p * TOTAL_STEPS)
+        );
         setActiveStep(step);
 
         if (!rafRef.current) {
@@ -204,6 +207,7 @@ function BlogNodes({ activeStep, screenSize }) {
     "/images/Blogs/Blog-1.webp",
     "/images/media/news/n1.webp",
     "/images/media/news/n1.webp",
+    "/images/media/news/n1.webp",
   ];
 
   const MOBILE_DATES = [
@@ -211,6 +215,7 @@ function BlogNodes({ activeStep, screenSize }) {
     "30 Jul 2025",
     "08 Jul 2025",
     "23 Apr 2025",
+    "11 Sep 2025",
     "11 Sep 2025",
   ];
 
@@ -228,6 +233,7 @@ function BlogNodes({ activeStep, screenSize }) {
     "Biologically Inspired\nNegotiation Models for\nSmarter Autonomous Systems",
     "AI-driven Cooperative\nDecision Making in\nAutonomous Driving",
     "Redefining the Future of\nAutonomous Vehicles with\nBidirectional Intelligence",
+    "Redefining the Future of\nAutonomous Vehicles with\nBidirectional Intelligence",
   ];
 
   const getSlots = () => {
@@ -242,6 +248,7 @@ function BlogNodes({ activeStep, screenSize }) {
     }
 
     return [
+      { x: -2560, scale: 0.6, opacity: 0, z: 1 },
       { x: -1560, scale: 0.6, opacity: 0, z: 1 },
       { x: -650, scale: 0.8, opacity: 0.25, z: 5 },
 
@@ -249,14 +256,16 @@ function BlogNodes({ activeStep, screenSize }) {
 
       { x: 650, scale: 0.8, opacity: 0.25, z: 5 },
       { x: 1560, scale: 0.6, opacity: 0.25, z: 1 },
+      { x: 2560, scale: 0.6, opacity: 0, z: 1 },
     ];
   };
 
   /* ================= desktop  GSAP ANIMATION ================= */
   useLayoutEffect(() => {
-    const total = images.length;
-    const CENTER = Math.floor(total / 2);
     const slots = getSlots();
+    const CENTER = Math.floor(slots.length / 2); // ✅ 3
+    const total = images.length;
+
 
     let nextCenter = centerIndex;
 
@@ -266,35 +275,34 @@ function BlogNodes({ activeStep, screenSize }) {
       gsap.killTweensOf(el);
 
       let offset = i - activeStep;
-      if (offset > CENTER) offset -= total;
-      if (offset < -CENTER) offset += total;
+      // if (offset > CENTER) offset -= total;
+      // if (offset < -CENTER) offset += total;
 
       const slotIndex = offset + CENTER;
       const slot = slots[slotIndex];
-      if (!slot) return;
+      if (!slot) {
+        gsap.to(el, {
+          opacity: 0,
+          scale: 0.5,
+          duration: 1,
+          overwrite: true,
+        });
+        return;
+      }
+
 
       if (slotIndex === CENTER) nextCenter = i;
 
+      gsap.to(el, {
+        x: slot.x,
+        scale: slot.scale,
+        opacity: slot.opacity,
+        zIndex: slot.z,
+        duration: 1,
+        ease: "power3.out",
+        overwrite: "auto",
+      });
 
-      // hide left images by default
-if (i < Math.floor(images.length / 2)) {
-  gsap.set(el, {
-    opacity: 0,
-    visibility: "hidden",
-  });
-}
-
-
-     gsap.to(el, {
-  x: slot.x,
-  scale: slot.scale,
-  opacity: slot.opacity,
-  zIndex: slot.z,
-  visibility: slot.opacity === 0 ? "hidden" : "visible",
-  duration: 0.9,
-  ease: "power4.out",
-  force3D: true,
-});
 
     });
 
@@ -302,43 +310,39 @@ if (i < Math.floor(images.length / 2)) {
   }, [activeStep, screenSize]);
 
 
-  useLayoutEffect(() => {
-    if (!screenSize.isMobile) return;
 
-    const items = mobileRefs.current;
-    const total = items.length;
-    const GAP = 360;
 
-    items.forEach((el, i) => {
-      gsap.set(el, {
-        y: i * GAP,
-        position: "absolute",
-      });
+  /* ================= MOBILE GSAP ANIMATION ================= */
+useLayoutEffect(() => {
+  if (!screenSize.isMobile) return;
+
+  const items = mobileRefs.current;
+  const total = items.length;
+  const GAP = 380;
+
+  items.forEach((el, i) => {
+    gsap.set(el, {
+      y: i * GAP,
+      position: "absolute",
     });
+  });
 
-    const tl = gsap.timeline({
-      scrollTrigger: {
-        trigger: ".timeline-wrapper",
-        start: "top top",
-        end: `+=${(total - 1) * 160}%`,
-        pin: true,
-        scrub: 1,
-        anticipatePin: 1,
-        invalidateOnRefresh: true,
-      },
-    });
+  gsap.to(items, {
+    y: `-=${(total - 1) * GAP}`,
+    ease: "none",
+    scrollTrigger: {
+      trigger: ".timeline-wrapper",
+      start: "top top",
+      end: `+=${(total - 1) * 140}%`, // 👈 IMPORTANT
+      pin: true,
+      scrub: 1,
+      anticipatePin: 1,
+      invalidateOnRefresh: true,
+    },
+  });
 
-    // Cards slide UP and go BEHIND header
-    for (let i = 0; i < total - 1; i++) {
-      tl.to(items, {
-        y: `-=${GAP}`,
-        ease: "none",
-        duration: 1,
-      });
-    }
-
-    return () => ScrollTrigger.getAll().forEach(t => t.kill());
-  }, [screenSize]);
+  return () => ScrollTrigger.getAll().forEach(t => t.kill());
+}, [screenSize]);
 
 
 
@@ -422,13 +426,12 @@ if (i < Math.floor(images.length / 2)) {
     <div className="absolute inset-0 overflow-hidden pointer-events-none">
       {/* GLOW */}
       <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(0, 255, 0, 0.13)_0%,rgba(0,0,0,1)_65%)]" />
+
       {/* CARDS */}
       <div className="absolute inset-0 flex items-center justify-center">
         <div className="relative w-full h-[460px] flex items-center justify-center isolate">
 
           {images.map((src, i) => (
-
-            
             <div
               key={i}
               ref={(el) => (refs.current[i] = el)}
@@ -451,6 +454,7 @@ if (i < Math.floor(images.length / 2)) {
                   className="w-full h-full object-cover object-fit object-center"
                   draggable={false}
                 />
+
                 <div className="absolute inset-0 bg-black/10" />
 
                 {/* PLAY */}
@@ -464,6 +468,9 @@ if (i < Math.floor(images.length / 2)) {
           ))}
         </div>
       </div>
+
+
+
 
 
 
@@ -545,12 +552,16 @@ function RoadTimeline({ progress, activeStep, screenSize }) {
         { left: "90%", date: "23 Apr 2025" },
       ];
     } else {
+
       return [
-        { left: "10%", date: "20 Aug 2025" },
-        { left: "38%", date: "30 Jul 2025" },
-        { left: "65%", date: "08 Jul 2025" },
-        { left: "92%", date: "23 Apr 2025" },
-      ];
+        { left: "0%", date: "20 Aug 2025" },
+        { left: "20%", date: "30 Jul 2025" },
+        { left: "40%", date: "08 Jul 2025" },
+        { left: "60%", date: "23 Apr 2025" },
+        { left: "80%", date: "11 Sep 2025" },
+        { left: "100%", date: "10 Mar 2025" },
+      ]
+
     }
   };
 
@@ -570,51 +581,32 @@ function RoadTimeline({ progress, activeStep, screenSize }) {
     }
   }, []);
 
+
+
+
   useEffect(() => {
     if (!carRef.current || !wrapperRef.current || !imageLoaded) return;
 
     const car = carRef.current;
     const width = wrapperRef.current.offsetWidth;
 
-    // Start and end positions
+    const totalSteps = DIVIDERS.length - 1;
+    const clampedStep = Math.min(activeStep, totalSteps);
+
     const startX = -car.offsetWidth * 1.2;
-    const lastDivider =
-      parseFloat(DIVIDERS[DIVIDERS.length - 1].left) / 100;
-    const exitX = width + car.offsetWidth * 1.2;
-
-    let x;
-
-    // 🚗 NORMAL DRIVE (0 → 90% scroll)
-    if (progress < 0.9) {
-      const driveProgress = gsap.utils.mapRange(
-        0,
-        0.9,
-        startX,
-        width * lastDivider,
-        progress
-      );
-      x = driveProgress;
-    }
-    // 🚗 EXIT DRIVE (90% → 100%)
-    else {
-      x = gsap.utils.mapRange(
-        0.9,
-        1,
-        width * lastDivider,
-        exitX,
-        progress
-      );
-    }
+    const targetX =
+      width * (parseFloat(DIVIDERS[clampedStep].left) / 100);
 
     gsap.to(car, {
-      x,
-      duration: 0.6,
-      ease: progress > 0.9 ? "power2.in" : "power2.out",
-      overwrite: true,
+      x: targetX,
+      duration: 0.9,
+      ease: "power3.out",
+      overwrite: "auto",
     });
 
     car.style.opacity = "1";
-  }, [progress, imageLoaded, screenSize]);
+  }, [activeStep, imageLoaded, screenSize]);
+
 
 
   if (screenSize.isMobile) return null;

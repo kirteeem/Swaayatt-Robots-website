@@ -120,6 +120,7 @@ export default function FeaturedVideoReveal() {
           {/* 📝 Center Overlay Text */}
           <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
             <h2
+                style={{ fontFamily: "'Chivo Mono', monospace" }}
               ref={textRef}
               className="
                 text-white

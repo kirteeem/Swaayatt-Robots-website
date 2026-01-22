@@ -27,8 +27,10 @@ export default function HomeHero() {
         pt-32 sm:pt-36 lg:pt-40
         pb-24"
       >
-        <h1
-          className="text-white font-Montserrat font-medium tracking-wide
+        <p
+       style={{ fontFamily: '"Montserrat", "sans-serif"' }}
+
+          className="text-white font-Montserrat font-[500] tracking-wide
           text-[24px] sm:text-[30px] md:text-[36px] lg:text-[42px] xl:text-[44px]
           leading-[1.45] sm:leading-[1.3]
           max-w-[85vw]"
@@ -36,9 +38,10 @@ export default function HomeHero() {
           Developing autonomous driving technologies
           <br className="hidden sm:block" />
           for the world&apos;s hardest driving scenarios.
-        </h1>
+        </p>
       </div>
 
+ 
       {/* Bottom fade */}
       <div className="absolute bottom-0 left-0 w-full h-40 bg-gradient-to-t from-black to-transparent z-10" />
     </section>
