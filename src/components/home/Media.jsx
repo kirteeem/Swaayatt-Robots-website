@@ -113,7 +113,7 @@ function Index() {
             Media Coverage
           </p>
 
-    <div className="flex items-center justify-between gap-3 sm:gap-6">
+          <div className="flex items-center justify-between gap-3 sm:gap-6">
             <button className="group relative flex items-center border border-white h-8 sm:h-14 overflow-hidden">
 
               {/* WHITE SLIDE BACKGROUND */}
@@ -156,7 +156,7 @@ function Index() {
                   text-black 
                 "
               >
-            <i class="ri-arrow-right-line transition-transform duration-300 group-hover:translate-x-1"></i>
+                <i class="ri-arrow-right-line transition-transform duration-300 group-hover:translate-x-1"></i>
               </span>
 
             </button>

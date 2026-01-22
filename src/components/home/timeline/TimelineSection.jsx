@@ -333,9 +333,9 @@ useLayoutEffect(() => {
     scrollTrigger: {
       trigger: ".timeline-wrapper",
       start: "top top",
-      end: `+=${(total - 1) * 140}%`, // 👈 IMPORTANT
+      end: `+=${(total - 0) * 120}%`, // 👈 IMPORTANT
       pin: true,
-      scrub: 1,
+      scrub: 0.5,
       anticipatePin: 1,
       invalidateOnRefresh: true,
     },
@@ -348,69 +348,76 @@ useLayoutEffect(() => {
 
   // MOBILE COMPONENT - SIMPLE VERSION
 
-  if (screenSize.isMobile) {
-    return (
-      <section className="relative w-full h-screen bg-[#0b0f0c] timeline-wrapper overflow-hidden">
+if (screenSize.isMobile) {
+  return (
+    <section className="relative w-full h-screen bg-[#0b0f0c] timeline-wrapper overflow-hidden">
 
-        {/* HEADER (FIXED & ABOVE CARDS) */}
-        <div className="sticky top-0 z-30 bg-[#0b0f0c] pt-10 pb-6">
-          <div className="px-6">
-            <h1 className="text-white text-2xl font-bold">
-              Research Updates
-            </h1>
-            <p className="text-white/60 text-sm mt-2">
-              Latest developments in autonomous driving
-            </p>
-          </div>
-        </div>
+      {/* TIMELINE LINE */}
+      <div className="absolute left-6 top-0 bottom-0 w-[2px] bg-white/30" />
 
+      {/* TIMELINE ITEMS */}
+      <div className="absolute left-0 right-0 top-40 bottom-20">
+        {images.slice(0, 5).map((src, i) => (
+          <div
+            key={i}
+            ref={(el) => (mobileRefs.current[i] = el)}
+            className="absolute left-0 right-0"
+          >
+            {/* DOT */}
+            <div className="absolute left-6 top-2 w-4 h-4 rounded-full bg-[#0b0f0c] border-2 border-white z-10" />
 
-        {/* Timeline on Left - Simple */}
-        <div className="absolute left-6 top-32 bottom-0 w-[2px] bg-white/30">
+            {/* DATE */}
+            <div className="ml-12 text-white text-sm font-medium mb-3">
+              {MOBILE_DATES[i]}
+            </div>
 
-        </div>
+            {/* CARD */}
+            <div className="ml-12 mr-6 bg-black/50 rounded-xl overflow-hidden border border-white/20">
 
-        {/* TIMELINE ITEMS */}
-        <div className="absolute left-0 right-0 top-40 bottom-20">
-          {images.slice(0, 5).map((src, i) => (
-            <div
-              key={i}
-              ref={(el) => (mobileRefs.current[i] = el)}
-              className="absolute left-0 right-0"
-            >
-              {/* DOT */}
-              <div className="absolute left-6 top-2 w-4 h-4 rounded-full bg-[#0b0f0c] border-2 border-white z-10" />
+              {/* IMAGE WITH PLAY BUTTON */}
+              <div className="relative group">
+                <img
+                  src={src}
+                  className="w-full h-[200px] object-cover"
+                  draggable={false}
+                />
 
-              {/* DATE */}
-              <div className="ml-12 text-white text-sm font-medium mb-3">
-                {MOBILE_DATES[i]}
+                {/* DARK OVERLAY */}
+                <div className="absolute inset-0 bg-black/30" />
+
+                {/* PLAY BUTTON */}
+                <div className="absolute inset-0 flex items-center justify-center">
+                  <div
+                    className="w-14 h-14 rounded-full bg-red-600 flex items-center justify-center
+                               backdrop-blur-sm
+                               active:scale-95 transition-transform"
+                  >
+                    <svg
+                      width="30"
+                      height="30"
+                      viewBox="0 0 24 24"
+                      fill="white"
+                      className="ml-[2px]"
+                    >
+                      <path d="M8 5v14l11-7z" />
+                    </svg>
+                  </div>
+                </div>
               </div>
 
-              {/* CARD */}
-              <div className="ml-12 mr-6 bg-black/50 rounded-xl overflow-hidden border border-white/20">
-                <div className="relative">
-                  <img
-                    src={src}
-                    className="w-full h-[200px] object-cover"
-                    draggable={false}
-                  />
-                </div>
-
-                <div className="p-4">
-                  <h3 className="text-white text-base font-medium">
-                    {CENTER_TEXTS[i]}
-                  </h3>
-                </div>
+              {/* TEXT */}
+              <div className="p-4">
+                <h3 className="text-white text-base font-medium">
+                  {CENTER_TEXTS[i]}
+                </h3>
               </div>
             </div>
-          ))}
-        </div>
-
-
-
-      </section>
-    );
-  }
+          </div>
+        ))}
+      </div>
+    </section>
+  );
+}
 
 
 

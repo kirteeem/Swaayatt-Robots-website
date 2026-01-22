@@ -290,6 +290,9 @@ export default function ThirdHero() {
     };
   }, [isMobile, isTablet]);
 
+
+
+  
   // Mobile & tablet scroll animation
   useLayoutEffect(() => {
     if (!isMobile && !isTablet) return;
@@ -303,13 +306,14 @@ export default function ThirdHero() {
 
     const ctx = gsap.context(() => {
       const totalCards = FEATURES.length;
-      const sectionHeight = window.innerHeight * totalCards * 1.2;
+
+const sectionHeight = window.innerHeight * totalCards * 1.5;
+
 
       // Initialize cards
       gsap.set(cardsRef.current, {
         y: "100%",
         opacity: 0,
-        display: "none",
       });
 
       // Initialize videos
@@ -505,10 +509,12 @@ export default function ThirdHero() {
 
       <section
         ref={sectionRef}
-        className={`relative overflow-hidden sm:mt-0 mt-40 scrollbar-hide ${
-          isMobile || isTablet ? "h-[100vh]" : "h-[110vh]"
-        }`}
+        className="relative overflow-hidden min-h-[100vh]"
+        style={{
+          height: isMobile || isTablet ? "auto" : "110vh"
+        }}
       >
+
         {/* Animated Background */}
         <div
           ref={bgRef}
@@ -551,7 +557,7 @@ export default function ThirdHero() {
         {/* Progress Indicator */}
         <div className="absolute top-[60px] left-0 right-0 z-20">
           {/* Progress Track */}
-          <div 
+          <div
             ref={progressTrackRef}
             className="h-[3px] bg-white/20 w-full sm:block hidden relative max-w-[100vw] mx-auto px-6"
           >
@@ -561,14 +567,14 @@ export default function ThirdHero() {
               className="absolute top-0 left-0 h-full bg-white transition-all duration-500 ease-out"
               style={{ width: '10%' }}
             />
-            
+
             {/* Diamond Indicator */}
             <div
               ref={diamondRef}
               className="absolute sm:bottom-[-8px] bottom-[-4px] sm:w-5 sm:h-5 w-2 h-2 rotate-45 bg-white shadow-[0_0_16px_rgba(255,255,255,0.95),0_0_30px_rgba(255,255,255,0.6)] transition-all duration-500 ease-out z-30"
             />
-            
-            
+
+
 
             {/* Tablet Marks */}
             {isTablet && (
@@ -585,7 +591,7 @@ export default function ThirdHero() {
         {/* Mobile & Tablet View */}
         {isMobile || isTablet ? (
           <div className="relative z-30 w-full px-4 pt-20 pb-40">
-            <div className="relative w-full min-h-[70vh] overflow-hidden">
+            <div className="relative w-full min-h-[90vh] overflow-hidden">
               {FEATURES.map((item, i) => (
                 <div
                   key={i}
@@ -606,7 +612,7 @@ export default function ThirdHero() {
                     <video
                       ref={el => (videosRef.current[i] = el)}
                       src={item.video}
-                      className="w-full h-[350px] object-cover"
+                      className="w-full h-[450px] object-cover"
                       muted
                       loop
                       playsInline
@@ -627,17 +633,15 @@ export default function ThirdHero() {
                 {FEATURES.map((item, i) => (
                   <div key={i} className="px-4 sm:px-6 lg:px-10">
                     <h3
-                      className={`text-[22px] sm:text-[26px] lg:text-[32px] font-Rethink Sans mt-[-6vh] py-4 transition-colors duration-400 drop-shadow-lg ${
-                        activeIndex === i ? "text-white" : "text-white/80"
-                      }`}
+                      className={`text-[22px] sm:text-[26px] lg:text-[32px] font-Rethink Sans mt-[-6vh] py-4 transition-colors duration-400 drop-shadow-lg ${activeIndex === i ? "text-white" : "text-white/80"
+                        }`}
                     >
                       {item.title}
                     </h3>
 
                     <p
-                      className={`text-[14px] sm:text-[16px] lg:text-[18px] transition-colors font-Rethink Sans duration-400 drop-shadow ${
-                        activeIndex === i ? "text-white" : "text-white/60"
-                      }`}
+                      className={`text-[14px] sm:text-[16px] lg:text-[18px] transition-colors font-Rethink Sans duration-400 drop-shadow ${activeIndex === i ? "text-white" : "text-white/60"
+                        }`}
                     >
                       {item.desc}
                     </p>

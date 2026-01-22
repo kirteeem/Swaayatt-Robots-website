@@ -92,7 +92,7 @@ const Blogs = () => {
                   text-black 
                 "
               >
-       <i class="ri-arrow-right-line transition-transform duration-300 group-hover:translate-x-1"></i>
+                <i class="ri-arrow-right-line transition-transform duration-300 group-hover:translate-x-1"></i>
               </span>
 
             </button>
