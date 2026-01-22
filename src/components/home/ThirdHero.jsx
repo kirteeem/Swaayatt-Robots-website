@@ -85,6 +85,7 @@ export default function ThirdHero() {
   const prevDiamondIndexRef = useRef(0);
   const prevVideoIndexRef = useRef(-1);
   const scrollTriggerRef = useRef(null);
+  const mobileScrollTriggerRef = useRef(null);
 
   // Detect screen size
   useEffect(() => {
@@ -292,6 +293,13 @@ export default function ThirdHero() {
   // Mobile & tablet scroll animation
   useLayoutEffect(() => {
     if (!isMobile && !isTablet) return;
+    if (!sectionRef.current) return;
+
+    // Kill any existing scroll trigger first
+    if (mobileScrollTriggerRef.current) {
+      mobileScrollTriggerRef.current.kill();
+      mobileScrollTriggerRef.current = null;
+    }
 
     const ctx = gsap.context(() => {
       const totalCards = FEATURES.length;
@@ -349,6 +357,11 @@ export default function ThirdHero() {
         });
       }
 
+      // Reset state
+      prevDiamondIndexRef.current = 0;
+      prevVideoIndexRef.current = 0;
+      setActiveIndex(0);
+
       const scrollTrigger = ScrollTrigger.create({
         trigger: sectionRef.current,
         start: "top top",
@@ -374,11 +387,13 @@ export default function ThirdHero() {
           const current = currentIndex;
 
           // Update diamond position
-          gsap.to(diamondRef.current, {
-            left: DIAMOND_POSITIONS_MOBILE[current],
-            duration: ANIMATION_TIMINGS.CARD_HIDE,
-            ease: "power2.out",
-          });
+          if (diamondRef.current) {
+            gsap.to(diamondRef.current, {
+              left: DIAMOND_POSITIONS_MOBILE[current],
+              duration: ANIMATION_TIMINGS.CARD_HIDE,
+              ease: "power2.out",
+            });
+          }
 
           // Update progress bar - synchronized with diamond movement
           if (progressBarRef.current) {
@@ -390,11 +405,13 @@ export default function ThirdHero() {
           }
 
           // Update background color
-          gsap.to(bgRef.current, {
-            background: SECTION_COLORS[current],
-            duration: 0.6,
-            ease: "power2.inOut",
-          });
+          if (bgRef.current) {
+            gsap.to(bgRef.current, {
+              background: SECTION_COLORS[current],
+              duration: 0.6,
+              ease: "power2.inOut",
+            });
+          }
 
           // Hide previous card
           if (prev !== null && cardsRef.current[prev]) {
@@ -403,7 +420,9 @@ export default function ThirdHero() {
               opacity: 0,
               duration: ANIMATION_TIMINGS.CARD_HIDE,
               onComplete: () => {
-                gsap.set(cardsRef.current[prev], { display: "none" });
+                if (cardsRef.current[prev]) {
+                  gsap.set(cardsRef.current[prev], { display: "none" });
+                }
                 // Pause previous video
                 if (videosRef.current[prev]) {
                   videosRef.current[prev].pause();
@@ -413,11 +432,13 @@ export default function ThirdHero() {
           }
 
           // Show current card
-          gsap.fromTo(
-            cardsRef.current[current],
-            { y: "100%", opacity: 0, display: "block" },
-            { y: "0%", opacity: 1, duration: ANIMATION_TIMINGS.CARD_SHOW, ease: "power3.out" }
-          );
+          if (cardsRef.current[current]) {
+            gsap.fromTo(
+              cardsRef.current[current],
+              { y: "100%", opacity: 0, display: "block" },
+              { y: "0%", opacity: 1, duration: ANIMATION_TIMINGS.CARD_SHOW, ease: "power3.out" }
+            );
+          }
 
           // Hide previous video
           if (prev !== null && videosRef.current[prev]) {
@@ -425,36 +446,46 @@ export default function ThirdHero() {
               opacity: 0,
               duration: 0.25,
               onComplete: () => {
-                gsap.set(videosRef.current[prev], { display: "none" });
+                if (videosRef.current[prev]) {
+                  gsap.set(videosRef.current[prev], { display: "none" });
+                }
               },
             });
           }
 
           // Show current video
-          gsap.fromTo(
-            videosRef.current[current],
-            { opacity: 0, display: "block" },
-            {
-              opacity: 1,
-              duration: 0.4,
-              delay: 0.1,
-              onStart: () => {
-                if (videosRef.current[current]) {
-                  videosRef.current[current].play().catch(e => console.log("Auto-play prevented:", e));
-                }
-              },
-            }
-          );
+          if (videosRef.current[current]) {
+            gsap.fromTo(
+              videosRef.current[current],
+              { opacity: 0, display: "block" },
+              {
+                opacity: 1,
+                duration: 0.4,
+                delay: 0.1,
+                onStart: () => {
+                  if (videosRef.current[current]) {
+                    videosRef.current[current].play().catch(e => console.log("Auto-play prevented:", e));
+                  }
+                },
+              }
+            );
+          }
 
           setActiveIndex(current);
           prevDiamondIndexRef.current = current;
         },
       });
 
-      return () => scrollTrigger.kill();
+      mobileScrollTriggerRef.current = scrollTrigger;
     }, sectionRef);
 
-    return () => ctx.revert();
+    return () => {
+      if (mobileScrollTriggerRef.current) {
+        mobileScrollTriggerRef.current.kill();
+        mobileScrollTriggerRef.current = null;
+      }
+      ctx.revert();
+    };
   }, [isMobile, isTablet]);
 
   return (
