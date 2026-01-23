@@ -1,14 +1,14 @@
 import { Routes, Route, useLocation } from "react-router-dom";
 
-import Header from "./components/Header";
-import Footer from "./components/Footer";
-import ScrollToTop from "./components/ScrollToTop";
+import Header from "./components/Header/Header";
+import Footer from "./pages/Footer";
+import ScrollToTop from "./pages/ScrollToTop";
 
 // PAGES
 import Home from "./pages/Home";
 import Contact from "./pages/Contact";
 import Blogs from "./pages/Blog";
-import Career from "./components/career/Career";
+import Career from "./components/Career/Career";
 import Media from "./pages/Media";
 import Research from "./pages/Research";
 
@@ -22,7 +22,6 @@ import MotionPlanning from "./pages/MotionPlanning";
 function AppLayout() {
   const location = useLocation();
 
-  // ✅ ONLY HOME gets "home" variant
   const headerVariant =
     location.pathname === "/" ? "home" : "default";
 

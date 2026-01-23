@@ -1,6 +1,5 @@
   import { useRef } from "react";
-  import VideoCard from "../components/VideoCard";
-  import PageContainer from "../components/PageContainer";
+  import VideoCard from "../components/media/VideoCard";
   import { useTheme } from "../context/ThemeContext"; // Add this import
 
   import onroadVideos from "../data/onroadVideo";
@@ -55,7 +54,7 @@
 
 
         {/* ================= HERO ================= */}
-        <PageContainer>
+        <div>
           <div className="mt-8 relative h-[384px] lg:h-[384px] rounded-2xl overflow-hidden">
             <img
               src="/images/research/offroad/Offroad.webp"
@@ -75,10 +74,10 @@
               </div>
             </div>
           </div>
-        </PageContainer>
+        </div>
 
         {/* ================= CONTENT ================= */}
-        <PageContainer>
+        <div>
           <div className="py-16 sm:py-20 space-y-24 sm:space-y-28">
 
             {/* ================= AUTONOMOUS DRIVING ================= */}
@@ -306,7 +305,7 @@
             </section>
 
           </div>
-        </PageContainer>
+        </div>
 
         </div>
       </main>

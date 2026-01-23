@@ -1,15 +1,15 @@
-import Header from "../components/Header";
-import Blogs from "../components/home/Blogs";
-import FourHome from "../components/home/FourHome";
-import HomeHero from "../components/home/HomeHero";
-import SecondHero from "../components/home/SecondHero";
-import Media from "../components/home/Media";
-import ThirdHero from "../components/home/ThirdHero";
+import Header from "../components/Header/Header";
+import Blogs from "../components/Home/Blogs";
+import FourHome from "../components/Home/FourHome";
+import HomeHero from "../components/Home/HomeHero";
+import SecondHero from "../components/Home/SecondHero";
+import Media from "../components/Home/Media";
+import ThirdHero from "../components/Home/ThirdHero";
 
-import TimelineSection from "../components/home/timeline/TimelineSection";
-import BrandFeaturedOn from "../components/Brandfeature/BrandFeaturedOn";
-import FeaturedImageReveal from "../components/Brandfeature/FeaturedImageReveal";
-import HomeHeroSec from "../components/home/HomeHeroSec";
+import TimelineSection from "../components/Home/Timeline/TimelineSection";
+import BrandFeaturedOn from "../components/Home/BrandFeaturedOn";
+import FeaturedImageReveal from "../components/Home/FeaturedImageReveal";
+import HomeHeroSec from "../components/Home/HomeHeroSec";
 
 
 
@@ -18,11 +18,10 @@ export default function Home() {
     <main className="bg-black overflow-x-hidden">
       <Header variant="home" />
 
-      {/* ================= FIRST HERO ================= */}
       <HomeHero />
 
       <section>
-        <HomeHeroSec/>
+        <HomeHeroSec />
       </section>
 
       {/* ================= SECOND HERO ================= */}
@@ -35,43 +34,39 @@ export default function Home() {
         <ThirdHero />
       </section>
 
-      {/* ================= TIMELINE SECTION ================= */}
 
 
 
 
-     <section
+      <section
         className="
-          relative bg-black z-20
-        
-        "
-      >
+          relative bg-black z-20" >
         <TimelineSection />
-      </section> 
+      </section>
 
 
 
 
-<section>
-  <FourHome/>
-</section>
+      <section>
+        <FourHome />
+      </section>
 
-<section>
-  <Blogs/>
-</section>
+      <section>
+        <Blogs />
+      </section>
 
-<section className="overflow-x-hidden">
-<Media/>
-</section>
+      <section className="overflow-x-hidden">
+        <Media />
+      </section>
 
 
-<section>
-  <BrandFeaturedOn/>
-</section>
+      <section>
+        <BrandFeaturedOn />
+      </section>
 
-<section>
-  <FeaturedImageReveal/>
-</section>
+      <section>
+        <FeaturedImageReveal />
+      </section>
 
 
 
