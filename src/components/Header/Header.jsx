@@ -101,8 +101,9 @@ export default function Header({ variant = "default" }) {
         : "translate-y-0"
         }`}
     >
-      <div className="max-w-[93vw] mx-auto py-3 px-6 sm:px-10 lg:px-16">
-        <div className="h-[70px] flex items-center justify-between">
+      <div className="max-w-[100vw] md:max-w-[100vw]  sm:max-w-[93vw] mx-auto py-3 px-6 sm:px-10 lg:px-16 bg-black lg:bg-transparent">
+
+        <div className="h-[70px]  flex items-center justify-between">
           <Link to="/" className="flex items-center gap-3 shrink-0">
             <img
               src="/images/Swaayatt/Swaayatt.png"
@@ -110,11 +111,11 @@ export default function Header({ variant = "default" }) {
               alt="Swaayatt Robots"
             />
             <div
-              className={`font-semibold text-[16px] leading-tight ${useDarkTheme ? "text-white" : "text-[#1C1C1C]" }`}>
+              className={`font-semibold text-[16px] leading-tight ${useDarkTheme ? "text-white" : "text-[#1C1C1C]"}`}>
 
-              <div 
-              style={{ fontFamily: '"Montserrat", "sans-serif"', fontWeight: "550" }}
-              className="font-rethink-sans tracking-[0.1em]">SWAAYATT
+              <div
+                style={{ fontFamily: '"Montserrat", "sans-serif"', fontWeight: "550" }}
+                className="font-rethink-sans tracking-[0.1em]">SWAAYATT
               </div>
 
               <div
@@ -233,7 +234,7 @@ export default function Header({ variant = "default" }) {
               Contact
             </Link>
 
-              
+
 
             {/* THEME TOGGLE */}
             <button
@@ -291,7 +292,7 @@ export default function Header({ variant = "default" }) {
       {mobileOpen && (
         <div
           className={`lg:hidden font-rethink-sans ${useDarkTheme
-            ? "bg-gray-900 border-gray-800"
+            ? "bg-black border-gray-800"
             : "bg-white border-gray-200"
             } border-t transition-colors duration-300`}
         >
