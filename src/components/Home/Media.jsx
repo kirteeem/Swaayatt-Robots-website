@@ -53,6 +53,7 @@ function MediaCard({
             )}
 
             <h3
+             style={{ fontFamily: "Rethink, sans-serif" }}
               className={`text-white font-semibold leading-tight ${isFeatured
                 ? "text-lg "
                 : ""
@@ -150,6 +151,8 @@ function Index() {
 
               {/* TEXT */}
               <span
+            style={{ fontFamily: '"Chivo Mono", monospace' }}
+
                 className="
                   relative z-10
                   px-3 sm:px-8

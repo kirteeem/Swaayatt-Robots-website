@@ -134,7 +134,7 @@ export default function FeaturedVideoReveal() {
                 drop-shadow-lg
               "
             >
-             THE JOURNEY OF AUTONOMOUS MOBILITY
+             THE JOURNEY OF AUTONOMOUS MOBILITY89
             </h2>
           </div>
         </div>

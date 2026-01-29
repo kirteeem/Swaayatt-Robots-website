@@ -66,6 +66,7 @@ export default function HomeHero() {
               tracking-[-0.02em]
               text-white
               -mt-1 lg:-mt-2
+              
             "
             style={{ fontFamily: "Montserrat, sans-serif" }}
           >

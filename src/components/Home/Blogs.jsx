@@ -54,15 +54,17 @@ const Blogs = () => {
 
         {/* HEADER */}
         <div className="flex flex sm:flex-row items-start sm:items-center justify-between gap-4 sm:gap-0 mb-8 sm:mb-10">
-          <p className="text-2xl sm:text-4xl lg:text-5xl font-[550] text-white">
+          <p
+            style={{ fontFamily: '"Montserrat", "sans-serif"', fontWeight: "500"}}
+           className="text-2xl sm:text-4xl lg:text-5xl font-[550] text-white">
             Blogs
           </p>
 
           {/* ALL BLOGS BUTTON */}
           <div className="flex items-center justify-between gap-3 sm:gap-6">
-            <button 
+            <button
               onClick={handleBlogClick}
-            className="group relative flex items-center border border-white h-8 sm:h-14 overflow-hidden">
+              className="group relative flex items-center border border-white h-8 sm:h-14 overflow-hidden">
 
               {/* WHITE SLIDE BACKGROUND */}
               <span
@@ -81,7 +83,8 @@ const Blogs = () => {
                 "
               />
 
-                 <span
+              <span
+                style={{ fontFamily: '"Chivo Mono", monospace' }}
                 className="
                   relative z-10
                   px-3 sm:px-8
@@ -129,7 +132,9 @@ const Blogs = () => {
                 />
 
                 <div className="relative h-full flex items-end p-4 sm:p-6 lg:p-8">
-                  <p className="text-sm sm:text-base lg:text-xl text-white line-clamp-3">
+                  <p
+                    style={{ fontFamily: '"Chivo Mono", monospace' }}
+                    className="text-sm sm:text-base lg:text-xl text-white line-clamp-3">
                     {post.title}
                   </p>
                 </div>

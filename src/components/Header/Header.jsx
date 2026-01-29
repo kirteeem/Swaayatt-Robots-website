@@ -110,11 +110,16 @@ export default function Header({ variant = "default" }) {
               alt="Swaayatt Robots"
             />
             <div
-              className={`font-semibold text-[16px] leading-tight ${useDarkTheme ? "text-white" : "text-[#1C1C1C]"
-                }`}
-            >
-              <div className="font-rethink-sans tracking-[0.1em]">SWAAYATT</div>
-              <div className="font-rethink-sans leading-tight tracking-[0.15em]">
+              className={`font-semibold text-[16px] leading-tight ${useDarkTheme ? "text-white" : "text-[#1C1C1C]" }`}>
+
+              <div 
+              style={{ fontFamily: '"Montserrat", "sans-serif"', fontWeight: "550" }}
+              className="font-rethink-sans tracking-[0.1em]">SWAAYATT
+              </div>
+
+              <div
+                style={{ fontFamily: '"Montserrat", "sans-serif"', fontWeight: "500" }}
+                className=" font-normal leading-tight tracking-[0.15em]">
                 ROBOTS
               </div>
             </div>
@@ -123,7 +128,7 @@ export default function Header({ variant = "default" }) {
           {/* DESKTOP NAV */}
           <nav
             className={`hidden lg:flex items-center gap-10 text-[18px] tracking-[0.03em]
-             font-semibold font-rethink-sans ${useDarkTheme ? "text-white" : "text-[#1C1C1C]"  }`} >
+             font-semibold font-rethink-sans ${useDarkTheme ? "text-white" : "text-[#1C1C1C]"}`} >
 
             <div
               ref={ref}
@@ -155,10 +160,11 @@ export default function Header({ variant = "default" }) {
 
               </div>
 
+
+
               {/* POPUP */}
               {open && (
                 <div className="absolute left-[-180px] top-[60px] w-[720px] h-[300px] bg-white dark:bg-gray-900 rounded-[16px] shadow-2xl flex overflow-hidden border dark:border-gray-800">
-                  {/* LEFT COLLAGE */}
                   <div className="relative w-[22vw] h-full overflow-hidden rounded-[1.2vw]">
                     <div className="absolute inset-[0.6vw] overflow-hidden rounded-[0.9vw]">
                       <div className="grid grid-cols-5 h-full">
@@ -191,6 +197,7 @@ export default function Header({ variant = "default" }) {
                     </div>
                   </div>
 
+
                   {/* RIGHT MENU */}
                   <div className="flex-1 px-1 py-10 flex flex-col justify-center font-rethink-sans">
                     {researchMenu.map((item) => (
@@ -211,6 +218,8 @@ export default function Header({ variant = "default" }) {
               )}
             </div>
 
+
+
             <Link to="/media" style={{ fontFamily: '"Rethink Sans", "sans-serif"' }} className="hover:opacity-80 font-[500] transition-opacity">
               Media
             </Link>
@@ -223,6 +232,8 @@ export default function Header({ variant = "default" }) {
             <Link to="/contact" style={{ fontFamily: '"Rethink Sans", "sans-serif"' }} className="hover:opacity-80 font-[500] transition-opacity">
               Contact
             </Link>
+
+              
 
             {/* THEME TOGGLE */}
             <button

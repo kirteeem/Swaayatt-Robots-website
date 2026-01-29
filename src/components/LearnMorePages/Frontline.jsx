@@ -1,4 +1,3 @@
-import { motion } from "framer-motion";
 import Wrapper from "../LearnMorePages/PageWrapper";
 import carImage from "/images/learn/image.png";
 
@@ -36,11 +35,7 @@ export default function HeroSection() {
             "
           >
             {/* FRONTLINE */}
-            <motion.h1
-              initial={{ clipPath: "inset(0 110% 0 -2%)" }}
-              whileInView={{ clipPath: "inset(0 -2% 0 -2%)" }}
-              transition={{ duration: 0.9, ease: "easeOut", delay: 0.1 }}
-              viewport={{ once: true }}
+            <h1
               className="
                 uppercase italic font-black
                 tracking-[-0.02em]
@@ -57,14 +52,10 @@ export default function HeroSection() {
               }}
             >
               FRONTLINE
-            </motion.h1>
+            </h1>
 
             {/* AUTONOMY */}
-            <motion.h1
-              initial={{ clipPath: "inset(0 110% 0 -2%)" }}
-              whileInView={{ clipPath: "inset(0 -2% 0 -2%)" }}
-              transition={{ duration: 0.9, ease: "easeOut" }}
-              viewport={{ once: true }}
+            <h1
               className="
                 uppercase italic font-black
                 tracking-[-0.02em]
@@ -81,18 +72,10 @@ export default function HeroSection() {
               }}
             >
               AUTONOMY
-            </motion.h1>
+            </h1>
 
             {/* DESCRIPTION */}
-            <motion.p
-              initial={{ clipPath: "inset(0 0 100% 0)" }}
-              whileInView={{ clipPath: "inset(0 0 0 0)" }}
-              transition={{
-                duration: 1.1,
-                ease: [0.25, 0.1, 0.25, 1],
-                delay: 0.25,
-              }}
-              viewport={{ once: true }}
+            <p
               className="
                 italic mt-6
                 text-[14px]
@@ -111,7 +94,7 @@ export default function HeroSection() {
               Introducing Vanguard. Leveraging the rugged Mahindra Thar platform,
               Swaayatt Robots introduces the next generation of unmanned ground
               vehicles (UGV). Deep learning navigation in unstructured terrain.
-            </motion.p>
+            </p>
           </div>
         </div>
       </Wrapper>

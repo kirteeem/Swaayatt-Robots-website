@@ -25,7 +25,8 @@ const MotionPlanningPage = () => {
               className="
                 font-rethink
                 font-medium
-                w-[40vw]
+                w-full
+                sm:w-[40vw]
                 tracking-[-0.02em]
                 leading-none
                 text-[36px]

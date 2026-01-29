@@ -9,7 +9,7 @@ export default function Footer() {
   return (
     <footer
       className={`${isDarkMode
-          ? "bg-gradient-to-b from-black to-[#093436] text-gray-300"
+          ? "bg-gradient-to-b from-black to-[#072b2d] text-gray-300"
           : "bg-[#F3F4F6] text-[#3A3A3A]"
         }`}
     >
@@ -42,7 +42,9 @@ export default function Footer() {
 
           {/* ===== COMPANY ===== */}
           <div className="space-y-4">
-            <p className={`text-md font-bold ${isDarkMode ? 'text-white' : 'text-[#3A3A3A]'}`}>COMPANY</p>
+            <p 
+            style={{ fontFamily: '"Montserrat"'}}
+            className={`text-md font-bold ${isDarkMode ? 'text-white' : 'text-[#3A3A3A]'}`}>COMPANY</p>
             {["Blogs", "Media", "Career", "Contact"].map((item) => (
               <Link
                 key={item}
@@ -56,7 +58,9 @@ export default function Footer() {
 
           {/* ===== RESEARCH ===== */}
           <div className="space-y-4">
-            <p className={`text-md font-bold ${isDarkMode ? 'text-white' : 'text-[#3A3A3A]'}`}>RESEARCH</p>
+            <p 
+            style={{ fontFamily: '"Montserrat"'}}
+            className={`text-md font-bold ${isDarkMode ? 'text-white' : 'text-[#3A3A3A]'}`}>RESEARCH</p>
             {[
               "On Road",
               "Off Road",

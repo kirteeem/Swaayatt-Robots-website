@@ -1,4 +1,4 @@
-@import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@200;800&family=Rethink+Sans:wght@400&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@200;400;800&family=Rethink+Sans:wght@400&display=swap");
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -9,20 +9,18 @@ body {
   text-rendering: optimizeLegibility;
 }
 /* Headings */
-h1,
+/* h1,
 h2 {
   font-family: "Montserrat", sans-serif;
-}
-/* Line height reset */
+} */
 h1,
 h2,
 h3,
 p {
   line-height: 1.25;
+
 }
-/* ================================================= */
-/* ================= SCROLL FIXES =================== */
-/* ================================================= */
+
 html {
   scrollbar-gutter: stable;
   overflow-y: scroll;

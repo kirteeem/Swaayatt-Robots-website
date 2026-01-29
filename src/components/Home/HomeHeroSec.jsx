@@ -22,14 +22,14 @@ export default function HomeHero() {
         pb-24"
       >
         <p
-          style={{ fontFamily: '"Rethink Sans", "sans-serif"' }}
+          style={{ fontFamily: '"Montserrat", "sans-serif"', fontWeight: "500"}}
 
-          className="text-gray-300 tracking-wide  font-[200]    text-[24px] sm:text-[30px] md:text-[36px] lg:text-[42px] xl:text-[44px] leading-[1.45] sm:leading-[1.3]
+          className="text-gray-300 tracking-wide  font-medium    text-[24px] sm:text-[30px] md:text-[36px] lg:text-[42px] xl:text-[44px] leading-[1.45] sm:leading-[1.3]
           max-w-[85vw]"
         >
-          Developing autonomous driving technologies
+          Developing Autonomous Driving Technologies
           <br className="hidden sm:block" />
-          for the world&apos;s hardest driving scenarios.
+          For The World&apos;s Hardest Driving Scenarios.
         </p>
 
       </div>

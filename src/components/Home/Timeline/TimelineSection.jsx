@@ -333,7 +333,7 @@ function BlogNodes({ activeStep, screenSize }) {
       scrollTrigger: {
         trigger: ".timeline-wrapper",
         start: "top top",
-        end: `+=${(total - 0) * 120}%`, // IMPORTANT
+        end: `+=${(total - 0) * 120}%`, 
         pin: true,
         scrub: 0.5,
         anticipatePin: 1,
@@ -420,7 +420,7 @@ function BlogNodes({ activeStep, screenSize }) {
   return (
     <div className="absolute inset-0 overflow-hidden pointer-events-none">
       {/* GLOW */}
-      <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(0, 255, 0, 0.13)_0%,rgba(0,0,0,1)_65%)]" />
+      {/* <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(0, 255, 72, 0.02)_0%,rgba(0, 0, 0, 0.35)_65%)]" /> */}
 
       {/* CARDS */}
       <div className="absolute inset-0 flex items-center justify-center">
@@ -440,7 +440,7 @@ function BlogNodes({ activeStep, screenSize }) {
             >
               <div
                 className={`relative sm:w-full sm:h-full h-[50vh]  sm:mt-20 mt-[40vh] sm:p-0 p-2  overflow-hidden ${centerIndex === i
-                  ? "shadow-[0_0_80px_rgba(0,255,0,0.45)]"
+                  ? ""
                   : ""
                   }`}
               >
@@ -481,13 +481,14 @@ function BlogNodes({ activeStep, screenSize }) {
       )}
 
       {/* CENTER TEXT */}
-      {centerIndex !== null && (
-        <div className="absolute mt-[10vh] bottom-[0%] w-[70vh]  sm:w-[70vw] md:w-[30vw]   md:top-[55%]  w-[90vw]  left-1/2 -translate-x-1/2 text-center z-30 px-4">
-          <p className="font-mono text-white whitespace-pre-line text-sm sm:text-base lg:text-lg max-w-[620px] leading-[150%]">
-            {CENTER_TEXTS[centerIndex]}
-          </p>
-        </div>
-      )}
+   {centerIndex !== null && (
+  <div className="absolute left-1/2 -translate-x-1/2   sm:bottom-[20vh] bottom-32 mt-[10vh] z-30 px-4 text-center w-[90vw] sm:w-[80vw] md:w-[75vw] lg:w-[40vw] xl:w-[35vw]">
+    <p className="font-mono text-white whitespace-pre-line text-sm sm:text-base lg:text-lg leading-[150%] max-w-[620px] mx-auto">
+      {CENTER_TEXTS[centerIndex]}
+    </p>
+  </div>
+)}
+
     </div>
   );
 }

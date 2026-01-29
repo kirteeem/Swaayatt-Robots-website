@@ -33,16 +33,17 @@ export default function BrandFeaturedOn() {
     >
       {/* ================= FEATURED ON TEXT ================= */}
       <div className="flex flex-col items-center mb-8 z-20">
-        <h5
+        <h1
+          style={{ fontFamily: '"Rethink Sans", "sans-serif"' }}
           className="
              font-[550] text-gray-500
-            text-sm sm:text-2xl md:text-lg
+            text-2xl 
             tracking-tight whitespace-nowrap
           "
         >
           Featured on
-        </h5>
-        <span className="mt-3 w-32 sm:w-40 md:w-48 h-[2px] bg-gray-300" />
+        </h1>
+        <span className="mt-3 w-32 sm:w-40 md:w-48 h-[1px] bg-gray-500" />
       </div>
 
       {/* ================= LOGO MARQUEE ================= */}
@@ -81,8 +82,10 @@ export default function BrandFeaturedOn() {
 
       <div className="w-full px-4 sm:px-6 md:px-8 mt-20 sm:mt-24 md:mt-32 bg-black">
         <div className="max-w-8xl mx-auto">
-          <h5 className="text-center font-[500] text-lg sm:text-xl md:text-2xl text-gray-500 mb-8 sm:mb-10 md:mb-12">Funded and Supported by</h5>
-          <div className="h-[1px] w-[18vw] mb-10 mt-[-25px] bg-white mx-auto"></div>
+          <h5
+           style={{ fontFamily: '"Rethink Sans", "sans-serif"' }}
+           className="text-center font-[500] text-md sm:text-md md:text-2xl text-gray-500 mb-8 sm:mb-10 md:mb-12">Funded and Supported by</h5>
+          <div className="h-[0.1px] w-[18vw] mb-10 mt-[-30px] bg-gray-500 mx-auto"></div>
 
           <div className="w-full">
             {/* ===== LOGOS GRID ===== */}
@@ -101,7 +104,7 @@ export default function BrandFeaturedOn() {
               </div>
 
 
-               <div className="space-y-2 sm:space-y-3">
+              <div className="space-y-2 sm:space-y-3">
                 <img
                   src="/images/founded/Seed Fund.svg"
                   alt="Nvidia"
@@ -120,7 +123,7 @@ export default function BrandFeaturedOn() {
                   className="mx-auto h-12 sm:h-16 md:h-20 w-auto object-contain"
                 />
                 <p className={`text-xs sm:text-sm ${isDarkMode ? 'text-gray-400' : 'text-gray-400'}`}>
-                 <span className="text-xm sm:text-xl">  INR 3M Research Grant</span> <br />March, 2022
+                  <span className="text-xm sm:text-xl">  INR 3M Research Grant</span> <br />March, 2022
                 </p>
               </div>
 
@@ -148,7 +151,7 @@ export default function BrandFeaturedOn() {
                 </p>
               </div>
 
-              
+
 
             </div>
           </div>

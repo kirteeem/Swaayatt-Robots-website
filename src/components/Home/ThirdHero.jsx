@@ -293,208 +293,217 @@ export default function ThirdHero() {
 
 
   
-  // Mobile & tablet scroll animation
-  useLayoutEffect(() => {
-    if (!isMobile && !isTablet) return;
-    if (!sectionRef.current) return;
+// Mobile & tablet scroll animation
+useLayoutEffect(() => {
+  if (!isMobile && !isTablet) return;
+  if (!sectionRef.current) return;
 
-    // Kill any existing scroll trigger first
+  // Kill any existing scroll trigger first
+  if (mobileScrollTriggerRef.current) {
+    mobileScrollTriggerRef.current.kill();
+    mobileScrollTriggerRef.current = null;
+  }
+
+  const ctx = gsap.context(() => {
+    const totalCards = FEATURES.length;
+
+    const sectionHeight = window.innerHeight * totalCards * 1.5;
+
+    // Initialize cards
+    gsap.set(cardsRef.current, {
+      y: "100%",
+      opacity: 0,
+      display: "none",
+    });
+
+    // Initialize videos
+    gsap.set(videosRef.current, {
+      opacity: 0,
+      display: "none",
+    });
+
+    // Show first card
+    if (cardsRef.current[0]) {
+      gsap.set(cardsRef.current[0], {
+        y: "0%",
+        opacity: 1,
+        display: "block",
+      });
+    }
+
+    // Show first video
+    if (videosRef.current[0]) {
+      gsap.set(videosRef.current[0], {
+        opacity: 1,
+        display: "block",
+      });
+      videosRef.current[0].play().catch(e =>
+        console.log("Auto-play prevented:", e)
+      );
+    }
+
+    // Initialize background
+    if (bgRef.current) {
+      gsap.set(bgRef.current, {
+        background: SECTION_COLORS[0],
+      });
+    }
+
+    // Initialize diamond
+    if (diamondRef.current) {
+      gsap.set(diamondRef.current, {
+        left: DIAMOND_POSITIONS_MOBILE[0],
+      });
+    }
+
+    // Initialize progress bar
+    if (progressBarRef.current) {
+      gsap.set(progressBarRef.current, {
+        width: "0%",
+      });
+    }
+
+    // Reset state
+    prevDiamondIndexRef.current = 0;
+    prevVideoIndexRef.current = 0;
+    setActiveIndex(0);
+
+    const scrollTrigger = ScrollTrigger.create({
+      trigger: sectionRef.current,
+      start: "top top",
+      end: `+=${sectionHeight}`,
+      pin: true,
+      scrub: true,
+      snap: {
+        snapTo: 1 / (totalCards - 1),
+        duration: { min: 0.25, max: 0.6 },
+        ease: "power1.inOut",
+      },
+      markers: false,
+
+      onUpdate: (self) => {
+        const progress = self.progress;
+        const direction = self.direction; // 1 = down, -1 = up
+        const sectionSize = 1 / totalCards;
+
+        let currentIndex = Math.floor(progress / sectionSize);
+        currentIndex = Math.min(currentIndex, totalCards - 1);
+
+        if (currentIndex === prevDiamondIndexRef.current) return;
+
+        const prev = prevDiamondIndexRef.current;
+        const current = currentIndex;
+
+        // Update diamond position
+        if (diamondRef.current) {
+          gsap.to(diamondRef.current, {
+            left: DIAMOND_POSITIONS_MOBILE[current],
+            duration: ANIMATION_TIMINGS.CARD_HIDE,
+            ease: "power2.out",
+          });
+        }
+
+        // Update progress bar
+        if (progressBarRef.current) {
+          gsap.to(progressBarRef.current, {
+            width: PROGRESS_BAR_STOPS_MOBILE[current],
+            duration: ANIMATION_TIMINGS.CARD_HIDE,
+            ease: "power2.out",
+          });
+        }
+
+        // Update background
+        if (bgRef.current) {
+          gsap.to(bgRef.current, {
+            background: SECTION_COLORS[current],
+            duration: 0.6,
+            ease: "power2.inOut",
+          });
+        }
+
+        // Hide previous card (direction-aware)
+        if (prev !== null && cardsRef.current[prev]) {
+          gsap.to(cardsRef.current[prev], {
+            y: direction === 1 ? "-40%" : "40%",
+            opacity: 0,
+            duration: ANIMATION_TIMINGS.CARD_HIDE,
+            onComplete: () => {
+              gsap.set(cardsRef.current[prev], { display: "none" });
+              if (videosRef.current[prev]) {
+                videosRef.current[prev].pause();
+              }
+            },
+          });
+        }
+
+        // Show current card (direction-aware)
+        if (cardsRef.current[current]) {
+          gsap.fromTo(
+            cardsRef.current[current],
+            {
+              y: direction === 1 ? "100%" : "-100%",
+              opacity: 0,
+              display: "block",
+            },
+            {
+              y: "0%",
+              opacity: 1,
+              duration: ANIMATION_TIMINGS.CARD_SHOW,
+              ease: "power3.out",
+            }
+          );
+        }
+
+        // Hide previous video
+        if (prev !== null && videosRef.current[prev]) {
+          gsap.to(videosRef.current[prev], {
+            opacity: 0,
+            duration: 0.25,
+            onComplete: () => {
+              gsap.set(videosRef.current[prev], { display: "none" });
+            },
+          });
+        }
+
+        // Show current video
+        if (videosRef.current[current]) {
+          gsap.fromTo(
+            videosRef.current[current],
+            { opacity: 0, display: "block" },
+            {
+              opacity: 1,
+              duration: 0.4,
+              delay: 0.1,
+              onStart: () => {
+                videosRef.current[current]
+                  ?.play()
+                  .catch(e => console.log("Auto-play prevented:", e));
+              },
+            }
+          );
+        }
+
+        setActiveIndex(current);
+        prevDiamondIndexRef.current = current;
+      },
+    });
+
+    mobileScrollTriggerRef.current = scrollTrigger;
+  }, sectionRef);
+
+  return () => {
     if (mobileScrollTriggerRef.current) {
       mobileScrollTriggerRef.current.kill();
       mobileScrollTriggerRef.current = null;
     }
+    ctx.revert();
+  };
+}, [isMobile, isTablet]);
 
-    const ctx = gsap.context(() => {
-      const totalCards = FEATURES.length;
-
-const sectionHeight = window.innerHeight * totalCards * 1.5;
-
-
-      // Initialize cards
-      gsap.set(cardsRef.current, {
-        y: "100%",
-        opacity: 0,
-      });
-
-      // Initialize videos
-      gsap.set(videosRef.current, {
-        opacity: 0,
-        display: "none",
-      });
-
-      // Show first card
-      if (cardsRef.current[0]) {
-        gsap.set(cardsRef.current[0], {
-          y: "0%",
-          opacity: 1,
-          display: "block",
-        });
-      }
-
-      // Show first video
-      if (videosRef.current[0]) {
-        gsap.set(videosRef.current[0], {
-          opacity: 1,
-          display: "block",
-        });
-        videosRef.current[0].play().catch(e => console.log("Auto-play prevented:", e));
-      }
-
-      // Initialize background
-      if (bgRef.current) {
-        gsap.set(bgRef.current, {
-          background: SECTION_COLORS[0],
-        });
-      }
-
-      // Initialize diamond
-      if (diamondRef.current) {
-        gsap.set(diamondRef.current, {
-          left: DIAMOND_POSITIONS_MOBILE[0],
-        });
-      }
-
-      // Initialize progress bar
-      if (progressBarRef.current) {
-        gsap.set(progressBarRef.current, {
-          width: "0%",
-        });
-      }
-
-      // Reset state
-      prevDiamondIndexRef.current = 0;
-      prevVideoIndexRef.current = 0;
-      setActiveIndex(0);
-
-      const scrollTrigger = ScrollTrigger.create({
-        trigger: sectionRef.current,
-        start: "top top",
-        end: `+=${sectionHeight}`,
-        pin: true,
-        scrub: true,
-        snap: {
-          snapTo: 1 / (totalCards - 1),
-          duration: { min: 0.25, max: 0.6 },
-          ease: "power1.inOut",
-        },
-        markers: false,
-        onUpdate: (self) => {
-          const progress = self.progress;
-          const sectionSize = 1 / totalCards;
-
-          let currentIndex = Math.floor(progress / sectionSize);
-          currentIndex = Math.min(currentIndex, totalCards - 1);
-
-          if (currentIndex === prevDiamondIndexRef.current) return;
-
-          const prev = prevDiamondIndexRef.current;
-          const current = currentIndex;
-
-          // Update diamond position
-          if (diamondRef.current) {
-            gsap.to(diamondRef.current, {
-              left: DIAMOND_POSITIONS_MOBILE[current],
-              duration: ANIMATION_TIMINGS.CARD_HIDE,
-              ease: "power2.out",
-            });
-          }
-
-          // Update progress bar - synchronized with diamond movement
-          if (progressBarRef.current) {
-            gsap.to(progressBarRef.current, {
-              width: PROGRESS_BAR_STOPS_MOBILE[current],
-              duration: ANIMATION_TIMINGS.CARD_HIDE,
-              ease: "power2.out",
-            });
-          }
-
-          // Update background color
-          if (bgRef.current) {
-            gsap.to(bgRef.current, {
-              background: SECTION_COLORS[current],
-              duration: 0.6,
-              ease: "power2.inOut",
-            });
-          }
-
-          // Hide previous card
-          if (prev !== null && cardsRef.current[prev]) {
-            gsap.to(cardsRef.current[prev], {
-              y: "-40%",
-              opacity: 0,
-              duration: ANIMATION_TIMINGS.CARD_HIDE,
-              onComplete: () => {
-                if (cardsRef.current[prev]) {
-                  gsap.set(cardsRef.current[prev], { display: "none" });
-                }
-                // Pause previous video
-                if (videosRef.current[prev]) {
-                  videosRef.current[prev].pause();
-                }
-              },
-            });
-          }
-
-          // Show current card
-          if (cardsRef.current[current]) {
-            gsap.fromTo(
-              cardsRef.current[current],
-              { y: "100%", opacity: 0, display: "block" },
-              { y: "0%", opacity: 1, duration: ANIMATION_TIMINGS.CARD_SHOW, ease: "power3.out" }
-            );
-          }
-
-          // Hide previous video
-          if (prev !== null && videosRef.current[prev]) {
-            gsap.to(videosRef.current[prev], {
-              opacity: 0,
-              duration: 0.25,
-              onComplete: () => {
-                if (videosRef.current[prev]) {
-                  gsap.set(videosRef.current[prev], { display: "none" });
-                }
-              },
-            });
-          }
-
-          // Show current video
-          if (videosRef.current[current]) {
-            gsap.fromTo(
-              videosRef.current[current],
-              { opacity: 0, display: "block" },
-              {
-                opacity: 1,
-                duration: 0.4,
-                delay: 0.1,
-                onStart: () => {
-                  if (videosRef.current[current]) {
-                    videosRef.current[current].play().catch(e => console.log("Auto-play prevented:", e));
-                  }
-                },
-              }
-            );
-          }
-
-          setActiveIndex(current);
-          prevDiamondIndexRef.current = current;
-        },
-      });
-
-      mobileScrollTriggerRef.current = scrollTrigger;
-    }, sectionRef);
-
-    return () => {
-      if (mobileScrollTriggerRef.current) {
-        mobileScrollTriggerRef.current.kill();
-        mobileScrollTriggerRef.current = null;
-      }
-      ctx.revert();
-    };
-  }, [isMobile, isTablet]);
 
   return (
     <>
-      <style>{`
+      <style jsx global>{`
         .scrollbar-hide::-webkit-scrollbar {
           display: none;
         }

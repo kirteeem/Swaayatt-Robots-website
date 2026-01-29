@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useState } from "react";
 import Wrapper from "../LearnMorePages/PageWrapper";
 
 /* ================= CONFIG ================= */
@@ -21,10 +21,6 @@ const QUOTE_LINES = [
 
 const NextShowcase = () => {
   const [index, setIndex] = useState(0);
-  const [visibleChars, setVisibleChars] = useState(0);
-  const [startReveal, setStartReveal] = useState(false);
-
-  const textRef = useRef(null);
 
   /* AUTO SLIDE */
   useEffect(() => {
@@ -33,32 +29,6 @@ const NextShowcase = () => {
     }, SLIDE_INTERVAL);
     return () => clearInterval(timer);
   }, []);
-
-  /* START TEXT REVEAL WHEN IN VIEW */
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          setStartReveal(true);
-          observer.disconnect();
-        }
-      },
-      { threshold: 0.4 }
-    );
-
-    if (textRef.current) observer.observe(textRef.current);
-  }, []);
-
-  /* TYPE REVEAL */
-  const fullText = QUOTE_LINES.join("");
-
-  useEffect(() => {
-    if (!startReveal) return;
-    if (visibleChars < fullText.length) {
-      const t = setTimeout(() => setVisibleChars(v => v + 1), 32);
-      return () => clearTimeout(t);
-    }
-  }, [visibleChars, startReveal, fullText.length]);
 
   return (
     <section
@@ -97,7 +67,6 @@ const NextShowcase = () => {
               style={{
                 width: "100%",
                 height: "auto",
-                animation: "slideIn 0.9s ease",
               }}
             />
           </div>
@@ -140,11 +109,10 @@ const NextShowcase = () => {
 
         {/* ================= QUOTE ================= */}
         <div
-          ref={textRef}
           className="quote-container"
           style={{ textAlign: "center", marginBottom: "7vh" }}
         >
-          {renderQuoteLines(visibleChars)}
+          {renderQuoteLines()}
         </div>
 
         {/* ================= BUTTON ================= */}
@@ -165,20 +133,9 @@ const NextShowcase = () => {
 
       </Wrapper>
 
-      {/* ANIMATIONS + RESPONSIVE STYLES */}
+      {/* RESPONSIVE STYLES */}
       <style>
         {`
-          @keyframes slideIn {
-            from {
-              opacity: 0;
-              transform: translateX(6vw);
-            }
-            to {
-              opacity: 1;
-              transform: translateX(0);
-            }
-          }
-
           /* Tablet Styles (768px - 1024px) */
           @media (max-width: 1024px) {
             .slider-container {
@@ -372,34 +329,26 @@ const NextShowcase = () => {
 
 /* ================= QUOTE RENDER ================= */
 
-const renderQuoteLines = (visibleChars) => {
+const renderQuoteLines = () => {
   const highlight = "EXTENDING THEIR REACH";
 
   const widths = ["82vw", "68vw", "52vw"]; // 🔥 taper effect
   const sizes = ["3vw", "2.6vw", "2.6vw"];
 
-  let charCount = 0;
-
   return QUOTE_LINES.map((line, i) => {
-    const remaining = Math.max(0, visibleChars - charCount);
-    const visibleLine = line.slice(0, remaining);
-    charCount += line.length;
-
-    let content = visibleLine;
+    let content = line;
 
     if (line.includes(highlight)) {
-      const start = visibleLine.indexOf(highlight);
-      if (start !== -1) {
-        content = (
-          <>
-            {visibleLine.slice(0, start)}
-            <span style={{ color: "rgb(17,103,50)" }}>
-              {visibleLine.slice(start, start + highlight.length)}
-            </span>
-            {visibleLine.slice(start + highlight.length)}
-          </>
-        );
-      }
+      const start = line.indexOf(highlight);
+      content = (
+        <>
+          {line.slice(0, start)}
+          <span style={{ color: "rgb(17,103,50)" }}>
+            {line.slice(start, start + highlight.length)}
+          </span>
+          {line.slice(start + highlight.length)}
+        </>
+      );
     }
 
     return (
@@ -451,4 +400,5 @@ const buttonStyle = {
   transition: "all 0.3s ease",
 };
 
-export default NextShowcase;  
+export default NextShowcase;
+
