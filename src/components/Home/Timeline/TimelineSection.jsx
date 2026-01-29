@@ -225,6 +225,7 @@ function BlogNodes({ activeStep, screenSize }) {
     "08 Jul 2025",
     "23 Apr 2025",
     "11 Sep 2025",
+     "11 Sep 2025",
   ];
 
   const CENTER_TEXTS = [
