@@ -84,7 +84,7 @@ export default function TimelineSection() {
     >
       <BlogNodes progress={progress} activeStep={activeStep} screenSize={screenSize} />
       <CenterFeature screenSize={screenSize} />
-      <RoadTimeline progress={progress} activeStep={activeStep} screenSize={screenSize} />
+      {/* <RoadTimeline progress={progress} activeStep={activeStep} screenSize={screenSize} /> */}
 
       <style jsx>{`
         @keyframes slideUp {
@@ -433,13 +433,13 @@ function BlogNodes({ activeStep, screenSize }) {
               className="absolute will-change-transform mb-80"
               style={{
                 width: "100%",
-                maxWidth: screenSize.isMobile ? 460 : 850,
+                maxWidth: screenSize.isMobile ? 460 : 870,
                 height: "auto",
               }}
 
             >
               <div
-                className={`relative sm:w-full sm:h-full h-[50vh]  sm:mt-10 mt-[40vh] sm:p-0 p-2  overflow-hidden ${centerIndex === i
+                className={`relative sm:w-full sm:h-full h-[50vh]  sm:mt-20 mt-[40vh] sm:p-0 p-2  overflow-hidden ${centerIndex === i
                   ? "shadow-[0_0_80px_rgba(0,255,0,0.45)]"
                   : ""
                   }`}
@@ -509,12 +509,12 @@ function CenterFeature({ screenSize }) {
       {/* Desktop Grid Lines */}
       {screenSize.isDesktop && (
         <>
-          <div className="absolute top-[5%] bottom-[18%] left-[26.9%] w-px bg-white/30 pointer-events-none" />
-          <div className="absolute top-[5%] bottom-[16%] left-[73.1%] w-px bg-white/30 pointer-events-none" />
+          <div className="absolute top-[5%] bottom-[18%] left-[26.4%] w-px bg-white/30 pointer-events-none" />
+          <div className="absolute top-[5%] bottom-[16%] left-[73.6%] w-px bg-white/30 pointer-events-none" />
 
 
-          <div className="absolute left-0 top-[10.6%] w-full h-px bg-white/20 pointer-events-none" />
-          <div className="absolute left-0 top-[60.2%] w-full h-px bg-white/20 pointer-events-none" />
+          <div className="absolute left-0 top-[12.3%] w-full h-px bg-white/20 pointer-events-none" />
+          <div className="absolute left-0 top-[62.8%] w-full h-px bg-white/20 pointer-events-none" />
         </>
       )}
 
@@ -526,125 +526,125 @@ function CenterFeature({ screenSize }) {
 
 
 
-function RoadTimeline({ progress, screenSize }) {
-  const carRefs = useRef([]);
-  const wrapperRef = useRef(null);
+// function RoadTimeline({ progress, screenSize }) {
+//   const carRefs = useRef([]);
+//   const wrapperRef = useRef(null);
 
 
-  const CAR_CONFIGS = [
-    {
-      src: "/images/ani-mediea/image (1).png",
-      name: "bolero",
-      start: 0,
-      end: 0.35,
-      widthClass: "w-[15vw]",
-    },
-    {
-      src: "/images/ani-mediea/image.png",
-      name: "thar",
-      start: 0.30,
-      end: 0.68,
-      widthClass: "w-[15vw]",
-    },
-    {
-      src: "/images/ani-mediea/image (1).png",
-      name: "future",
-      start: 0.64,
-      end: 1,
-      widthClass: "w-[15vw]",
-    },
-  ];
+//   const CAR_CONFIGS = [
+//     {
+//       src: "/images/ani-mediea/image (1).png",
+//       name: "bolero",
+//       start: 0,
+//       end: 0.35,
+//       widthClass: "w-[15vw]",
+//     },
+//     {
+//       src: "/images/ani-mediea/image.png",
+//       name: "thar",
+//       start: 0.30,
+//       end: 0.68,
+//       widthClass: "w-[15vw]",
+//     },
+//     {
+//       src: "/images/ani-mediea/image (1).png",
+//       name: "future",
+//       start: 0.64,
+//       end: 1,
+//       widthClass: "w-[15vw]",
+//     },
+//   ];
 
-  const getActiveCarIndex = (progress) => {
-    if (progress < 0.33) return 0;
-    if (progress < 0.66) return 1;
-    return 2;
-  };
-
-
-
-
-
-  const SWITCH_RANGE = 0.05;
-
-  useLayoutEffect(() => {
-    if (!wrapperRef.current) return;
-
-    const width = wrapperRef.current.offsetWidth;
-
-    gsap.set(carRefs.current, { yPercent: -50 });
-
-    const x = width * progress;
-
-    CAR_CONFIGS.forEach((car, i) => {
-      const el = carRefs.current[i];
-      if (!el) return;
-
-      let opacity = 0;
-
-      if (progress >= car.start && progress <= car.end) {
-        opacity = 1;
-      }
-
-      if (progress > car.end - SWITCH_RANGE && progress <= car.end) {
-        opacity =
-          (car.end - progress) / SWITCH_RANGE;
-      }
-
-      if (progress >= car.start && progress < car.start + SWITCH_RANGE) {
-        opacity =
-          (progress - car.start) / SWITCH_RANGE;
-      }
-
-      opacity = Math.max(0, Math.min(1, opacity));
-
-      gsap.set(el, {
-        x,
-        autoAlpha: opacity,
-      });
-    });
-  }, [progress]);
+//   const getActiveCarIndex = (progress) => {
+//     if (progress < 0.33) return 0;
+//     if (progress < 0.66) return 1;
+//     return 2;
+//   };
 
 
 
-  if (screenSize.isMobile) return null;
+
+
+//   const SWITCH_RANGE = 0.05;
+
+//   useLayoutEffect(() => {
+//     if (!wrapperRef.current) return;
+
+//     const width = wrapperRef.current.offsetWidth;
+
+//     gsap.set(carRefs.current, { yPercent: -50 });
+
+//     const x = width * progress;
+
+//     CAR_CONFIGS.forEach((car, i) => {
+//       const el = carRefs.current[i];
+//       if (!el) return;
+
+//       let opacity = 0;
+
+//       if (progress >= car.start && progress <= car.end) {
+//         opacity = 1;
+//       }
+
+//       if (progress > car.end - SWITCH_RANGE && progress <= car.end) {
+//         opacity =
+//           (car.end - progress) / SWITCH_RANGE;
+//       }
+
+//       if (progress >= car.start && progress < car.start + SWITCH_RANGE) {
+//         opacity =
+//           (progress - car.start) / SWITCH_RANGE;
+//       }
+
+//       opacity = Math.max(0, Math.min(1, opacity));
+
+//       gsap.set(el, {
+//         x,
+//         autoAlpha: opacity,
+//       });
+//     });
+//   }, [progress]);
 
 
 
-  return (
-    <div
-      ref={wrapperRef}
-      className="fixed bottom-0 left-0 right-0 h-[25vh] z-[999] pointer-events-none overflow-visible"
-    >
-      <div className="absolute mt-16 left-0 right-0 h-[13vh] z-10 road-wrap">
-        <div className="road-surface" />
-        <div className="road-center">
-          <div className="road-dash" />
-        </div>
-      </div>
-
-      <div
-        className="absolute left-[-20px] right-0 bg-black z-[5]"
-        style={{ top: "12.5vh", height: "9.5vh" }}
-      />
+//   if (screenSize.isMobile) return null;
 
 
-      {CAR_CONFIGS.map((car, i) => (
-        <img
-          key={car.name}
-          ref={(el) => (carRefs.current[i] = el)}
-          src={car.src}
-          className={`absolute top-[14vh] ${car.widthClass} z-50`}
-          style={{
-            left: 0,
-            opacity: 0,
-            duration: 1,
-            filter: "drop-shadow(0 0 12px rgba(255,255,255,0.35))",
-            willChange: "transform, opacity",
-          }}
-          alt={car.name}
-        />
-      ))}
-    </div>
-  );
-}
+
+//   return (
+//     <div
+//       ref={wrapperRef}
+//       className="fixed bottom-0 left-0 right-0 h-[25vh] z-[999] pointer-events-none overflow-visible"
+//     >
+//       <div className="absolute mt-16 left-0 right-0 h-[13vh] z-10 road-wrap">
+//         <div className="road-surface" />
+//         <div className="road-center">
+//           <div className="road-dash" />
+//         </div>
+//       </div>
+
+//       <div
+//         className="absolute left-[-20px] right-0 bg-black z-[5]"
+//         style={{ top: "12.5vh", height: "9.5vh" }}
+//       />
+
+
+//       {CAR_CONFIGS.map((car, i) => (
+//         <img
+//           key={car.name}
+//           ref={(el) => (carRefs.current[i] = el)}
+//           src={car.src}
+//           className={`absolute top-[14vh] ${car.widthClass} z-50`}
+//           style={{
+//             left: 0,
+//             opacity: 0,
+//             duration: 1,
+//             filter: "drop-shadow(0 0 12px rgba(255,255,255,0.35))",
+//             willChange: "transform, opacity",
+//           }}
+//           alt={car.name}
+//         />
+//       ))}
+//     </div>
+//   );
+// }

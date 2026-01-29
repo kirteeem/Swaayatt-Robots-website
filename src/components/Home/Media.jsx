@@ -2,6 +2,7 @@
 /////// MEDIA COURANGE CODE ////////////
 
 import { ArrowRight } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 
 function MediaCard({
   imageSrc,
@@ -103,7 +104,17 @@ const mediaArticles = [
   },
 ];
 
+
+
+
+
 function Index() {
+  const navigate = useNavigate();
+
+  const handleMediaClick = (blog) => {
+    navigate('/media');
+  };
+
   return (
     <main className="min-h-screen bg-black overflow-hidden">
       <section className="min-h-screen mx-auto w-full  max-w-[100vw] sm:max-w-[90vw] md:max-w-[100vw] bg-background py-8 sm:py-12 md:py-16 px-4 sm:px-6 md:px-8 lg:px-12 mb-16 md:mb-24 lg:mb-32 overflow-hidden">
@@ -114,7 +125,11 @@ function Index() {
           </p>
 
           <div className="flex items-center justify-between gap-3 sm:gap-6">
-            <button className="group relative flex items-center border border-white h-8 sm:h-14 overflow-hidden">
+
+
+            <button
+              onClick={handleMediaClick}
+             className="group relative flex items-center border border-white h-8 sm:h-14 overflow-hidden">
 
               {/* WHITE SLIDE BACKGROUND */}
               <span
@@ -144,7 +159,7 @@ function Index() {
                   transition-colors duration-300
                 "
               >
-                ALL BLOGS
+                ALL Media
               </span>
 
               {/* ARROW */}

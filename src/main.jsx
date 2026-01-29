@@ -6,9 +6,13 @@ import "./index.css";
 import "remixicon/fonts/remixicon.css";
 
 import { ThemeProvider } from "../src/context/ThemeContext";
+import ScrollToTop from "./components/ScrollToTop";
+
+
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
     <BrowserRouter>
+     <ScrollToTop />
       <ThemeProvider>
         <App />
       </ThemeProvider>

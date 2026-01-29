@@ -25,6 +25,7 @@ const MotionPlanningPage = () => {
               className="
                 font-rethink
                 font-medium
+                w-[40vw]
                 tracking-[-0.02em]
                 leading-none
                 text-[36px]
@@ -48,13 +49,13 @@ const MotionPlanningPage = () => {
       <section className="sm:max-w-[93vw] max-w-[100vw] mx-auto px-6 sm:px-10 lg:px-16 py-12">
         <p
           className={`
-            max-w-[1497px]
+            max-w-[93vw]
             font-rethink
             font-medium
             sm:text-[32px] text-xl
-            leading-[1]
+            leading-snug
             tracking-[-0.02em]
-            ${isDarkMode ? 'text-gray-300' : 'text-[#686868]'}
+            ${isDarkMode ? 'text-white' : 'text-[#686868]'}
           `}
         >
           These videos demonstrate advanced motion planning and adaptive
@@ -103,7 +104,7 @@ const MotionPlanningPage = () => {
                     font-rethink
                     font-bold
                     text-[20px]
-                    leading-[1.1]
+                    leading-snug
                     tracking-[0.02em]
                     ${isDarkMode ? 'text-gray-100' : 'text-[#3F3F3F]'}
                   `}
@@ -111,19 +112,7 @@ const MotionPlanningPage = () => {
                   {card.title}
                 </h3>
 
-                <p
-                  className={`
-                    mt-3
-                    font-rethink
-                    font-normal
-                    text-[16px]
-                    leading-[1]
-                    tracking-[-0.02em]
-                    ${isDarkMode ? 'text-gray-300' : 'text-[#737373]'}
-                  `}
-                >
-                  {card.description}
-                </p>
+               
 
                 <p className={`mt-3 text-[12px] ${isDarkMode ? 'text-gray-400' : 'text-[#9CA3AF]'} font-mono`}>
                   {card.date}

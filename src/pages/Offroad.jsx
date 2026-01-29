@@ -65,7 +65,7 @@ const OffRoadPage = () => {
       {/* ================= INTRO ================= */}
       <section className="w-full sm:max-w-[93vw] max-w-[100vw] mx-auto px-4 sm:px-6 lg:px-16 py-12">
         {/* ⬇️ TEXT UNCHANGED */}
-        <p className="max-w-full lg:max-w-[1497px] font-rethink font-medium ttext-xl sm:ext-[32px] leading-[1] tracking-[-0.02em] text-[#686868] dark:text-[#A3A3A3]">
+        <p className="max-w-full lg:max-w-[94vw] font-rethink font-medium text-xl sm:text-[1.84vw] leading-snug tracking-[-0.02em] text-[#686868] dark:text-[#fff]">
           These demonstrations highlight our autonomous vehicles tackling
           challenging off-road terrains, leveraging advanced reinforcement
           learning to redefine decision-making across diverse and unpredictable
@@ -104,7 +104,7 @@ const OffRoadPage = () => {
               {/* ================= TEXT ================= */}
               <div className="mt-4 max-w-full lg:max-w-[519px]">
                 {/* ⬇️ TEXT UNCHANGED */}
-                <h3 className="font-rethink font-bold text-[20px] leading-[1] tracking-[-0.02em] text-[#3F3F3F] dark:text-white">
+                <h3 className="font-rethink font-bold text-[20px] leading-snug tracking-[-0.02em] text-[#3F3F3F] dark:text-[#f2f2f2]">
                   {card.title}
                 </h3>
 

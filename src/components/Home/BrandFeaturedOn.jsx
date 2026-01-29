@@ -108,7 +108,7 @@ export default function BrandFeaturedOn() {
                   className="mx-auto h-12 sm:h-16 md:h-20 w-auto object-contain"
                 />
                 <p className={`text-xs sm:text-sm ${isDarkMode ? 'text-gray-400' : 'text-gray-400'}`}>
-                  <span className="text-xm sm:text-xl">  $3M Speed</span> <br />Jult, 2021
+                  <span className="text-xm sm:text-xl">  $3M Seed</span> <br />Jult, 2021
                 </p>
               </div>
 

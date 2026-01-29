@@ -1,5 +1,7 @@
 import { useState, useEffect, useRef } from "react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
+import { useNavigate } from "react-router-dom";
+
 
 const blogs = [
   {
@@ -38,6 +40,14 @@ const blogs = [
 ];
 
 const Blogs = () => {
+
+
+  const navigate = useNavigate();
+
+  const handleBlogClick = (blog) => {
+    navigate('/blogs');
+  };
+
   return (
     <main className="min-h-screen bg-black py-6 sm:py-12 lg:py-16">
       <div className="w-full px-4 sm:px-6   lg:max-w-[94vw] lg:mx-auto">
@@ -50,7 +60,9 @@ const Blogs = () => {
 
           {/* ALL BLOGS BUTTON */}
           <div className="flex items-center justify-between gap-3 sm:gap-6">
-            <button className="group relative flex items-center border border-white h-8 sm:h-14 overflow-hidden">
+            <button 
+              onClick={handleBlogClick}
+            className="group relative flex items-center border border-white h-8 sm:h-14 overflow-hidden">
 
               {/* WHITE SLIDE BACKGROUND */}
               <span
@@ -69,8 +81,7 @@ const Blogs = () => {
                 "
               />
 
-              {/* TEXT */}
-              <span
+                 <span
                 className="
                   relative z-10
                   px-3 sm:px-8
@@ -92,10 +103,11 @@ const Blogs = () => {
                   text-black 
                 "
               >
-                <i class="ri-arrow-right-line transition-transform duration-300 group-hover:translate-x-1"></i>
+                <i className="ri-arrow-right-line transition-transform duration-300 group-hover:translate-x-1"></i>
               </span>
 
             </button>
+
           </div>
 
         </div>

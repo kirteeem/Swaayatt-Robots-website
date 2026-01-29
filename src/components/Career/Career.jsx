@@ -13,31 +13,31 @@ export default function Career() {
   const { isDarkMode } = useTheme();
 
 
-//  const [currentIndex, setCurrentIndex] = useState(0);
-//   const [isAnimating, setIsAnimating] = useState(false);
-//   const interval = 2500;
-//    const className = ""// Total cycle time
+  //  const [currentIndex, setCurrentIndex] = useState(0);
+  //   const [isAnimating, setIsAnimating] = useState(false);
+  //   const interval = 2500;
+  //    const className = ""// Total cycle time
 
-// // wrap-around helper
-//   const getTextAtIndex = (offset) => {
-//     const idx = (currentIndex + offset + texts.length) % texts.length;
-//     return texts[idx];
-//   };
+  // // wrap-around helper
+  //   const getTextAtIndex = (offset) => {
+  //     const idx = (currentIndex + offset + texts.length) % texts.length;
+  //     return texts[idx];
+  //   };
 
-const texts = [
-  "Machine Learning Engineer",
-  "Data Scientist",
-  "Full Stack Developer",
-  "AI Engineer",
-  "Software Architect",
-  "Tech Lead",
-   "Machine Learning Engineer",
-  "Data Scientist",
-  "Full Stack Developer",
-  "AI Engineer",
-  "Software Architect",
-  "Tech Lead",
-];
+  const texts = [
+    "Machine Learning Engineer",
+    "Data Scientist",
+    "Full Stack Developer",
+    "AI Engineer",
+    "Software Architect",
+    "Tech Lead",
+    "Machine Learning Engineer",
+    "Data Scientist",
+    "Full Stack Developer",
+    "AI Engineer",
+    "Software Architect",
+    "Tech Lead",
+  ];
 
 
   const itemsRef = useRef([]);
@@ -133,29 +133,29 @@ const texts = [
     <main className={`w-full min-h-screen  transition-colors duration-300 ${isDarkMode ? "bg-black text-gray-100" : "bg-white text-gray-900"
       }`}>
 
-     <section className="py-6 sm:py-8 ">
-  <div className="sm:max-w-[93vw]  max-w-[130vw] mx-auto px-4 sm:px-10 lg:px-16">
+      <section className="py-6 sm:py-8 ">
+        <div className="sm:max-w-[93vw]  max-w-[130vw] mx-auto px-4 sm:px-10 lg:px-16">
 
 
-    <div className="relative rounded-2xl mt-20 overflow-hidden">
-      <div className="relative">
-        <img
-          src={team}
-          alt="Careers at Swaayatt Robots"
-          className="w-full h-[240px] sm:h-[320px] md:h-[420px] lg:h-[624px] object-cover   sm:object-[50%_80%]"
-          style={{ opacity: 0.9 }}
-        />
-        <div className="absolute inset-0 bg-black/20" />
-      </div>
+          <div className="relative rounded-2xl mt-20 overflow-hidden">
+            <div className="relative">
+              <img
+                src={team}
+                alt="Careers at Swaayatt Robots"
+                className="w-full h-[240px] sm:h-[320px] md:h-[420px] lg:h-[624px] object-cover   sm:object-[50%_80%]"
+                style={{ opacity: 0.9 }}
+              />
+              <div className="absolute inset-0 bg-black/20" />
+            </div>
 
-      <div className="absolute inset-x-0 bottom-0 hidden md:block h-[180px] sm:h-[200px] lg:h-[317px] bg-black/55 pointer-events-none" />
+            <div className="absolute inset-x-0 bottom-0 hidden md:block h-[180px] sm:h-[200px] lg:h-[317px] bg-black/55 pointer-events-none" />
 
-      {/* CONTENT */}
-      <div className="absolute bottom-0 p-6  sm:px-20 md:px-20 lg:px-2  lg:w-[80vw] h-auto min-h-[30vh] left-0 right-0 pb-10 sm:pb-8 lg:pb-10">
-        <div className="flex flex-col lg:flex-row justify-between items-end lg:items-center text-white px-2 sm:px-4 lg:px-12">
-          {/* LEFT TEXT */}
-        <div
-  className="
+            {/* CONTENT */}
+            <div className="absolute bottom-0 p-6  sm:px-20 md:px-20 lg:px-2  lg:w-[80vw] h-auto min-h-[30vh] left-0 right-0 pb-10 sm:pb-8 lg:pb-10">
+              <div className="flex flex-col lg:flex-row justify-between items-end lg:items-center text-white px-2 sm:px-4 lg:px-12">
+                {/* LEFT TEXT */}
+                <div
+                  className="
     max-w-full
     sm:px-10
     sm:mt-0
@@ -170,51 +170,51 @@ const texts = [
     mx-auto
     lg:mx-0
   "
->
-  <p className="font-rethink text-base sm:text-lg mb-2">
-    Careers @ Swaayatt Robots
-  </p>
+                >
+                  <p className="font-rethink text-base sm:text-lg mb-2">
+                    Careers @ Swaayatt Robots
+                  </p>
 
-  <h1 className="font-rethink font-bold text-3xl sm:text-5xl lg:text-6xl tracking-[-0.02em] mb-2">
-    Join the Journey
-  </h1>
+                  <h1 className="font-rethink font-bold text-3xl sm:text-5xl lg:text-6xl tracking-[-0.02em] mb-2">
+                    Join the Journey
+                  </h1>
 
-  <p className="font-rethink text-md sm:text-[20px] lg:text-[24px] 2xl:text-[30px]">
-    Build Something Great With Us
-  </p>
-</div>
-
-
+                  <p className="font-rethink text-md sm:text-[20px] lg:text-[24px] 2xl:text-[30px]">
+                    Build Something Great With Us
+                  </p>
+                </div>
 
 
-{/* ///animation */}
-  <div className="relative hidden md:flex items-center justify-center h-20  md:mr-16  overflow-hidden">
-      <div className="relative h-10 w-[300px] bg-white/20 py-8 rounded-md  text-center">
 
-        {texts.map((text, i) => (
-          <div
-            key={i}
-            ref={(el) => (itemsRef.current[i] = el)}
-            className="absolute inset-0 mt-4 text-white mb-5 font-bold text-lg"
-          >
-            {text}
+
+                {/* ///animation */}
+                <div className="relative hidden md:flex items-center justify-center h-20  md:mr-16  overflow-hidden">
+                  <div className="relative h-10 w-[300px] bg-white/20 py-8 rounded-md  text-center">
+
+                    {texts.map((text, i) => (
+                      <div
+                        key={i}
+                        ref={(el) => (itemsRef.current[i] = el)}
+                        className="absolute inset-0 mt-4 text-white mb-5 font-bold text-lg"
+                      >
+                        {text}
+                      </div>
+                    ))}
+
+                  </div>
+                </div>
+
+
+
+              </div>
+            </div>
           </div>
-        ))}
 
-      </div>
-    </div>
 
 
 
         </div>
-      </div>
-    </div>
-
-
-
-
-  </div>
-</section>
+      </section>
 
 
 
@@ -226,7 +226,7 @@ const texts = [
           text-xl sm:text-[33px]   leading-[1.3] tracking-[-0.01em]
           ${isDarkMode ? "text-gray-200" : "text-[#1A212F]"}
         `}>
-          <span className="text-blue-500">Our mission</span> is to revolutionize
+          <span className="text-[#00B7FF]">Our mission</span> is to revolutionize
           the future of transportation and contribute to the advancement of
           autonomous systems on a global scale. By becoming part of the
           Swaayatt&apos;s team, you will be surrounded by passionate individuals
@@ -237,8 +237,8 @@ const texts = [
 
 
 
-<section
-  className="
+      <section
+        className="
     max-w-[100vw]
     md:max-w-[95vw]
     lg:max-w-[89.5vw]
@@ -246,13 +246,13 @@ const texts = [
     px-4 md:px-6 lg:px-8
     pb-20
   "
->
-  <div className="relative rounded-2xl overflow-hidden">
-    {/* Background Image */}
-    <img
-      src={frame}
-      alt="Innovation That Matters"
-      className="
+      >
+        <div className="relative rounded-2xl overflow-hidden">
+          {/* Background Image */}
+          <img
+            src={frame}
+            alt="Innovation That Matters"
+            className="
         w-full
         h-[880px]
         sm:h-[420px]
@@ -260,16 +260,16 @@ const texts = [
         lg:h-[635px]
         object-cover
       "
-    />
+          />
 
-    {/* Overlay */}
-    <div className="absolute inset-0 flex">
-      {/* Left side transparent */}
-      <div className="flex-1"></div>
+          {/* Overlay */}
+          <div className="absolute inset-0 flex">
+            {/* Left side transparent */}
+            <div className="flex-1"></div>
 
-      {/* Right side blur black */}
-      <div
-        className="
+            {/* Right side blur black */}
+            <div
+              className="
           w-full
           max-w-full
           md:max-w-[420px]
@@ -280,43 +280,43 @@ const texts = [
           to-transparent
           backdrop-blur
         "
-      >
-        <div className="w-full h-full flex items-center">
-          <div className="px-4 md:px-6 lg:px-8 text-white py-8 lg:py-12">
-            <h2 className="font-rethink font-bold text-2xl md:text-3xl lg:text-4xl mb-4">
-              Innovation That Matters
-            </h2>
+            >
+              <div className="w-full h-full flex items-center">
+                <div className="px-4 md:px-6 lg:px-8 text-white py-8 lg:py-12">
+                  <h2 className="font-rethink font-bold text-2xl md:text-3xl lg:text-4xl mb-4">
+                    Innovation That Matters
+                  </h2>
 
-            <p className="font-rethink text-base md:text-lg leading-[1.6] space-y-4">
-              <span className="block">
-                At Swaayatt Robots, we have been at the forefront of developing
-                India's first autonomous driving technology since 2016.
-              </span>
+                  <p className="font-rethink text-base md:text-lg leading-[1.6] space-y-4">
+                    <span className="block">
+                      At Swaayatt Robots, we have been at the forefront of developing
+                      India's first autonomous driving technology since 2016.
+                    </span>
 
-              <span className="block">
-                Join our innovative team and embark on a journey to work on
-                cutting-edge research in the field of autonomous driving and
-                artificial intelligence.
-              </span>
+                    <span className="block">
+                      Join our innovative team and embark on a journey to work on
+                      cutting-edge research in the field of autonomous driving and
+                      artificial intelligence.
+                    </span>
 
-              <span className="block">
-                At Swaayatt, you'll have access to continuous learning opportunities
-                and the latest advancements in tools and technologies related to
-                autonomous driving and AI.
-              </span>
+                    <span className="block">
+                      At Swaayatt, you'll have access to continuous learning opportunities
+                      and the latest advancements in tools and technologies related to
+                      autonomous driving and AI.
+                    </span>
 
-              <span className="block">
-                We take pride in being recognized as the first company in the world
-                to enable autonomous driving in some of the most challenging and
-                stochastic environments, such as India.
-              </span>
-            </p>
+                    <span className="block">
+                      We take pride in being recognized as the first company in the world
+                      to enable autonomous driving in some of the most challenging and
+                      stochastic environments, such as India.
+                    </span>
+                  </p>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
-      </div>
-    </div>
-  </div>
-</section>
+      </section>
 
       {/* ================= WE ARE HIRING ================= */}
       <section className="max-w-[1440px] mx-auto px-6 sm:px-10 lg:px-16 pt-12  pb-20">
@@ -343,7 +343,7 @@ const texts = [
             Check out current openings and send your resume to{" "}
             <a
               href="mailto:career@swaayatt.com"
-              className="underline text-blue-500 hover:text-blue-400 transition-colors"
+              className="underline text-[#00B7FF] hover:text-blue-400 transition-colors"
             >
               career@swaayatt.com
             </a>
@@ -359,7 +359,7 @@ const texts = [
                 key={tab}
                 onClick={() => setActiveTab(tab)}
                 className={`px-6 py-2 rounded-full text-sm transition-all duration-300 ${activeTab === tab
-                  ? "bg-blue-600 text-white"
+                  ? "bg-[#00B7FF] text-white"
                   : isDarkMode
                     ? "text-gray-300 hover:bg-gray-800"
                     : "text-gray-700 hover:bg-blue-50"
@@ -396,9 +396,9 @@ const texts = [
                     </h3>
                     <a
                       href="#"
-                      className="text-sm text-blue-500 hover:text-blue-400 flex items-center gap-1 transition-colors"
+                      className="text-sm text-[#00B7FF] hover:text-blue-400 flex items-center gap-1 transition-colors"
                     >
-                      View Job Description ↗
+                      View Job Description <i class="ri-arrow-right-up-line"></i>
                     </a>
                   </div>
 
@@ -425,11 +425,11 @@ const texts = [
 
                 <button
                   className={`
-                    px-6 py-2.5 rounded-lg text-sm font-medium
+                    px-6 py-2.5 rounded-lg text-sm 
                     transition-all duration-300 hover:scale-105
                     whitespace-nowrap
                     ${isDarkMode
-                      ? "bg-white text-blue-600 "
+                      ? "bg-[#00425C] text-white "
                       : "bg-blue-600 text-white hover:bg-blue-700"
                     }
                   `}

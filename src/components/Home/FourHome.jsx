@@ -1,6 +1,16 @@
 import { ArrowRight } from "lucide-react";
+import { useNavigate } from "react-router-dom";
+
 
 const Index = () => {
+  const navigate = useNavigate();
+
+
+  const handleclick = () => {
+    navigate("/learn_more");
+  };
+
+  
   return (
     <main className="h-[100vh] overflow-hidden bg-black">
       <section className="relative h-[100vh] flex flex-col sm:flex-row sm:items-center">
@@ -49,18 +59,7 @@ const Index = () => {
               {/* DESCRIPTION */}
               <p
                 style={{ fontFamily: "'Chivo Mono', monospace" }}
-                className="
-              
-  chivo-italic
-  text-white/90
-  text-sm
-  sm:text-lg
-  md:text-xl
-  leading-[1.6]
-  tracking-[0.01em]
-  max-w-2xl
-  mb-10
-">
+                className="  chivo-italic text-white/90 text-sm sm:text-lg md:text-xl leading-[1.6] tracking-[0.01em] max-w-2xl mb-10 ">
                 Leveraging the rugged Mahindra Thar platform, Swaayatt Robots introduces the next
                 generation of unmanned ground vehicles (UGV). Deep learning navigation in
                 unstructured terrain.
@@ -68,21 +67,8 @@ const Index = () => {
 
 
               {/* CTA */}
-              <button
-                className="
-                  inline-flex
-                  items-center
-                  gap-2
-                  sm:gap-3
-                  bg-[#1E6F3E]
-                  hover:bg-[#249155]
-                  transition
-                  px-5
-                  py-2.5
-                  sm:px-7
-                  sm:py-3.5
-                  md:px-8
-                  md:py-4
+              <button onClick={handleclick}
+                className=" inline-flex items-center gap-2 sm:gap-3 bg-[#1E6F3E] hover:bg-[#249155] transition px-5 py-2.5 sm:px-7 sm:py-3.5md:px-8 md:py-4
                   text-white
                   font-semibold
                   tracking-wide

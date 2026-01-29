@@ -85,7 +85,7 @@ const PreceptionPage = () => {
                     font-rethink
                     font-bold
                     text-[20px]
-                    leading-[1.1]
+                    leading-snug
                     tracking-[0.01em]
                     ${isDarkMode ? 'text-gray-100' : 'text-[#3F3F3F]'}
                   `}

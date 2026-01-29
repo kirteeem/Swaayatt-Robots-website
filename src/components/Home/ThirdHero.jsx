@@ -494,7 +494,7 @@ const sectionHeight = window.innerHeight * totalCards * 1.5;
 
   return (
     <>
-      <style jsx global>{`
+      <style>{`
         .scrollbar-hide::-webkit-scrollbar {
           display: none;
         }
@@ -565,7 +565,7 @@ const sectionHeight = window.innerHeight * totalCards * 1.5;
             <div
               ref={progressBarRef}
               className="absolute top-0 left-0 h-full bg-white transition-all duration-500 ease-out"
-              style={{ width: '10%' }}
+              style={{ width: '14%' }}
             />
 
             {/* Diamond Indicator */}

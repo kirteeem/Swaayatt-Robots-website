@@ -18,6 +18,7 @@ import OffRoad from "./pages/Offroad";
 import Perception from "./pages/Perception";
 import MappingLocalization from "./pages/MappingLocalization";
 import MotionPlanning from "./pages/MotionPlanning";
+import LearnMore from "./components/LearnMorePages/LearnMore";
 
 function AppLayout() {
   const location = useLocation();
@@ -50,7 +51,13 @@ function AppLayout() {
           path="/research/motion-planning"
           element={<MotionPlanning />}
         />
+
+        {/* LEARN MORE */}
+        <Route path="/Learn_more" element={< LearnMore/>} />
       </Routes>
+
+
+      
 
       <Footer />
     </>

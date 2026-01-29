@@ -59,7 +59,7 @@ const MappingAndLocalization = () => {
 
       {/* ================= INTRO ================= */}
       <section className="w-full sm:max-w-[93vw] max-w-[100vw] mx-auto px-4 sm:px-6 lg:px-16 py-12">
-        <p className="max-w-full lg:max-w-[1497px] font-rethink font-medium t text-xl sm:ext-[32px] leading-[1] tracking-[-0.02em] text-[#686868] dark:text-[#A3A3A3]">
+        <p className="max-w-full lg:max-w-[90vw] font-rethink font-medium t text-xl sm:text-[32px] leading-snug tracking-[-0.02em] text-[#686868] dark:text-[#f2f2f2]">
           These videos demonstrate high-precision mapping and real-time
           localization across diverse and dynamic settings.
         </p>
@@ -95,14 +95,11 @@ const MappingAndLocalization = () => {
 
               {/* ================= TEXT */}
               <div className="mt-4 max-w-full lg:max-w-[519px]">
-                <h3 className="font-rethink font-bold text-[20px] leading-[1] tracking-[-0.02em] text-[#3F3F3F] dark:text-white">
+                <h3 className="font-rethink font-bold text-[20px] leading-snug tracking-[-0.02em] text-[#3F3F3F] dark:text-white">
                   {card.title}
                 </h3>
 
-                <p className="mt-3 font-rethink font-normal text-[14px] leading-[1] tracking-[-0.02em] text-[#737373] dark:text-[#A3A3A3]">
-                  {card.description}
-                </p>
-
+               
                 <p className="mt-3 text-[12px] text-[#9CA3AF] font-mono">
                   {card.date}
                 </p>

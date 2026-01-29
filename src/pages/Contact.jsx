@@ -131,7 +131,7 @@ function ContactRow({ icon: Icon, title, text, link, linkText, isDarkMode }) {
                   ? "text-gray-200" 
                   : "text-[#1A212F]"
                 : isDarkMode
-                  ? "text-blue-400 underline"
+                  ? "text-[#00B7FF] underline"
                   : "text-[#174CD2] underline"
             }`}
           >
