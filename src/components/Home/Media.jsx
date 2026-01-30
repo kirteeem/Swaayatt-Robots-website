@@ -54,7 +54,7 @@ function MediaCard({
 
             <h3
              style={{ fontFamily: "Rethink, sans-serif" }}
-              className={`text-white font-semibold leading-tight ${isFeatured
+              className={`text-white font-normal leading-rexeled ${isFeatured
                 ? "text-lg "
                 : ""
                 }`}
@@ -82,7 +82,7 @@ const mediaArticles = [
     imageSrc: "/images/img-media/p2.png",
     sourceIcon: "/images/Home/logo2.png",
     sourceName: "Swaayatt Robots",
-    headline: "Swaayatt Robots Raises $4 Million at $151 Million Valuation",
+    headline: "Raises $4 Million at $151 Million Valuation",
   },
   {
     id: 3,

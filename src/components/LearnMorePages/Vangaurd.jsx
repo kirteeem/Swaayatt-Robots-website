@@ -39,14 +39,13 @@ export default function Vangaurd() {
   return (
     <section className="relative bg-black">
       <Wrapper>
-        <div className="py-[6vh]">
+        <div style={{ padding: "6vh 0" }}>
 
           {/* STATS STRIP */}
           <div
             className="
               relative
               grid grid-cols-2
-              sm:grid-cols-2
               md:grid-cols-4
               lg:flex
               lg:h-[18vh]
@@ -56,7 +55,7 @@ export default function Vangaurd() {
                 "linear-gradient(to bottom, rgb(6,6,6) 0%, rgb(12,12,12) 50%, rgb(6,6,6) 100%)",
             }}
           >
-            {/* OUTER BORDERS */}
+            {/* 🔒 ORIGINAL OUTER LINES — UNCHANGED */}
             <span className="absolute top-0 left-0 w-full h-[1px] bg-gradient-to-r from-white/30 via-white/10 to-white/30" />
             <span className="absolute bottom-0 left-0 w-full h-[1px] bg-gradient-to-r from-white/20 via-white/5 to-white/20" />
             <span className="absolute left-0 top-0 h-full w-[1px] bg-gradient-to-b from-white/40 via-white/15 to-white/5" />
@@ -69,50 +68,46 @@ export default function Vangaurd() {
                 className="
                   relative
                   flex flex-col items-center justify-center
-                  py-6 sm:py-7 md:py-8
-                  lg:py-0 lg:flex-1
+                  py-[4vh]
+                  lg:py-0
+                  lg:flex-1
                 "
               >
                 {/* VALUE */}
                 <div
-                  className="uppercase text-center leading-none tracking-[-0.03em] flex items-end"
+                  className="flex items-end uppercase"
                   style={{
                     fontFamily: "Chivo Mono",
                     fontWeight: 500,
+                    lineHeight: "1",
+                    letterSpacing: "-0.03em",
                   }}
                 >
                   {item.value === "0MS" ? (
                     <>
-                      <span className="
-                        text-[32px]
-                        sm:text-[36px]
-                        md:text-[40px]
-                        lg:text-[48px]
-                      ">
+                      <span
+                        className="stats-value"
+                        style={{ fontSize: "3.3vw" }}
+                      >
                         0
                       </span>
+
                       <span
-                        className="
-                          ml-[2px]
-                          text-[14px]
-                          sm:text-[16px]
-                          md:text-[18px]
-                          lg:text-[20px]
-                        "
+                        className="stats-unit"
                         style={{
-                          transform: "translateY(-4px)",
+                          fontSize: "1.5vw",
+                          marginLeft: "0.2vw",
+                          transform: "translateY(-0.4vh)",
                         }}
                       >
-                        MS
+                        ms
                       </span>
                     </>
                   ) : (
-                    <span className="
-                      text-[32px]
-                      sm:text-[36px]
-                      md:text-[40px]
-                      lg:text-[48px]
-                    ">
+                    <span
+                      className="stats-value"
+                      style={{ fontSize: "3.3vw" }}
+                    >
                       {item.value}
                     </span>
                   )}
@@ -120,26 +115,21 @@ export default function Vangaurd() {
 
                 {/* LABEL */}
                 <div
-                  className="
-                    uppercase text-center mt-2
-                    text-[11px]
-                    sm:text-[12px]
-                    md:text-[13px]
-                    lg:text-[20px]
-                  "
+                  className="stats-label uppercase text-center"
                   style={{
+                    marginTop: "1.2vh",
                     fontFamily: "Chivo Mono",
                     fontWeight: 100,
-                    letterSpacing: "-0.08em",
+                    fontSize: "1.4vw",
+                    lineHeight: "1",
+                    letterSpacing: "-0.03em",
                     color: "rgba(255,255,255,0.75)",
-                    WebkitFontSmoothing: "antialiased",
-                    MozOsxFontSmoothing: "grayscale",
                   }}
                 >
                   {item.label}
                 </div>
 
-                {/* DIVIDER — DESKTOP ONLY */}
+                {/* 🔒 ORIGINAL DIVIDER — UNCHANGED */}
                 {index !== stats.length - 1 && (
                   <div className="hidden lg:block absolute right-0 top-[10%] h-[80%]">
                     <VerticalDivider />
@@ -151,30 +141,48 @@ export default function Vangaurd() {
 
         </div>
       </Wrapper>
+
+      {/* ================= MOBILE TYPOGRAPHY FIX ================= */}
+      <style>
+        {`
+          @media (max-width: 767px) {
+
+            .stats-value {
+              font-size: 8.5vw !important;
+            }
+
+            .stats-unit {
+              font-size: 4vw !important;
+              transform: translateY(-0.6vh) !important;
+            }
+
+            .stats-label {
+              font-size: 3.6vw !important;
+              letter-spacing: -0.03em !important;
+            }
+          }
+        `}
+      </style>
     </section>
   );
 }
 
 
-
 /* =========================
    PROVEN CHASSIS SECTION
 ========================= */
-
 export function ProvenChassisSection() {
   return (
-    <section className="relative py-[8vh] lg:py-[10vh] bg-black">
+    <section className="relative bg-black py-[8vh] lg:py-[10vh]">
       <Wrapper>
         <div
           className="
             relative mx-auto w-full
             max-w-[95vw] lg:max-w-[90vw]
-            h-auto lg:h-[62vh]
             overflow-hidden
-            bg-black lg:bg-transparent
           "
         >
-          {/* SPLIT BACKGROUND — DESKTOP ONLY (UNCHANGED) */}
+          {/* SPLIT BACKGROUND — DESKTOP */}
           <div className="absolute inset-0 hidden lg:block">
             <div
               className="w-full h-full"
@@ -192,50 +200,29 @@ export function ProvenChassisSection() {
             />
           </div>
 
-          {/* MOBILE / TAB BACKGROUND ONLY */}
+          {/* MOBILE BACKGROUND */}
           <div className="absolute inset-0 lg:hidden bg-black" />
 
           {/* BORDER */}
           <span className="absolute inset-0 border border-[rgba(255,255,255,0.08)] pointer-events-none z-20" />
 
-          {/* CONTENT */}
+          {/* CONTENT GRID */}
           <div className="relative z-10 grid grid-cols-1 lg:grid-cols-2 h-full">
 
             {/* LEFT — IMAGE */}
-            <div className="relative flex items-center justify-center overflow-hidden py-8 sm:py-10 lg:py-0">
-
-              {/* MOBILE / TAB — DIFFUSED GLOW */}
+            <div className="relative flex items-center justify-center overflow-hidden py-10 lg:py-0">
               <div
-                className="
-                  absolute
-                  w-[80vw] h-[80vw]
-                  sm:w-[65vw] sm:h-[65vw]
-                  md:w-[55vw] md:h-[55vw]
-                  lg:hidden
-                  blur-[140px]
-                "
-                style={{
-                  background: "rgb(7,28,15)",
-                  opacity: 0.65,
-                }}
+                className="absolute lg:hidden w-[70vw] h-[70vw] blur-[140px]"
+                style={{ background: "rgb(7,28,15)", opacity: 0.6 }}
               />
 
-              {/* DESKTOP — ORIGINAL GLOW (UNCHANGED) */}
               <div
-                className="
-                  absolute hidden lg:block
-                  w-[42vw] h-[42vw]
-                  blur-[120px]
-                "
-                style={{
-                  background: "rgb(7,28,15)",
-                  left: "-4vw",
-                }}
+                className="absolute hidden lg:block w-[42vw] h-[42vw] blur-[120px]"
+                style={{ background: "rgb(7,28,15)", left: "-4vw" }}
               />
 
-              {/* SOFT VIGNETTE */}
               <div
-                className="absolute inset-0 pointer-events-none z-20"
+                className="absolute inset-0 z-20 pointer-events-none"
                 style={{
                   background: `
                     radial-gradient(
@@ -253,9 +240,9 @@ export function ProvenChassisSection() {
                 alt="Vehicle"
                 className="
                   relative z-10
-                  w-[85vw]
-                  sm:w-[70vw]
-                  md:w-[60vw]
+                  w-[80vw]
+                  sm:w-[65vw]
+                  md:w-[55vw]
                   lg:w-[42vw]
                 "
                 style={{
@@ -265,65 +252,82 @@ export function ProvenChassisSection() {
               />
             </div>
 
-            {/* RIGHT — CONTENT */}
+            {/* RIGHT — CONTENT (MATCHES INTELLIGENCE SECTION) */}
             <div
               className="
                 flex flex-col justify-center
-                px-4 sm:px-6 md:px-8
-                lg:px-[4vw]
-                py-8 sm:py-10 lg:py-0
-                gap-4 sm:gap-5 lg:gap-[3vh]
                 bg-black lg:bg-transparent
               "
+              style={{
+                paddingTop: "5vh",       // ≈ 80
+                paddingBottom: "4.9vh",  // ≈ 78
+                paddingLeft: "4.9vw",    // ≈ 78
+                paddingRight: "4.9vw",   // ≈ 78
+              }}
             >
+              {/* HEADING */}
               <h3
-                className="
-                  uppercase tracking-[-0.03em]
-                  text-[20px]
-                  sm:text-[22px]
-                  md:text-[24px]
-                  lg:text-[1.8vw]
-                "
+                className="uppercase tracking-[-0.03em]"
                 style={{
                   fontFamily: "Chivo Mono",
                   fontWeight: 700,
+                  fontSize: "clamp(22px, 2.28vw, 32.8px)",
+                  lineHeight: "1.1",
+                  color: "rgba(255,255,255,1)",
+                  marginBottom: "2.2vh",
                 }}
               >
                 Built on a Proven Chassis
               </h3>
 
+              {/* BULLETS */}
               <ul
-                className="
-                  list-disc
-                  pl-5 lg:pl-[1.2vw]
-                  space-y-2.5 sm:space-y-3
-                  max-w-full lg:max-w-[554px]
-                  text-[13px] sm:text-[14px] md:text-[15px] lg:text-base
-                "
                 style={{
                   fontFamily: "Rethink Sans",
                   fontWeight: 400,
+                  fontSize: "clamp(15px, 1.11vw, 16px)",
+                  lineHeight: "1.5",
                   color: "rgba(255,255,255,0.85)",
+                  display: "flex",
+                  flexDirection: "column",
+                  gap: "1.8vh",
+                  marginBottom: "3vh",
                 }}
               >
-                <li>
-                  Based on a rugged, off-road-proven platform that has dominated
-                  unstructured terrain for decades.
-                </li>
-                <li>
-                  Engineered with a reinforced frame and military-grade body
-                  panels for maximum ballistic protection and durability.
-                </li>
-                <li>
-                  Specifically optimized for extreme terrain and hostile
-                  environments where traditional vehicles falter.
-                </li>
+                {[
+                  "Based on a rugged, off-road-proven platform that has dominated unstructured terrain for decades.",
+                  "Engineered with a reinforced frame and military-grade body panels for maximum ballistic protection and durability.",
+                  "Specifically optimized for extreme terrain and hostile environments where traditional vehicles falter.",
+                ].map((text, i) => (
+                  <li
+                    key={i}
+                    style={{
+                      listStyle: "none",
+                      display: "grid",
+                      gridTemplateColumns: "0.6em 1fr",
+                      columnGap: "0.9em",
+                      alignItems: "start",
+                    }}
+                  >
+                    <span
+                      style={{
+                        width: "0.45em",
+                        height: "0.45em",
+                        borderRadius: "50%",
+                        backgroundColor: "rgba(255,255,255,1)",
+                        marginTop: "0.55em",
+                      }}
+                    />
+                    <span>{text}</span>
+                  </li>
+                ))}
               </ul>
 
-              <div className="mt-3 sm:mt-4 lg:mt-[3.5vh] space-y-2.5 sm:space-y-3">
-                <Feature type="terrain" label="4×4 All-Terrain Mobility" />
-                <Feature type="clearance" label="High Ground Clearance" />
-                <Feature type="modular" label="Modular Architecture" />
+              {/* FEATURES */}
+              <div className="flex flex-col gap-[1.6vh]">
+                <Feature type="terrain" label="4×4 ALL-TERRAIN MOBILITY" />
+                <Feature type="clearance" label="HIGH GROUND CLEARANCE" />
+                <Feature type="modular" label="MODULAR ARCHITECTURE" />
               </div>
             </div>
 
@@ -335,7 +339,6 @@ export function ProvenChassisSection() {
 }
 
 /* ---------- FEATURE ROW ---------- */
-
 function Feature({ label, type }) {
   return (
     <div
@@ -355,16 +358,11 @@ function Feature({ label, type }) {
       {type === "modular" && <ModularIcon />}
 
       <span
-        className="
-          uppercase tracking-[-0.03em]
-          text-[11px]
-          sm:text-[12px]
-          md:text-[13px]
-          lg:text-[0.8vw]
-        "
+        className="uppercase tracking-[-0.03em]"
         style={{
           fontFamily: "Chivo Mono",
           fontWeight: 100,
+          fontSize: "clamp(14px, 0.8vw, 15px)", // ✅ PHONE FIX, DESKTOP SAME
           color: "rgba(255,255,255,0.9)",
         }}
       >
@@ -408,8 +406,7 @@ function ClearanceIcon() {
     </svg>
   );
 }
-
-function ModularIcon() {
+export  function ModularIcon() {
   return (
     <svg
       viewBox="0 0 21 20"
@@ -417,10 +414,19 @@ function ModularIcon() {
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
     >
+      {/* Top + Bottom layers */}
       <path
         d="M21 4.78125L10.5 0L0 4.78125L10.5 9.65625L21 4.78125ZM10.4864 16.1695L3.69844 13.0664L0 14.7188L10.5 19.5L21 14.7188L17.3114 13.0641L10.4864 16.1695Z"
-        fill="rgb(17 103 50)"
+        fill="#116732"
       />
+
+      {/* Middle layer — slightly lower */}
+    <path
+  d="M21 1.57359L17.4595 0.0018754L10.5047 3.19547L3.53109 0L0 1.57359L10.5 6.35484L21 1.57359Z"
+  fill="#116732"
+  transform="translate(0 8)"
+/>
+
     </svg>
   );
 }
@@ -440,7 +446,7 @@ export function IntelligenceAtCoreSection() {
             bg-black lg:bg-transparent
           "
         >
-          {/* SPLIT BACKGROUND — DESKTOP ONLY (UNCHANGED) */}
+          {/* SPLIT BACKGROUND — DESKTOP ONLY */}
           <div className="absolute inset-0 hidden lg:block">
             <div
               className="w-full h-full"
@@ -458,7 +464,7 @@ export function IntelligenceAtCoreSection() {
             />
           </div>
 
-          {/* MOBILE / TAB BACKGROUND ONLY */}
+          {/* MOBILE BACKGROUND */}
           <div className="absolute inset-0 lg:hidden bg-black" />
 
           {/* BORDER */}
@@ -470,7 +476,7 @@ export function IntelligenceAtCoreSection() {
             {/* LEFT IMAGE */}
             <div className="relative flex items-center justify-center overflow-hidden py-10 lg:py-0">
 
-              {/* MOBILE / TAB — DIFFUSED GLOW ONLY */}
+              {/* MOBILE GLOW */}
               <div
                 className="
                   absolute
@@ -486,7 +492,7 @@ export function IntelligenceAtCoreSection() {
                 }}
               />
 
-              {/* DESKTOP — ORIGINAL GLOW (UNCHANGED) */}
+              {/* DESKTOP GLOW */}
               <div
                 className="
                   absolute hidden lg:block
@@ -499,7 +505,7 @@ export function IntelligenceAtCoreSection() {
                 }}
               />
 
-              {/* SOFT VIGNETTE — SAFE FOR ALL */}
+              {/* VIGNETTE */}
               <div
                 className="absolute inset-0 pointer-events-none z-20"
                 style={{
@@ -531,15 +537,15 @@ export function IntelligenceAtCoreSection() {
               />
             </div>
 
-            {/* RIGHT CONTENT */}
+            {/* RIGHT CONTENT — FIGMA EXACT 80 / 78 / 78 / 78 */}
             <div
-              className="
-                flex flex-col justify-center
-                px-6 sm:px-8 md:px-12
-                lg:pl-[3.5vw] lg:pr-[4vw]
-                py-10 lg:py-0
-                bg-black lg:bg-transparent
-              "
+              className="flex flex-col justify-center bg-black lg:bg-transparent"
+              style={{
+                paddingTop: "5vh",        // 80
+                paddingBottom: "4.9vh",   // 78
+                paddingLeft: "4.9vw",     // 78
+                paddingRight: "4.9vw",    // 78
+              }}
             >
               <h3
                 className="
@@ -779,7 +785,7 @@ export function MissionAdaptiveLoadoutSection() {
             overflow-hidden
           "
         >
-          {/* SPLIT BACKGROUND — DESKTOP ONLY (UNCHANGED) */}
+          {/* SPLIT BACKGROUND — DESKTOP ONLY */}
           <div className="absolute inset-0 hidden lg:block">
             <div
               className="w-full h-full"
@@ -797,7 +803,7 @@ export function MissionAdaptiveLoadoutSection() {
             />
           </div>
 
-          {/* MOBILE / TAB BACKGROUND ONLY */}
+          {/* MOBILE BACKGROUND */}
           <div className="absolute inset-0 lg:hidden bg-black" />
 
           {/* BORDER */}
@@ -806,10 +812,8 @@ export function MissionAdaptiveLoadoutSection() {
           {/* CONTENT */}
           <div className="relative z-10 grid grid-cols-1 lg:grid-cols-2 h-full">
 
-            {/* LEFT — IMAGE */}
+            {/* LEFT IMAGE */}
             <div className="relative flex items-center justify-center overflow-hidden py-8 sm:py-10 lg:py-0">
-
-              {/* MOBILE / TAB — DIFFUSED GLOW ONLY */}
               <div
                 className="
                   absolute
@@ -819,26 +823,14 @@ export function MissionAdaptiveLoadoutSection() {
                   lg:hidden
                   blur-[140px]
                 "
-                style={{
-                  background: "rgb(7,28,15)",
-                  opacity: 0.65,
-                }}
+                style={{ background: "rgb(7,28,15)", opacity: 0.65 }}
               />
 
-              {/* DESKTOP — ORIGINAL GLOW (UNCHANGED) */}
               <div
-                className="
-                  absolute hidden lg:block
-                  w-[42vw] h-[42vw]
-                  blur-[120px]
-                "
-                style={{
-                  background: "rgb(7,28,15)",
-                  left: "-4vw",
-                }}
+                className="absolute hidden lg:block w-[42vw] h-[42vw] blur-[120px]"
+                style={{ background: "rgb(7,28,15)", left: "-4vw" }}
               />
 
-              {/* VIGNETTE — SAFE FOR ALL */}
               <div
                 className="absolute inset-0 pointer-events-none z-20"
                 style={{
@@ -870,15 +862,15 @@ export function MissionAdaptiveLoadoutSection() {
               />
             </div>
 
-            {/* RIGHT — CONTENT (NO bg-black on lg) */}
+            {/* RIGHT CONTENT — SAME 80 / 78 / 78 / 78 */}
             <div
-              className="
-                flex flex-col justify-center
-                px-4 sm:px-6 md:px-8
-                lg:pl-[3.5vw] lg:pr-[3.5vw]
-                py-8 sm:py-10 lg:py-0
-                bg-black lg:bg-transparent
-              "
+              className="flex flex-col justify-center bg-black lg:bg-transparent"
+              style={{
+                paddingTop: "5vh",
+                paddingBottom: "4.9vh",
+                paddingLeft: "4.9vw",
+                paddingRight: "4.9vw",
+              }}
             >
               <h3
                 className="
@@ -901,7 +893,6 @@ export function MissionAdaptiveLoadoutSection() {
                   md:text-[15px]
                   lg:text-[1vw]
                   mb-5 sm:mb-6 lg:mb-[3.5vh]
-                  max-w-full lg:max-w-[657px]
                 "
                 style={{
                   fontFamily: "Rethink Sans",
@@ -929,31 +920,15 @@ export function MissionAdaptiveLoadoutSection() {
                 Abstract Modules
               </h4>
 
-              <div className="relative">
-                <div
-                  className="absolute inset-0 pointer-events-none"
-                  style={{
-                    background: `
-                      linear-gradient(
-                        to right,
-                        rgb(0,0,0) 0%,
-                        rgb(0,0,0) 45%,
-                        rgba(0,0,0,0.85) 65%,
-                        rgba(0,0,0,0) 100%
-                      )
-                    `,
-                  }}
-                />
-
-                <div className="relative z-10 flex flex-col gap-2.5 sm:gap-3 lg:gap-[1.6vh]">
-                  <ModuleRow icon={<RadarIcon />} text="Roof-mounted perception mast" />
-                  <ModuleRow icon={<CubeIcon />} text="Armored sensor pods" />
-                  <ModuleRow icon={<CameraIcon />} text="Front & rear vision units" />
-                  <ModuleRow icon={<SignalIcon />} text="Communication & telemetry array" />
-                </div>
+              {/* MODULE LIST — MOBILE & DESKTOP CONSISTENT */}
+              <div className="flex flex-col gap-2.5 sm:gap-3 lg:gap-[1.6vh]">
+                <ModuleRow icon={<RadarIcon />} text="Roof-mounted perception mast" />
+                <ModuleRow icon={<CubeIcon />} text="Armored sensor pods" />
+                <ModuleRow icon={<CameraIcon />} text="Front & rear vision units" />
+                <ModuleRow icon={<SignalIcon />} text="Communication & telemetry array" />
               </div>
-
             </div>
+
           </div>
         </div>
       </Wrapper>
@@ -961,39 +936,32 @@ export function MissionAdaptiveLoadoutSection() {
   );
 }
 
+
 /* ================= MODULE ROW ================= */
 function ModuleRow({ icon, text }) {
   return (
     <div
       className="
         flex items-center
+        w-full
         gap-[1.2vw]
         px-[1.4vw]
         h-[5.6vh]
       "
       style={{
-        background: `
-          linear-gradient(
-            to right,
-            rgb(17,17,17) 0%,
-            rgb(17,17,17) 40%,
-            rgb(24,24,24) 70%,
-            rgb(36,36,36) 100%
-          )
-        `,
+        boxSizing: "border-box",
+        background:
+          "linear-gradient(to right, rgba(255,255,255,0.06), rgba(255,255,255,0.02))",
       }}
     >
       {icon}
 
       <span
-        className="
-          uppercase
-          text-[1.05vw]
-          tracking-[-0.03em]
-        "
+        className="uppercase tracking-[-0.03em]"
         style={{
           fontFamily: "Chivo Mono",
           fontWeight: 200,
+          fontSize: "clamp(14px, 1.05vw, 16px)", // same mobile feel as ProvenChassis
           color: "rgba(255,255,255,0.9)",
         }}
       >

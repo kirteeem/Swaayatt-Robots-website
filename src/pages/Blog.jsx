@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 import { useTheme } from "../context/ThemeContext"; // Adjust the import path as needed
 
-const blogs = [
+export const blogs = [
   {
     id: 1,
     image: "/images/Blogs/Blog-1.webp",

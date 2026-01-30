@@ -36,19 +36,13 @@ export default function HeroSection() {
           >
             {/* FRONTLINE */}
             <h1
-              className="
-                uppercase italic font-black
-                tracking-[-0.02em]
-                leading-[1]
-
-                text-[44px]
-                sm:text-[56px]
-                md:text-[72px]
-                lg:text-[6.5vw]
-              "
+              className="hero-frontline uppercase italic leading-[1]"
               style={{
-                color: "rgba(217, 217, 217, 1)",
                 fontFamily: "Montserrat",
+                fontWeight: 900,
+                fontSize: "6.5vw",
+                letterSpacing: "-0.02em",
+                color: "rgba(217,217,217,1)",
               }}
             >
               FRONTLINE
@@ -56,19 +50,13 @@ export default function HeroSection() {
 
             {/* AUTONOMY */}
             <h1
-              className="
-                uppercase italic font-black
-                tracking-[-0.02em]
-                leading-[1]
-
-                text-[42px]
-                sm:text-[54px]
-                md:text-[68px]
-                lg:text-[6.25vw]
-              "
+              className="hero-autonomy uppercase italic leading-[1]"
               style={{
                 fontFamily: "Montserrat",
-                color: "rgba(55, 154, 86, 1)",
+                fontWeight: 900,
+                fontSize: "6.25vw",
+                letterSpacing: "-0.02em",
+                color: "rgba(55,154,86,1)",
               }}
             >
               AUTONOMY
@@ -76,30 +64,25 @@ export default function HeroSection() {
 
             {/* DESCRIPTION */}
             <p
-              className="
-                italic mt-6
-                text-[14px]
-                sm:text-[15px]
-                md:text-[16px]
-                lg:text-[1.1vw]
-                leading-[1.54]
-
-                max-w-full
-                sm:max-w-[90%]
-                md:max-w-[60vw]
-                lg:max-w-[32vw]
-              "
-              style={{ color: "white", fontFamily: "Rethink Sans" }}
+              className="hero-description italic mt-[3vh]"
+              style={{
+                fontFamily: "Rethink Sans",
+                fontWeight: 400,
+                fontSize: "1.39vw",
+                lineHeight: "1.54",
+                color: "#ffffff",
+                maxWidth: "32vw",
+              }}
             >
-              Introducing Vanguard. Leveraging the rugged Mahindra Thar platform,
-              Swaayatt Robots introduces the next generation of unmanned ground
-              vehicles (UGV). Deep learning navigation in unstructured terrain.
+              Leveraging the rugged Mahindra Thar platform, Swaayatt Robots introduces
+              the next generation of unmanned ground vehicles (UGV). Deep learning
+              navigation in unstructured terrain.
             </p>
           </div>
         </div>
       </Wrapper>
 
-      {/* 🚗 STATIC CAR IMAGE — NO ANIMATION */}
+      {/* 🚗 STATIC CAR IMAGE — UNCHANGED */}
       <img
         src={carImage}
         alt="Autonomous Vehicle"
@@ -117,6 +100,28 @@ export default function HeroSection() {
           lg:bottom-[-6vh] lg:right-[-8vw] lg:w-[72vw]
         "
       />
+
+      {/* ================= MOBILE TEXT SIZE FIX ================= */}
+      <style>
+        {`
+          @media (max-width: 767px) {
+
+            .hero-frontline {
+              font-size: 11vw !important;
+            }
+
+            .hero-autonomy {
+              font-size: 12vw !important;
+            }
+
+            .hero-description {
+              font-size: 4.2vw !important;
+              line-height: 1.6 !important;
+              max-width: 90vw !important;
+            }
+          }
+        `}
+      </style>
     </section>
   );
 }

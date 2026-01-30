@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from "react";
 import Wrapper from "../LearnMorePages/PageWrapper";
+import { useNavigate } from "react-router-dom";
+
 
 /* ================= CONFIG ================= */
 
@@ -21,6 +23,8 @@ const QUOTE_LINES = [
 
 const NextShowcase = () => {
   const [index, setIndex] = useState(0);
+  const navigate = useNavigate();
+
 
   /* AUTO SLIDE */
   useEffect(() => {
@@ -29,6 +33,13 @@ const NextShowcase = () => {
     }, SLIDE_INTERVAL);
     return () => clearInterval(timer);
   }, []);
+
+
+   const handleContact = () => {
+    navigate("/contact");
+  };
+
+ 
 
   return (
     <section
@@ -117,30 +128,78 @@ const NextShowcase = () => {
 
         {/* ================= BUTTON ================= */}
         <div style={{ textAlign: "center" }}>
+
+
+
           <button
             className="contact-button"
-            style={buttonStyle}
-            onMouseEnter={(e) =>
-              (e.target.style.background = "rgb(22,140,70)")
-            }
-            onMouseLeave={(e) =>
-              (e.target.style.background = "rgb(17,103,50)")
-            }
+            onClick={handleContact}
+           
+            style={{
+              padding: "2.2vh 3.6vw",          // desktop exact
+              background: "rgb(17,103,50)",
+              border: "none",
+              cursor: "pointer",
+              transition: "all 0.3s ease",
+            }}
           >
-            Contact Us
+            <span
+              style={{
+                fontFamily: "Chivo Mono",
+                fontWeight: 700,
+                fontSize: "1.55vw",            // desktop exact (≈24px)
+                letterSpacing: "-0.03em",
+                textTransform: "uppercase",
+                color: "#ffffff",
+                display: "inline-block",
+              }}
+            >
+              Contact Us
+            </span>
           </button>
+
+
         </div>
 
       </Wrapper>
 
       {/* RESPONSIVE STYLES */}
       <style>
-        {`
+        {`contact
           /* Tablet Styles (768px - 1024px) */
           @media (max-width: 1024px) {
             .slider-container {
               gap: 4vw !important;
             }
+              @media (min-width: 1025px) {
+  .quote-line-0,
+  .quote-line-1,
+  .quote-line-2 {
+    white-space: nowrap;
+  }
+}
+/* ✅ MOBILE FIX — GREEN TEXT SIZE MATCH */
+@media (max-width: 767px) {
+  .quote-line-1 span {
+    font-size: inherit !important;
+    line-height: inherit !important;
+    letter-spacing: inherit !important;
+  }
+}
+/* ================= MOBILE CTA — REFINED ================= */
+@media (max-width: 767px) {
+  .contact-button {
+    padding: 1.8vh 7vw !important;   /* reduced padding */
+    border-radius: 5px !important;  /* subtle, not bulky */
+    min-width: auto !important;     /* ❌ no forced width */
+  }
+
+  .contact-button span {
+    font-size: 4vw !important;      /* balanced text size */
+    letter-spacing: -0.02em !important;
+  }
+}
+
             .slider-image {
               width: 65vw !important;
             }
@@ -331,9 +390,7 @@ const NextShowcase = () => {
 
 const renderQuoteLines = () => {
   const highlight = "EXTENDING THEIR REACH";
-
-  const widths = ["82vw", "68vw", "52vw"]; // 🔥 taper effect
-  const sizes = ["3vw", "2.6vw", "2.6vw"];
+  const FONT_SIZE = "clamp(28px, 3.125vw, 45px)"; // responsive but Figma-correct
 
   return QUOTE_LINES.map((line, i) => {
     let content = line;
@@ -343,7 +400,16 @@ const renderQuoteLines = () => {
       content = (
         <>
           {line.slice(0, start)}
-          <span style={{ color: "rgb(17,103,50)" }}>
+          <span
+            style={{
+              color: "rgb(17,103,50)",
+              fontFamily: "Chivo Mono",
+              fontWeight: 700,
+              fontSize: FONT_SIZE,
+              letterSpacing: "-0.02em",
+              lineHeight: "1",
+            }}
+          >
             {line.slice(start, start + highlight.length)}
           </span>
           {line.slice(start + highlight.length)}
@@ -354,18 +420,17 @@ const renderQuoteLines = () => {
     return (
       <div
         key={i}
-        className={`quote-line-${i}`}
+        className={`quote-line quote-line-${i}`}
         style={{
-          width: widths[i],
           margin: "0 auto",
-          fontSize: sizes[i],
           fontFamily: "Chivo Mono",
           fontWeight: 700,
+          fontSize: FONT_SIZE,
           lineHeight: "1",
           letterSpacing: "-0.02em",
           textTransform: "uppercase",
           textAlign: "center",
-          color: "#fff",
+          color: "#ffffff",
         }}
       >
         {i === 0 && '"'}
@@ -375,6 +440,8 @@ const renderQuoteLines = () => {
     );
   });
 };
+
+
 
 /* ================= STYLES ================= */
 

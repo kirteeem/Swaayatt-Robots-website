@@ -8,6 +8,8 @@ import ScrollToTop from "./pages/ScrollToTop";
 import Home from "./pages/Home";
 import Contact from "./pages/Contact";
 import Blogs from "./pages/Blog";
+import BlogDetail from "./pages/BlogDetail"; // ✅ ADDED
+
 import Career from "./components/Career/Career";
 import Media from "./pages/Media";
 import Research from "./pages/Research";
@@ -34,7 +36,11 @@ function AppLayout() {
         {/* MAIN PAGES */}
         <Route path="/" element={<Home />} />
         <Route path="/contact" element={<Contact />} />
+
+        {/* BLOGS */}
         <Route path="/blogs" element={<Blogs />} />
+        <Route path="/blogs/:id" element={<BlogDetail />} /> {/* ✅ ADDED */}
+
         <Route path="/career" element={<Career />} />
         <Route path="/media" element={<Media />} />
 
@@ -53,11 +59,8 @@ function AppLayout() {
         />
 
         {/* LEARN MORE */}
-        <Route path="/Learn_more" element={< LearnMore/>} />
+        <Route path="/Learn_more" element={<LearnMore />} />
       </Routes>
-
-
-      
 
       <Footer />
     </>

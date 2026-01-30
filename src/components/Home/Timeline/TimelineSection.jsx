@@ -223,9 +223,10 @@ function BlogNodes({ activeStep, screenSize }) {
     "20 Aug 2025",
     "30 Jul 2025",
     "08 Jul 2025",
+
     "23 Apr 2025",
     "11 Sep 2025",
-     "11 Sep 2025",
+    "11 Sep 2025",
   ];
 
   const CENTER_TEXTS = [
@@ -334,7 +335,7 @@ function BlogNodes({ activeStep, screenSize }) {
       scrollTrigger: {
         trigger: ".timeline-wrapper",
         start: "top top",
-        end: `+=${(total - 0) * 120}%`, 
+        end: `+=${(total - 0) * 120}%`,
         pin: true,
         scrub: 0.5,
         anticipatePin: 1,
@@ -482,13 +483,15 @@ function BlogNodes({ activeStep, screenSize }) {
       )}
 
       {/* CENTER TEXT */}
-   {centerIndex !== null && (
-  <div className="absolute left-1/2 -translate-x-1/2   sm:bottom-[20vh] bottom-32 mt-[10vh] z-30 px-4 text-center w-[90vw] sm:w-[80vw] md:w-[75vw] lg:w-[40vw] xl:w-[35vw]">
-    <p className="font-mono text-white whitespace-pre-line text-sm sm:text-base lg:text-lg leading-[150%] max-w-[620px] mx-auto">
-      {CENTER_TEXTS[centerIndex]}
-    </p>
-  </div>
-)}
+      {centerIndex !== null && (
+        <div className="absolute left-1/2 -translate-x-1/2   sm:bottom-[20vh] bottom-32 mt-[10vh] z-30 px-4 text-center w-[90vw] sm:w-[80vw] md:w-[75vw] lg:w-[40vw] xl:w-[35vw]">
+          <p
+            style={{ fontFamily: "Rethink, sans-serif" }}
+            className=" text-white whitespace-pre-line text-sm sm:text-base lg:text-lg leading-[10%] max-w-[620px] mx-auto">
+            {CENTER_TEXTS[centerIndex]}
+          </p>
+        </div>
+      )}
 
     </div>
   );

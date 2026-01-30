@@ -133,6 +133,12 @@ const Relibility = () => {
               font-size: 14px !important;
               line-height: 1.45 !important;
             }
+
+            /* ✅ ONLY CHANGE: BIGGER HEADING ON PHONES */
+            .reliability-heading {
+              font-size: 7vw !important;
+              white-space: normal !important;
+            }
           }
         `}
       </style>
@@ -157,12 +163,13 @@ const Relibility = () => {
         }}
       >
         <Wrapper>
-          {/* HEADING (DESKTOP UNCHANGED) */}
+          {/* HEADING */}
           <h2
+            className="reliability-heading"
             style={{
               fontFamily: "Chivo Mono",
               fontWeight: 700,
-              fontSize: HEADING_SIZE,
+              fontSize: HEADING_SIZE, // ✅ desktop exact
               lineHeight: "1",
               letterSpacing: "-0.03em",
               textTransform: "uppercase",
@@ -213,7 +220,7 @@ const Relibility = () => {
                     textTransform: "uppercase",
                     color: "#fff",
                     lineHeight: "1",
-                    width: "18.3vw", // ✅ desktop exact
+                    width: "18.3vw",
                     whiteSpace: "nowrap",
                     marginBottom: "1.8vh",
                   }}
@@ -231,7 +238,7 @@ const Relibility = () => {
                     lineHeight: "1",
                     letterSpacing: "-0.03em",
                     color: "rgba(255,255,255,0.8)",
-                    maxWidth: "17.5vw", // ✅ desktop exact
+                    maxWidth: "17.5vw",
                   }}
                 >
                   {item.desc}

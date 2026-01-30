@@ -643,7 +643,8 @@ useLayoutEffect(() => {
                   <div key={i} className="px-4 sm:px-6 lg:px-10">
                     <h3
                      style={{ fontFamily: "Rethink, sans-serif" }}
-                      className={`text-[22px] sm:text-[26px] lg:text-[32px] ml-[5vw] w-full mt-[-6vh] py-4 transition-colors duration-400 drop-shadow-lg ${activeIndex === i ? "text-white" : "text-white/80"
+                      className={`text-[22px] sm:text-[26px] lg:text-[32px] ml-[5vw] w-full mt-[-6vh] py-4
+                         transition-colors duration-400 drop-shadow-lg ${activeIndex === i ? "text-white" : "text-white/40"
                         }`}
                     >
                       {item.title}
@@ -651,7 +652,8 @@ useLayoutEffect(() => {
 
                     <p
                      style={{ fontFamily: "Rethink, sans-serif" }}
-                      className={`text-[14px] sm:text-[14px] lg:text-[18px] ml-[10vh] w-full transition-colors font-Rethink Sans duration-400 drop-shadow ${activeIndex === i ? "text-white" : "text-white/60"
+                      className={`text-[12px]   lg:text-[18px] ml-[10vh] font-normal w-full transition-colors
+                         font-Rethink Sans duration-400 drop-shadow ${activeIndex === i ? "text-white" : "text-white/40"
                         }`}
                     >
                       {item.desc}

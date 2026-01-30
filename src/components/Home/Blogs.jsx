@@ -55,8 +55,8 @@ const Blogs = () => {
         {/* HEADER */}
         <div className="flex flex sm:flex-row items-start sm:items-center justify-between gap-4 sm:gap-0 mb-8 sm:mb-10">
           <p
-            style={{ fontFamily: '"Montserrat", "sans-serif"', fontWeight: "500"}}
-           className="text-2xl sm:text-4xl lg:text-5xl font-[550] text-white">
+            style={{ fontFamily: '"Montserrat", "sans-serif"', fontWeight: "500" }}
+            className="text-2xl sm:text-4xl lg:text-5xl font-[550] text-white">
             Blogs
           </p>
 
@@ -133,7 +133,7 @@ const Blogs = () => {
 
                 <div className="relative h-full flex items-end p-4 sm:p-6 lg:p-8">
                   <p
-                    style={{ fontFamily: '"Chivo Mono", monospace' }}
+                    style={{ fontFamily: "Rethink, sans-serif" }}
                     className="text-sm sm:text-base lg:text-xl text-white line-clamp-3">
                     {post.title}
                   </p>

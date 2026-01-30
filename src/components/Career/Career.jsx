@@ -2,6 +2,8 @@ import React, { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { MapPin, Clock, Briefcase } from "lucide-react";
 import { useTheme } from "../../context/ThemeContext";
+import JobCard from "./JobCard";
+import JobDescriptionModal from "./JobDescriptionModal";
 import team from "/images/career/head.png";
 import "./career.css";
 import gsap from "gsap";
@@ -11,6 +13,8 @@ import frame from "/images/career/head1.png";
 export default function Career() {
   const [activeTab, setActiveTab] = useState("Full Time");
   const { isDarkMode } = useTheme();
+  const [isModalOpen, setIsModalOpen] = useState(false);
+const [selectedJob, setSelectedJob] = useState(null);
 
 
   //  const [currentIndex, setCurrentIndex] = useState(0);
@@ -24,6 +28,11 @@ export default function Career() {
   //     return texts[idx];
   //   };
 
+  const onView = (job) => {
+  console.log("Opening JD for:", job);
+  setSelectedJob(job);
+  setIsModalOpen(true);
+};
   const texts = [
     "Machine Learning Engineer",
     "Data Scientist",
@@ -394,12 +403,13 @@ export default function Career() {
                       }`}>
                       {job.title}
                     </h3>
-                    <a
-                      href="#"
-                      className="text-sm text-[#00B7FF] hover:text-blue-400 flex items-center gap-1 transition-colors"
-                    >
-                      View Job Description <i class="ri-arrow-right-up-line"></i>
-                    </a>
+                  <button
+  onClick={() => onView(job)}
+  className="text-sm text-[#00B7FF] hover:text-blue-400 flex items-center gap-1 transition-colors"
+>
+  View Job Description <i className="ri-arrow-right-up-line"></i>
+</button>
+
                   </div>
 
                   <div className={`flex flex-wrap gap-6 text-sm ${isDarkMode ? "text-gray-400" : "text-gray-500"
@@ -447,6 +457,12 @@ export default function Career() {
           Apply Now
         </button>
       </div>
+      <JobDescriptionModal
+  open={isModalOpen}
+  job={selectedJob}
+  onClose={() => setIsModalOpen(false)}
+/>
+
     </main>
   );
 }
