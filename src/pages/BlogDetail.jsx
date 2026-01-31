@@ -61,7 +61,7 @@ export default function BlogDetail() {
 
       {/* ================= CONTENT SECTION ================= */}
       <section className={`w-full flex justify-center ${isDarkMode ? "bg-black" : "bg-white"}`}>
-        <div className="w-[min(90vw,75vw)] py-[6vh] md:py-[10vh] mx-auto">
+        <div className="w-full md:w-[75vw] py-[6vh] md:py-[10vh] mx-auto">
           {/* COMMENT: Added px-[5vw] for phone alignment */}
           <div 
             className="space-y-[3vh] md:space-y-[4vh] leading-[1.6] md:leading-[1.8] px-[5vw] md:px-0"
@@ -129,8 +129,8 @@ export default function BlogDetail() {
       </section>
 
       {/* ================= POST VIDEO CONTENT ================= */}
-      <section className={`w-full flex justify-center ${isDarkMode ? "bg-black" : "bg-white"}`}>
-        <div className="w-[min(90vw,75vw)] pb-[6vh] md:pb-[10vh] mx-auto">
+     <section className={`w-full flex justify-center ${isDarkMode ? "bg-black" : "bg-white"}`}>
+  <div className="w-full md:w-[75vw] pb-[6vh] md:pb-[10vh] mx-auto">
           {/* COMMENT: Added px-[5vw] for phone alignment */}
           <div 
             className="space-y-[3vh] md:space-y-[4vh] leading-[1.6] md:leading-[1.8] px-[5vw] md:px-0"
@@ -269,8 +269,8 @@ export default function BlogDetail() {
       </section>
 
       {/* ================= FUTURE WORK ================= */}
-      <section className={`w-full flex justify-center pb-[10vh] ${isDarkMode ? "bg-black" : "bg-white"}`}>
-        <div className="w-[min(90vw,75vw)] mx-auto">
+<section className={`w-full flex justify-center pb-[10vh] ${isDarkMode ? "bg-black" : "bg-white"}`}>
+  <div className="w-full md:w-[75vw] mx-auto">
           {/* COMMENT: Added px-[5vw] for phone alignment */}
           <div className="px-[5vw] md:px-0">
             <h2 
