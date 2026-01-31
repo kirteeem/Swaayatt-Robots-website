@@ -10,7 +10,7 @@ export default function BlogDetail() {
 
   if (!blog) {
     return (
-      <div className={`min-h-screen flex items-center justify-center px-[4vw] ${
+      <div className={`min-h-screen flex items-center justify-center px-[5vw] ${
         isDarkMode ? "bg-black text-white" : "bg-white text-[#1A212F]"
       }`}>
         <h2 className="text-[6vw] sm:text-[4vw] md:text-[3vw] font-medium" style={{ fontFamily: 'Rethink Sans, sans-serif' }}>
@@ -41,7 +41,7 @@ export default function BlogDetail() {
           backgroundPosition: "center",
         }}
       >
-        <div className="w-[92vw] md:w-[80vw]">
+        <div className="w-[min(90vw,80vw)]">
           <h1
             className="font-bold text-white leading-[1.1] text-[9vw] sm:text-[7vw] md:text-[5.5vw] lg:text-[4.5vw] mx-auto"
             style={{ 
@@ -61,9 +61,10 @@ export default function BlogDetail() {
 
       {/* ================= CONTENT SECTION ================= */}
       <section className={`w-full flex justify-center ${isDarkMode ? "bg-black" : "bg-white"}`}>
-        <div className="w-[92vw] md:w-[75vw] py-[6vh] md:py-[10vh] mx-auto">
+        <div className="w-[min(90vw,75vw)] py-[6vh] md:py-[10vh] mx-auto">
+          {/* COMMENT: Added px-[5vw] for phone alignment */}
           <div 
-            className="space-y-[3vh] md:space-y-[4vh] leading-[1.6] md:leading-[1.8]"
+            className="space-y-[3vh] md:space-y-[4vh] leading-[1.6] md:leading-[1.8] px-[5vw] md:px-0"
             style={{
               fontFamily: 'Rethink Sans, sans-serif',
               fontWeight: 400,
@@ -102,17 +103,24 @@ export default function BlogDetail() {
 
       {/* ================= VIDEO PREVIEW SECTION 1 ================= */}
       <section className={`w-full flex justify-center pb-[6vh] md:pb-[10vh] ${isDarkMode ? "bg-black" : "bg-white"}`}>
-        <div className="w-[92vw] md:w-[75vw] mx-auto">
+        <div className="w-[90vw] sm:w-[86vw] md:w-[75vw] mx-auto">
           <div
-            className="w-full h-[40vh] sm:h-[55vh] md:h-[75vh] flex items-center justify-center rounded-none shadow-2xl"
+            className="relative w-full h-[40vh] sm:h-[55vh] md:h-[75vh]
+                       flex items-center justify-center
+                       rounded-none shadow-2xl"
             style={{
               backgroundImage: `linear-gradient(rgba(0,0,0,0.45), rgba(0,0,0,0.45)), url('/images/Blogs/Blog-3.webp')`,
               backgroundSize: "cover",
               backgroundPosition: "center",
             }}
           >
-            <div className="w-[18vw] h-[18vw] sm:w-[12vw] sm:h-[12vw] md:w-[8vw] md:h-[8vw] max-w-[90px] max-h-[90px] rounded-full bg-[#FF0000] flex items-center justify-center cursor-pointer hover:scale-110 transition-transform shadow-lg">
-              <svg viewBox="0 0 24 24" className="w-[45%] h-[45%] fill-white">
+            <div className="w-[18vw] h-[18vw] sm:w-[12vw] sm:h-[12vw] md:w-[8vw] md:h-[8vw]
+                            max-w-[90px] max-h-[90px]
+                            rounded-full bg-[#FF0000]
+                            flex items-center justify-center
+                            cursor-pointer
+                            hover:scale-110 transition-transform shadow-lg">
+              <svg viewBox="0 0 24 24" className="w-[45%] h-[45%] fill-white translate-x-[2px]">
                 <path d="M8 5v14l11-7z" />
               </svg>
             </div>
@@ -122,9 +130,10 @@ export default function BlogDetail() {
 
       {/* ================= POST VIDEO CONTENT ================= */}
       <section className={`w-full flex justify-center ${isDarkMode ? "bg-black" : "bg-white"}`}>
-        <div className="w-[92vw] md:w-[75vw] pb-[6vh] md:pb-[10vh] mx-auto">
+        <div className="w-[min(90vw,75vw)] pb-[6vh] md:pb-[10vh] mx-auto">
+          {/* COMMENT: Added px-[5vw] for phone alignment */}
           <div 
-            className="space-y-[3vh] md:space-y-[4vh] leading-[1.6] md:leading-[1.8]"
+            className="space-y-[3vh] md:space-y-[4vh] leading-[1.6] md:leading-[1.8] px-[5vw] md:px-0"
             style={{
               fontFamily: 'Rethink Sans, sans-serif',
               fontSize: 'clamp(1rem, 0.9rem + 0.5vw, 1.3rem)',
@@ -179,19 +188,33 @@ export default function BlogDetail() {
 
       {/* ================= VIDEO PREVIEW SECTION 2 ================= */}
       <section className={`w-full flex justify-center pb-[6vh] md:pb-[10vh] ${isDarkMode ? "bg-black" : "bg-white"}`}>
-        <div className="w-[92vw] md:w-[75vw] mx-auto">
+        <div className="w-[90vw] sm:w-[86vw] md:w-[75vw] mx-auto">
           <div
-            className="w-full h-[40vh] sm:h-[55vh] md:h-[75vh] flex items-center justify-center rounded-none shadow-2xl"
+            className="relative w-full h-[40vh] sm:h-[55vh] md:h-[75vh]
+                       flex items-center justify-center
+                       rounded-none overflow-hidden shadow-2xl"
             style={{
-              backgroundImage: `linear-gradient(rgba(0,0,0,0.45), rgba(0,0,0,0.45)), url('/images/Blogs/Blog-1.webp')`,
+              backgroundImage: `linear-gradient(rgba(0,0,0,0.45), rgba(0,0,0,0.45)), url('/images/Blogs/Blog-3.webp')`,
               backgroundSize: "cover",
               backgroundPosition: "center",
             }}
           >
-            <div className="w-[18vw] h-[18vw] sm:w-[12vw] sm:h-[12vw] md:w-[8vw] md:h-[8vw] max-w-[90px] max-h-[90px] rounded-full bg-[#FF0000] flex items-center justify-center cursor-pointer hover:scale-110 transition-transform shadow-lg">
-              <svg viewBox="0 0 24 24" className="w-[45%] h-[45%] fill-white">
-                <path d="M8 5v14l11-7z" />
-              </svg>
+            <div className="flex items-center justify-center">
+              <div className="w-[18vw] h-[18vw] sm:w-[12vw] sm:h-[12vw] md:w-[8vw] md:h-[8vw]
+                              max-w-[80px] max-h-[80px]
+                              bg-[#FF0000] rounded-full
+                              flex items-center justify-center
+                              cursor-pointer
+                              shadow-xl
+                              transition-transform duration-200
+                              hover:scale-105 active:scale-95">
+                <svg
+                  viewBox="0 0 24 24"
+                  className="w-[45%] h-[45%] fill-white translate-x-[2px]"
+                >
+                  <path d="M8 5v14l11-7z" />
+                </svg>
+              </div>
             </div>
           </div>
         </div>
@@ -199,9 +222,10 @@ export default function BlogDetail() {
 
       {/* ================= FINAL TEXT & IMAGE ================= */}
       <section className={`w-full flex justify-center ${isDarkMode ? "bg-black" : "bg-white"}`}>
-        <div className="w-[92vw] md:w-[75vw] pb-[6vh] md:pb-[10vh] mx-auto">
+        <div className="w-full md:w-[75vw] pb-[6vh] md:pb-[10vh] mx-auto">
+          {/* COMMENT: Added px-[5vw] for phone alignment */}
           <div 
-            className="space-y-[3vh] md:space-y-[4vh] leading-[1.6] md:leading-[1.8]"
+            className="space-y-[3vh] md:space-y-[4vh] leading-[1.6] md:leading-[1.8] px-[5vw] md:px-0"
             style={{
               fontFamily: 'Rethink Sans, sans-serif',
               fontSize: 'clamp(1rem, 0.9rem + 0.5vw, 1.3rem)',
@@ -212,19 +236,33 @@ export default function BlogDetail() {
               The framework allowed our autonomous vehicle to drive off-roads, on-roads, as well as negotiate tight obstacles, such as avoiding a tractor or a very narrow curved region. Furthermore, in the situation around 30-seconds in the video below, it allowed our vehicle to negotiate a tight passage through a vehicle parked on the left, and a bike approaching from the front on the right, successfully, without bringing the vehicle to a complete halt.
             </p>
           </div>
-          
-          <div
-            className="w-full h-[35vh] sm:h-[50vh] md:h-[65vh] mt-[5vh] flex items-center justify-center rounded-none shadow-2xl"
-            style={{
-              backgroundImage: `linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.4)), url('/images/Blogs/Blog-1.webp')`,
-              backgroundSize: "cover",
-              backgroundPosition: "center",
-            }}
-          >
-            <div className="w-[18vw] h-[18vw] sm:w-[12vw] sm:h-[12vw] md:w-[8vw] md:h-[8vw] max-w-[90px] max-h-[90px] rounded-full bg-[#FF0000] flex items-center justify-center cursor-pointer hover:scale-110 transition-transform shadow-lg">
-              <svg viewBox="0 0 24 24" className="w-[45%] h-[45%] fill-white">
-                <path d="M8 5v14l11-7z" />
-              </svg>
+
+          <div className="w-[90vw] sm:w-[86vw] md:w-full mx-auto mt-[5vh]">
+            <div
+              className="relative w-full h-[40vh] sm:h-[50vh] md:h-[65vh]
+                         flex items-center justify-center
+                         rounded-none overflow-hidden shadow-2xl"
+              style={{
+                backgroundImage: `linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.4)), url('/images/Blogs/Blog-1.webp')`,
+                backgroundSize: "cover",
+                backgroundPosition: "center",
+              }}
+            >
+              <div className="w-[18vw] h-[18vw] sm:w-[12vw] sm:h-[12vw] md:w-[8vw] md:h-[8vw]
+                              max-w-[80px] max-h-[80px]
+                              bg-[#FF0000] rounded-full
+                              flex items-center justify-center
+                              cursor-pointer
+                              shadow-xl
+                              transition-transform duration-200
+                              hover:scale-105 active:scale-95">
+                <svg
+                  viewBox="0 0 24 24"
+                  className="w-[45%] h-[45%] fill-white translate-x-[2px]"
+                >
+                  <path d="M8 5v14l11-7z" />
+                </svg>
+              </div>
             </div>
           </div>
         </div>
@@ -232,33 +270,36 @@ export default function BlogDetail() {
 
       {/* ================= FUTURE WORK ================= */}
       <section className={`w-full flex justify-center pb-[10vh] ${isDarkMode ? "bg-black" : "bg-white"}`}>
-        <div className="w-[92vw] md:w-[75vw] mx-auto">
-          <h2 
-            className="font-bold mb-[3vh] md:mb-[5vh] text-[8vw] sm:text-[6vw] md:text-[2.8rem]"
-            style={{
-              fontFamily: 'Rethink Sans, sans-serif',
-              fontWeight: 700,
-              color: isDarkMode ? 'white' : 'rgba(51, 51, 51, 1)'
-            }}
-          >
-            Future Work
-          </h2>
+        <div className="w-[min(90vw,75vw)] mx-auto">
+          {/* COMMENT: Added px-[5vw] for phone alignment */}
+          <div className="px-[5vw] md:px-0">
+            <h2 
+              className="font-bold mb-[3vh] md:mb-[5vh] text-[8vw] sm:text-[6vw] md:text-[2.8rem]"
+              style={{
+                fontFamily: 'Rethink Sans, sans-serif',
+                fontWeight: 700,
+                color: isDarkMode ? 'white' : 'rgba(51, 51, 51, 1)'
+              }}
+            >
+              Future Work
+            </h2>
 
-          <div 
-            className="space-y-[3vh] md:space-y-[4vh] leading-[1.6] md:leading-[1.8]"
-            style={{
-              fontFamily: 'Rethink Sans, sans-serif',
-              fontSize: 'clamp(1rem, 0.9rem + 0.5vw, 1.3rem)',
-              color: isDarkMode ? 'white' : 'rgba(93, 93, 93, 1)'
-            }}
-          >
-            <p>
-              Earlier in 2017 we demonstrated an end-to-end holistic framework capable of negotiating very tight regions using only two cameras mounted on the front bumper of the vehicle, computing directly the control commands from the input images. This work on the other hand was a classical motion planning and decision making algorithmic framework developed to handle such sophisticated navigation and negotiation tasks at a very large scale. Presently we are further increasing the capabilities of this framework, along with developing deeper variant of this, which will solve Level-5 Bidirectional Negotiation Problem, first in a non-holistic, and then in a holistic manner — taking inspiration from the November 2017 work — mathematically modelling how humans drive.
-            </p>
+            <div 
+              className="space-y-[3vh] md:space-y-[4vh] leading-[1.6] md:leading-[1.8]"
+              style={{
+                fontFamily: 'Rethink Sans, sans-serif',
+                fontSize: 'clamp(1rem, 0.9rem + 0.5vw, 1.3rem)',
+                color: isDarkMode ? 'white' : 'rgba(93, 93, 93, 1)'
+              }}
+            >
+              <p>
+                Earlier in 2017 we demonstrated an end-to-end holistic framework capable of negotiating very tight regions using only two cameras mounted on the front bumper of the vehicle, computing directly the control commands from the input images. This work on the other hand was a classical motion planning and decision making algorithmic framework developed to handle such sophisticated navigation and negotiation tasks at a very large scale. Presently we are further increasing the capabilities of this framework, along with developing deeper variant of this, which will solve Level-5 Bidirectional Negotiation Problem, first in a non-holistic, and then in a holistic manner — taking inspiration from the November 2017 work — mathematically modelling how humans drive.
+              </p>
 
-            <p>
-              We are researching on several avenues for this framework, and for solving generalized autonomous driving problem, including mathematically modelling the human driving behaviour to develop the Level-5 autonomous driving technology.
-            </p>
+              <p>
+                We are researching on several avenues for this framework, and for solving generalized autonomous driving problem, including mathematically modelling the human driving behaviour to develop the Level-5 autonomous driving technology.
+              </p>
+            </div>
           </div>
         </div>
       </section>
