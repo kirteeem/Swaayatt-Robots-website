@@ -84,10 +84,11 @@ export default function BlogDetail() {
         <div className="w-[90vw] sm:w-[88vw] md:w-[85vw] py-8 sm:py-12 md:py-[8vh]">
 
           <div 
-            className="space-y-4 sm:space-y-6 md:space-y-[4vh] text-base sm:text-lg md:text-[1.5vw] lg:text-[1.9vw] leading-[1.6] sm:leading-[1.65] md:leading-[1.7]"
+            className="space-y-4 sm:space-y-6 md:space-y-[4vh] leading-[1.6] sm:leading-[1.65] md:leading-[1.7]"
             style={{
               fontFamily: 'Rethink Sans, sans-serif',
-              fontWeight: 500,
+              fontWeight: 400,
+              fontSize: '20px',
               letterSpacing: '-2%',
               color: isDarkMode ? 'white' : 'rgba(93, 93, 93, 1)'
             }}
@@ -200,10 +201,11 @@ export default function BlogDetail() {
         <div className="w-[90vw] sm:w-[88vw] md:w-[85vw] py-8 sm:py-12 md:py-[8vh]">
 
           <div 
-            className="space-y-4 sm:space-y-6 md:space-y-[4vh] text-base sm:text-lg md:text-[1.5vw] lg:text-[1.9vw] leading-[1.6] sm:leading-[1.65] md:leading-[1.7]"
+            className="space-y-4 sm:space-y-6 md:space-y-[4vh] leading-[1.6] sm:leading-[1.65] md:leading-[1.7]"
             style={{
               fontFamily: 'Rethink Sans, sans-serif',
-              fontWeight: 500,
+              fontWeight: 400,
+              fontSize: '20px',
               letterSpacing: '-2%',
               color: isDarkMode ? 'white' : 'rgba(93, 93, 93, 1)'
             }}
@@ -323,10 +325,11 @@ export default function BlogDetail() {
         <div className="w-[90vw] sm:w-[88vw] md:w-[85vw] py-8 sm:py-12 md:py-[8vh]">
 
           <div 
-            className="space-y-4 sm:space-y-6 md:space-y-[4vh] text-base sm:text-lg md:text-[1.5vw] lg:text-[1.9vw] leading-[1.6] sm:leading-[1.65] md:leading-[1.7]"
+            className="space-y-4 sm:space-y-6 md:space-y-[4vh] leading-[1.6] sm:leading-[1.65] md:leading-[1.7]"
             style={{
               fontFamily: 'Rethink Sans, sans-serif',
-              fontWeight: 500,
+              fontWeight: 400,
+              fontSize: '20px',
               letterSpacing: '-2%',
               color: isDarkMode ? 'white' : 'rgba(93, 93, 93, 1)'
             }}
@@ -419,10 +422,11 @@ export default function BlogDetail() {
           </h2>
 
           <div 
-            className="space-y-4 sm:space-y-6 md:space-y-[4vh] text-base sm:text-lg md:text-[1.5vw] lg:text-[1.9vw] leading-[1.6] sm:leading-[1.65] md:leading-[1.7]"
+            className="space-y-4 sm:space-y-6 md:space-y-[4vh] leading-[1.6] sm:leading-[1.65] md:leading-[1.7]"
             style={{
               fontFamily: 'Rethink Sans, sans-serif',
-              fontWeight: 500,
+              fontWeight: 400,
+              fontSize: '20px',
               letterSpacing: '-2%',
               color: isDarkMode ? 'white' : 'rgba(93, 93, 93, 1)'
             }}
