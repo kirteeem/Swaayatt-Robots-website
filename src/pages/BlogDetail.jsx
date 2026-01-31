@@ -13,7 +13,7 @@ export default function BlogDetail() {
       <div className={`min-h-screen flex items-center justify-center px-4 ${
         isDarkMode ? "bg-black text-white" : "bg-white text-[#1A212F]"
       }`}>
-        <h2 className="text-xl sm:text-2xl md:text-3xl font-medium">Blog not found</h2>
+        <h2 className="text-xl sm:text-2xl md:text-3xl font-medium" style={{ fontFamily: 'Rethink Sans, sans-serif' }}>Blog not found</h2>
       </div>
     );
   }
@@ -51,10 +51,8 @@ export default function BlogDetail() {
         <div className="w-[95vw] sm:w-[90vw] max-w-[90vw]">
           <h1
             className="
-              font-rethink
-              font-medium
+              font-bold
               text-white
-              tracking-[-0.02em]
               leading-[1.1]
               text-[8vw]
               sm:text-[6vw]
@@ -62,6 +60,11 @@ export default function BlogDetail() {
               lg:text-[4.2vw]
               mx-auto
             "
+            style={{ 
+              fontFamily: 'Rethink Sans, sans-serif',
+              fontWeight: 700,
+              letterSpacing: '-2%'
+            }}
           >
             {blog.title}
           </h1>
@@ -76,38 +79,28 @@ export default function BlogDetail() {
       {/* ================= CONTENT SECTION ================= */}
       {/* ================= BLOG TEXT CONTENT ================= */}
       <section className={`w-full flex justify-center ${
-        isDarkMode ? "bg-black text-white" : "bg-white text-[#1A212F]"
+        isDarkMode ? "bg-black" : "bg-white"
       }`}>
         <div className="w-[90vw] sm:w-[88vw] md:w-[85vw] max-w-[85vw] py-8 sm:py-12 md:py-[8vh]">
 
-          <div className="space-y-4 sm:space-y-6 md:space-y-[4vh] text-base sm:text-lg md:text-[1.5vw] lg:text-[1.9vw] leading-[1.6] sm:leading-[1.65] md:leading-[1.7]">
+          <div 
+            className="space-y-4 sm:space-y-6 md:space-y-[4vh] text-base sm:text-lg md:text-[1.5vw] lg:text-[1.9vw] leading-[1.6] sm:leading-[1.65] md:leading-[1.7]"
+            style={{
+              fontFamily: 'Rethink Sans, sans-serif',
+              fontWeight: 500,
+              letterSpacing: '-2%',
+              color: isDarkMode ? 'white' : 'rgba(93, 93, 93, 1)'
+            }}
+          >
 
             <p>
-              Autonomous driving, even in the scenarios where a robust probabilistic
-              function or a model of the behaviour of obstacles, or that of agents
-              representing the obstacles, is available, along with strict
-              (mathematical-) projection of, or (in mathematical functional form)
-              superposition of, strict traffic rules, remains an active area of
-              research, both in terms of theoretical and experimental research
-              paradigms.
+          Autonomous driving, even in the scenarios where a robust probabilistic function or a model of the behaviour of obstacles, or that of agents representing the obstacles, is available, along with strict (mathematical-) projection of, or (in mathematical functional form) superposition of, strict traffic rules, remains an active area of research, both in terms of theoretical and experimental research paradigms.
             </p>
 
             <p>
-              Current motion planning and decision making research, globally, in the
-              autonomous driving industry, at large, focuses on developing the ability
-              to negotiate obstacles on broad roads, with strict traffic-rules, along
-              with assumption of availability (or computational ability) of the
-              probabilistic functions encoding the behaviour of the agents
-              representing the obstacles.
+             Current motion planning and decision making research, globally, in the autonomous driving industry, at large, focuses on developing the ability to negotiate obstacles on broad roads, with strict traffic-rules, along with assumption of availability (or computational ability) of the probabilistic functions encoding the behaviour of the agents representing the obstacles. Negotiation of bi-directional traffic on a single lane road, where the autonomous vehicle (or Ego-Agent) might be required to shift off the road, and drive through an uneven patch of terrain to facilitate successful negotiation, remains an uncharted terrain for the industry at large.
             </p>
 
-            <p>
-              Negotiation of bi-directional traffic on a single lane road, where the
-              autonomous vehicle (or Ego-Agent) might be required to shift off the
-              road, and drive through an uneven patch of terrain to facilitate
-              successful negotiation, remains an uncharted terrain for the industry
-              at large.
-            </p>
 
             <p>
               Such abilities have not been demonstrated by any autonomous driving
@@ -202,92 +195,64 @@ export default function BlogDetail() {
 
       {/* ================= POST VIDEO CONTENT ================= */}
       <section className={`w-full flex justify-center ${
-        isDarkMode ? "bg-black text-white" : "bg-white text-[#1A212F]"
+        isDarkMode ? "bg-black" : "bg-white"
       }`}>
         <div className="w-[90vw] sm:w-[88vw] md:w-[85vw] py-8 sm:py-12 md:py-[8vh]">
 
-          <div className="space-y-4 sm:space-y-6 md:space-y-[4vh] text-base sm:text-lg md:text-[1.5vw] lg:text-[1.9vw] leading-[1.6] sm:leading-[1.65] md:leading-[1.7]">
+          <div 
+            className="space-y-4 sm:space-y-6 md:space-y-[4vh] text-base sm:text-lg md:text-[1.5vw] lg:text-[1.9vw] leading-[1.6] sm:leading-[1.65] md:leading-[1.7]"
+            style={{
+              fontFamily: 'Rethink Sans, sans-serif',
+              fontWeight: 500,
+              letterSpacing: '-2%',
+              color: isDarkMode ? 'white' : 'rgba(93, 93, 93, 1)'
+            }}
+          >
 
             <p>
-              This was a near-holistic algorithmic framework, i.e., the decision making
-              task was nearly end-to-end, where the deep neural network(s) representing
-              multiple RL agents (along with some classical agents) computed motion and
-              behaviour commands for the ego-agent by directly taking left and right
-              image pairs from the two cameras mounted on the front-bumper.
+              
+This was a near-holistic algorithmic framework, i.e., the decision making task was nearly end-to-end, where the deep neural network(s) representing multiple RL agents (along with some classical agents) computed motion and behaviour commands for the ego-agent by directly taking left and right image pairs from the two cameras mounted on the front-bumper. This framework was named Multi-Agent Intent Analysis and Negotiation Framework. The system was trained using apprenticeship learning via reinforcement learning. The system also used stochastic output from the optical flow as an input for decision making. The optical flow was one of the few tiny pieces of explicit computational information, and thus this framework was nearly-holistic.
             </p>
 
             <p>
-              This framework was named <strong>Multi-Agent Intent Analysis and
-              Negotiation Framework</strong>. The system was trained using
-              apprenticeship learning via reinforcement learning. The system also
-              used stochastic output from the optical flow as an input for decision
-              making. The optical flow was one of the few tiny pieces of explicit
-              computational information, and thus this framework was nearly-holistic.
+              The algorithmic framework had tremendous capabilities to negotiate tight-stochastic-adversarial-dynamic environments as can be seen in the above video. This framework was specifically developed to deal with adversarial nature of the opposing agents in the environments. For example, in India, in the absence of strict adherence to the traffic rules, agents, representing two wheeled vehicles, are not only stochastic but also adversarial in nature. It is the task of the ego-agent to ensure collision-avoidance. In case of an accident, Indian law favours the smaller vehicle. Thus, there is adversity in the traffic-dynamics on Indian roads.
             </p>
 
             <p>
-              The algorithmic framework had tremendous capabilities to negotiate
-              tight-stochastic-adversarial-dynamic environments as can be seen in the
-              above video. This framework was specifically developed to deal with
-              adversarial nature of the opposing agents in the environments.
+             One might argue, does a solution to this problem have a practical significance outside India? The answer to this question, while debatable to an extent, holds the key to solving the Level-5 autonomous driving problem. Only if we ensure safe navigation in such traffic and environmental conditions, we can really be sure of the safety of such vehicles elsewhere, where the traffic dynamics is simpler, and environments are significantly structured.
             </p>
 
             <p>
-              For example, in India, in the absence of strict adherence to the traffic
-              rules, agents representing two-wheeled vehicles are not only stochastic
-              but also adversarial in nature. It is the task of the ego-agent to ensure
-              collision-avoidance. In case of an accident, Indian law favours the
-              smaller vehicle.
+             While Sanjeev was developing this framework, he asked himself a very simple question; if I were to drive in this colony road, would I stop for every obstacle coming from the opposite direction and yield to them? Or would I use my driving experience and judgement and negotiate without completely yielding. In India we do this on a regular basis. Furthermore, since the beginning of his autonomous navigation research, he focused on enabling autonomous driving in world’s most difficult traffic-dynamics imaginable for autonomous vehicles, along with enabling navigation in completely unknown environments, i.e., without the high-definition maps, just like humans do.
+
+
             </p>
 
             <p>
-              One might argue whether a solution to this problem has practical
-              significance outside India. The answer to this question holds the key to
-              solving the Level-5 autonomous driving problem.
+             Formulating this problem, this biological inspiration, mathematically required him to work at the intersection of convex optimization, reinforcement learning, heuristic search, apprenticeship learning, mathematical topology, and deep learning to develop this framework in 2017 and demo in our autonomous vehicle. While this was a very robust framework, in the absence of any funding back then, this pioneering work couldn’t be scaled further at that time. This was a first ever successful demo of reinforcement learning for practical real-world autonomous driving. Even more so, this was a multi-RL agent demo, for learning a behavioural capability that was unimaginable in the context of autonomous driving back then.
             </p>
-
-            <p>
-              While developing this framework, a fundamental question was asked:
-              would a human driver always stop and yield, or would they negotiate
-              using judgement and experience? Humans do this regularly, especially
-              on Indian roads.
-            </p>
-
-            <p>
-              Formulating this biological inspiration mathematically required working
-              at the intersection of convex optimization, reinforcement learning,
-              heuristic search, apprenticeship learning, mathematical topology, and
-              deep learning. This framework was developed and demoed in 2017.
-            </p>
-
-            <p>
-              While highly robust, the absence of funding at that time prevented
-              scaling this pioneering work further. This was the first successful
-              demonstration of reinforcement learning for real-world autonomous
-              driving.
-            </p>
-
-            <h2 className="text-2xl sm:text-3xl md:text-[2.5vw] lg:text-[3vw] font-medium mt-8 sm:mt-10 md:mt-[6vh]">
+            <h2 
+              className="text-2xl sm:text-3xl md:text-[2.5vw] lg:text-[3vw] font-bold mt-8 sm:mt-10 md:mt-[6vh]"
+              style={{
+                fontFamily: 'Rethink Sans, sans-serif',
+                fontWeight: 700,
+                letterSpacing: '-2%',
+                color: isDarkMode ? 'white' : 'rgba(51, 51, 51, 1)'
+              }}
+            >
               Present Work
             </h2>
 
             <p>
-              Recently, we began addressing the problem of bidirectional negotiation
-              again at a much larger scale to solve the Level-5 autonomous driving
-              problem.
+              Recently we began addressing this problem of bidirectional negotiation again, at a very large scale, to solve the Level-5 autonomous driving problem.
             </p>
 
             <p>
-              In India, many roads are single-lane where vehicles must negotiate by
-              shifting off-road. Solving this requires significantly higher
-              intelligence than contemporary autonomous driving systems.
+             Whether autonomous vehicles should be allowed to execute such a behaviour can be topic for a debate. However, in India, many of the roads single lane road, where only one vehicle can fit at a time, and if another 4-wheeler comes from the other end, then both the vehicles will have to shift to the side of the road to allow each other to pass-through. In case of a truck, the deviation from main road is even more significant, as can be seen in our demo. Furthermore, solving this problem requires much higher level of intelligence that what is demonstrated by the contemporary autonomous driving technology demonstrated by North American and European companies. Usually autonomous vehicles come to a complete halt, unable to compute action to allow negotiation on broader roads, in the presence of opposing or laterally crossing obstacles, let alone negotiating bidirectionally on a single lane road. Humans on the other hand, are quite adept at such bidirectional negotiation, like drivers in India, even at high-speeds.
             </p>
 
             <p>
-              Inspired by biological intelligence, we recently developed a classical
-              motion planning and decision making framework (without deep learning).
-              This was demonstrated in our off-road autonomous driving demo in
-              September 2023, successfully negotiating tight spaces at low speeds.
+              Taking this biological inspiration, very recently we started development of a motion planning and decision making algorithmic framework, present from a classic standpoint, i.e., without using deep learning, in the present work. Very recently we demonstrated this algorithmic framework in our off-road autonomous driving demo in September 2023, where it enabled negotiating very tight spaces, at low speeds, on a single lane road.
             </p>
 
           </div>
@@ -353,25 +318,23 @@ export default function BlogDetail() {
       </section>
       {/* ================= POST SECOND VIDEO TEXT ================= */}
       <section className={`w-full flex justify-center ${
-        isDarkMode ? "bg-black text-white" : "bg-white text-[#1A212F]"
+        isDarkMode ? "bg-black" : "bg-white"
       }`}>
         <div className="w-[90vw] sm:w-[88vw] md:w-[85vw] py-8 sm:py-12 md:py-[8vh]">
 
-          <div className="space-y-4 sm:space-y-6 md:space-y-[4vh] text-base sm:text-lg md:text-[1.5vw] lg:text-[1.9vw] leading-[1.6] sm:leading-[1.65] md:leading-[1.7]">
+          <div 
+            className="space-y-4 sm:space-y-6 md:space-y-[4vh] text-base sm:text-lg md:text-[1.5vw] lg:text-[1.9vw] leading-[1.6] sm:leading-[1.65] md:leading-[1.7]"
+            style={{
+              fontFamily: 'Rethink Sans, sans-serif',
+              fontWeight: 500,
+              letterSpacing: '-2%',
+              color: isDarkMode ? 'white' : 'rgba(93, 93, 93, 1)'
+            }}
+          >
 
             <p>
-              The framework allowed our autonomous vehicle to drive off-roads,
-              on-roads, as well as negotiate tight obstacles, such as avoiding a
-              tractor or a very narrow curved region.
+             The framework allowed our autonomous vehicle to drive off-roads, on-roads, as well as negotiate tight obstacles, such as avoiding a tractor or a very narrow curved region. Furthermore, in the situation around 30-seconds in the video below, it allowed our vehicle to negotiate a tight passage through a vehicle parked on the left, and a bike approaching from the front on the right, successfully, without bringing the vehicle to a complete halt.
             </p>
-
-            <p>
-              Furthermore, in the situation around 30-seconds in the video below,
-              it allowed our vehicle to negotiate a tight passage through a vehicle
-              parked on the left, and a bike approaching from the front on the right,
-              successfully, without bringing the vehicle to a complete halt.
-            </p>
-
           </div>
         </div>
       </section>
@@ -436,43 +399,41 @@ export default function BlogDetail() {
 
       {/* ================= FUTURE WORK ================= */}
       <section className={`w-full flex justify-center ${
-        isDarkMode ? "bg-black text-white" : "bg-white text-[#1A212F]"
+        isDarkMode ? "bg-black" : "bg-white"
       }`}>
         <div className="w-[90vw] sm:w-[88vw] md:w-[85vw] py-8 sm:py-12 md:py-[8vh]">
 
           {/* Section Heading */}
-          <h2 className="text-2xl sm:text-3xl md:text-[2.5vw] lg:text-[3vw] font-medium mb-6 sm:mb-8 md:mb-[5vh]">
+          <h2 
+            className="text-2xl sm:text-3xl md:text-[2.5vw] lg:text-[3vw] font-bold mb-6 sm:mb-8 md:mb-[5vh]"
+            style={{
+              fontFamily: 'Rethink Sans, sans-serif',
+              fontWeight: 700,
+              letterSpacing: '-2%',
+              color: isDarkMode ? 'white' : 'rgba(51, 51, 51, 1)'
+            }}
+          >
             Future Work
           </h2>
 
-          <div className="space-y-4 sm:space-y-6 md:space-y-[4vh] text-base sm:text-lg md:text-[1.5vw] lg:text-[1.9vw] leading-[1.6] sm:leading-[1.65] md:leading-[1.7]">
+          <div 
+            className="space-y-4 sm:space-y-6 md:space-y-[4vh] text-base sm:text-lg md:text-[1.5vw] lg:text-[1.9vw] leading-[1.6] sm:leading-[1.65] md:leading-[1.7]"
+            style={{
+              fontFamily: 'Rethink Sans, sans-serif',
+              fontWeight: 500,
+              letterSpacing: '-2%',
+              color: isDarkMode ? 'white' : 'rgba(93, 93, 93, 1)'
+            }}
+          >
 
             <p>
-              Earlier in 2017 we demonstrated an end-to-end holistic framework capable
-              of negotiating very tight regions using only two cameras mounted on the
-              front bumper of the vehicle, computing directly the control commands
-              from the input images.
+              Earlier in 2017 we demonstrated an end-to-end holistic framework capable of negotiating very tight regions using only two cameras mounted on the front bumper of the vehicle, computing directly the control commands from the input images. This work on the other hand was a classical motion planning and decision making algorithmic framework developed to handle such sophisticated navigation and negotiation tasks at a very large scale. Presently we are further increasing the capabilities of this framework, along with developing deeper variant of this, which will solve Level-5 Bidirectional Negotiation Problem, first in a non-holistic, and then in a holistic manner — taking inspiration from the November 2017 work — mathematically modelling how humans drive.
+
+
             </p>
 
             <p>
-              This work, on the other hand, was a classical motion planning and
-              decision making algorithmic framework developed to handle such
-              sophisticated navigation and negotiation tasks at a very large scale.
-            </p>
-
-            <p>
-              Presently, we are further increasing the capabilities of this framework,
-              along with developing deeper variants of this, which will solve the
-              Level-5 Bidirectional Negotiation Problem — first in a non-holistic, and
-              then in a holistic manner — taking inspiration from the November 2017
-              work and mathematically modelling how humans drive.
-            </p>
-
-            <p>
-              We are researching several avenues for this framework, and for solving
-              the generalized autonomous driving problem, including mathematically
-              modelling human driving behaviour to develop Level-5 autonomous driving
-              technology.
+              We are researching on several avenues for this framework, and for solving generalized autonomous driving problem, including mathematically modelling the human driving behaviour to develop the Level-5 autonomous driving technology.
             </p>
 
           </div>
