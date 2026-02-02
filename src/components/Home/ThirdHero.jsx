@@ -294,6 +294,19 @@ export default function ThirdHero() {
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
   
 // Mobile & tablet scroll animation
 useLayoutEffect(() => {
@@ -329,12 +342,12 @@ useLayoutEffect(() => {
 
       pin: true,
       scrub: false,
-      snap: {
-        snapTo: 1 / (total - 1),
-        duration: 0.45,
-        delay: 0.12,
-        ease: "power1.out",
-      },
+     snap: {
+  snapTo: 1 / (total - 1),
+  duration: { min: 0.35, max: 0.7 },
+  delay: 0.25,
+  ease: "power1.out",
+},
 
       onUpdate: self => {
         const index = Math.round(self.progress * (total - 1));
@@ -364,6 +377,13 @@ useLayoutEffect(() => {
 
         mobileTimelineRef.current = tl;
 
+        videosRef.current.forEach(v => {
+  v.preload = "auto";
+  v.muted = true;
+  v.playsInline = true;
+});
+
+
         // ---- DIAMOND ----
         tl.to(diamondRef.current, {
           left: DIAMOND_POSITIONS_MOBILE[index],
@@ -377,10 +397,10 @@ useLayoutEffect(() => {
         }, 0);
 
         // ---- BG ----
-        tl.to(bgRef.current, {
-          background: SECTION_COLORS[index],
-          duration: 0.5,
-        }, 0);
+        tl.set(bgRef.current, {
+  background: SECTION_COLORS[index],
+});
+
 
         // ---- HIDE PREV CARD ----
         if (cardsRef.current[prev]) {
@@ -407,23 +427,19 @@ useLayoutEffect(() => {
                 gsap.set(cardsRef.current[index], { pointerEvents: "auto" });
               },
             },
-            0.15
+            0.18
           );
         }
 
         // ---- VIDEO SWITCH (HARD SWAP) ----
-        videosRef.current.forEach((v, i) => {
-          if (!v) return;
-          if (i === index) {
-            v.currentTime = 0;
-            v.style.display = "block";
-            gsap.to(v, { opacity: 1, duration: 0.3 });
-            v.play().catch(() => {});
-          } else {
-            gsap.set(v, { opacity: 0, display: "none" });
-            v.pause();
-          }
-        });
+  videosRef.current.forEach(v => {
+  if (!v) return;
+  v.preload = "auto";
+  v.muted = true;
+  v.playsInline = true;
+});
+
+
 
         requestAnimationFrame(() => setActiveIndex(index));
       },
