@@ -87,9 +87,6 @@ export default function ThirdHero() {
   const scrollTriggerRef = useRef(null);
   const mobileScrollTriggerRef = useRef(null);
   const mobileTimelineRef = useRef(null);
-  const isAnimatingRef = useRef(false);
-const PAUSE_TIME = 220; // ms (sweet spot)
-
 
 
   // Detect screen size
@@ -157,12 +154,7 @@ const PAUSE_TIME = 220; // ms (sweet spot)
         scrub: 1,
         markers: false,
         onUpdate: (self) => {
-            if (isAnimatingRef.current) return;
-
-  const index = Math.round(self.progress * (total - 1));
-  if (index === prevDiamondIndexRef.current) return;
-
-  isAnimatingRef.current = true;
+          const progress = self.progress;
 
           // Determine which feature to highlight based on scroll progress
           let diamondIndex;
@@ -308,38 +300,19 @@ useLayoutEffect(() => {
   if (!isMobile && !isTablet) return;
   if (!sectionRef.current) return;
 
-  if (mobileScrollTriggerRef.current) {
-    mobileScrollTriggerRef.current.kill();
-    mobileScrollTriggerRef.current = null;
-  }
+  mobileScrollTriggerRef.current?.kill();
 
   const ctx = gsap.context(() => {
     const total = FEATURES.length;
+    let isAnimating = false;
 
     // RESET
-    gsap.set(cardsRef.current, {
-      opacity: 0,
-      y: 40,
-      pointerEvents: "none",
-    });
-
-    gsap.set(videosRef.current, {
-      opacity: 0,
-      pointerEvents: "none",
-    });
+    gsap.set(cardsRef.current, { opacity: 0, y: 40, pointerEvents: "none" });
+    gsap.set(videosRef.current, { opacity: 0, pointerEvents: "none" });
 
     // SHOW FIRST
-    gsap.set(cardsRef.current[0], {
-      opacity: 1,
-      y: 0,
-      pointerEvents: "auto",
-    });
-
-    gsap.set(videosRef.current[0], {
-      opacity: 1,
-      pointerEvents: "auto",
-    });
-
+    gsap.set(cardsRef.current[0], { opacity: 1, y: 0, pointerEvents: "auto" });
+    gsap.set(videosRef.current[0], { opacity: 1, pointerEvents: "auto" });
     videosRef.current[0]?.play().catch(() => {});
     setActiveIndex(0);
     prevDiamondIndexRef.current = 0;
@@ -347,44 +320,46 @@ useLayoutEffect(() => {
     const ST = ScrollTrigger.create({
       trigger: sectionRef.current,
       start: "top top",
-      end: `+=${window.innerHeight * total * 1.3}`,
+
+      // ✅ FIXED END
+      end: () => `+=${sectionRef.current.offsetHeight * total}`,
+
       pin: true,
       scrub: false,
       snap: {
         snapTo: 1 / (total - 1),
         duration: 0.45,
         delay: 0.12,
-        ease: "power3.out",
+        ease: "power2.out",
       },
+
       onUpdate: self => {
         const index = Math.round(self.progress * (total - 1));
+
+        // ✅ Ignore same section
         if (index === prevDiamondIndexRef.current) return;
+
+        // ✅ Lock animation
+        if (isAnimating) return;
+        isAnimating = true;
 
         const prev = prevDiamondIndexRef.current;
         prevDiamondIndexRef.current = index;
 
-        // Kill previous animation immediately (prevents overlap)
-mobileTimelineRef.current?.kill();
+        // Kill previous timeline
+        mobileTimelineRef.current?.kill();
 
-const tl = gsap.timeline({
-  defaults: { ease: "power2.out" },
-  onComplete: () => {
-    mobileTimelineRef.current = null;
-  }
-});
+        const tl = gsap.timeline({
+          defaults: { ease: "power2.out" },
+          onComplete: () => {
+            // ✅ Pause before allowing next section
+            setTimeout(() => {
+              isAnimating = false;
+            }, 220);
+          },
+        });
 
-mobileTimelineRef.current = tl;
-
-mobileTimelineRef.current = gsap.timeline({
-  defaults: { ease: "power2.out" },
-  onComplete: () => {
-    setTimeout(() => {
-      isAnimatingRef.current = false;
-    }, PAUSE_TIME);
-  }
-});
-
-
+        mobileTimelineRef.current = tl;
 
         // ---- DIAMOND ----
         tl.to(diamondRef.current, {
@@ -405,24 +380,13 @@ mobileTimelineRef.current = gsap.timeline({
         }, 0);
 
         // ---- HIDE PREV CARD ----
-        cardsRef.current.forEach((card, i) => {
-  if (!card || i === index) return;
-  gsap.set(card, {
-    opacity: 0,
-    pointerEvents: "none",
-  });
-});
-
-        
         if (cardsRef.current[prev]) {
           tl.to(cardsRef.current[prev], {
             opacity: 0,
             y: -30,
             duration: 0.25,
             onComplete: () => {
-              gsap.set(cardsRef.current[prev], {
-                pointerEvents: "none",
-              });
+              gsap.set(cardsRef.current[prev], { pointerEvents: "none" });
             },
           }, 0);
         }
@@ -437,16 +401,14 @@ mobileTimelineRef.current = gsap.timeline({
               y: 0,
               duration: 0.35,
               onStart: () => {
-                gsap.set(cardsRef.current[index], {
-                  pointerEvents: "auto",
-                });
+                gsap.set(cardsRef.current[index], { pointerEvents: "auto" });
               },
             },
             0.15
           );
         }
 
-        // ---- VIDEO SWITCH (HARD SWAP = NO OVERLAP) ----
+        // ---- VIDEO SWITCH (HARD SWAP) ----
         videosRef.current.forEach((v, i) => {
           if (!v) return;
           if (i === index) {
@@ -465,14 +427,18 @@ mobileTimelineRef.current = gsap.timeline({
     });
 
     mobileScrollTriggerRef.current = ST;
+
+    // ✅ Refresh after layout settles (important on mobile)
+    setTimeout(() => ScrollTrigger.refresh(), 300);
   }, sectionRef);
 
   return () => {
     mobileScrollTriggerRef.current?.kill();
+    mobileTimelineRef.current?.kill();
     ctx.revert();
   };
 }, [isMobile, isTablet]);
-
+  
 
 
   return (
