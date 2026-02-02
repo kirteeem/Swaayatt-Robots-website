@@ -44,24 +44,26 @@ export default function TimelineSection() {
   useLayoutEffect(() => {
     if (!sectionRef.current) return;
 
-    const st = ScrollTrigger.create({
-      trigger: sectionRef.current,
-      start: "top top",
-      end: () => `+=${sectionRef.current.offsetHeight * 1.2}`,
+const st = ScrollTrigger.create({
+  trigger: sectionRef.current,
+  start: "top top",
+  end: () =>
+    screenSize.isMobile
+      ? `+=${sectionRef.current.offsetHeight * 2.2}`
+      : "+=" + window.innerHeight * 7.5,
 
+  pin: true,
+  scrub: screenSize.isMobile ? 1.2 : 1.8,
 
-      scrub: screenSize.isMobile ? 0.8 : 1.2,
-      pin: true,
-      onUpdate: (self) => {
-        const p = self.progress;
-        progressRef.current = p;
+  onUpdate: (self) => {
+    const p = self.progress;
 
-        // 4 steps for 4 divider points
-        const step = Math.min(
-          TOTAL_STEPS - 1,
-          Math.floor(p * TOTAL_STEPS)
-        );
-        setActiveStep(step);
+    const step = Math.min(
+      TOTAL_STEPS - 1,
+      Math.floor(p * TOTAL_STEPS)
+    );
+
+    setActiveStep(step);
 
         if (!rafRef.current) {
           rafRef.current = requestAnimationFrame(() => {
@@ -338,6 +340,7 @@ useEffect(() => {
       ease: "none",
       scrollTrigger: {
         trigger: ".timeline-wrapper",
+          id: "timeline-mobile",
         start: "top top",
         end: `+=${(total - 0) * 120}%`,
         

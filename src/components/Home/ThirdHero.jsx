@@ -322,7 +322,10 @@ useLayoutEffect(() => {
       start: "top top",
 
       // ✅ FIXED END
-      end: () => `+=${sectionRef.current.offsetHeight * total}`,
+      end: () => `+=${window.innerHeight * total * 2.2}`,
+
+
+
 
       pin: true,
       scrub: false,
@@ -330,7 +333,7 @@ useLayoutEffect(() => {
         snapTo: 1 / (total - 1),
         duration: 0.45,
         delay: 0.12,
-        ease: "power2.out",
+        ease: "power1.out",
       },
 
       onUpdate: self => {
@@ -438,7 +441,7 @@ useLayoutEffect(() => {
     ctx.revert();
   };
 }, [isMobile, isTablet]);
-  
+
 
 
   return (
