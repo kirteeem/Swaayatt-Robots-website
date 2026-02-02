@@ -86,6 +86,11 @@ export default function ThirdHero() {
   const prevVideoIndexRef = useRef(-1);
   const scrollTriggerRef = useRef(null);
   const mobileScrollTriggerRef = useRef(null);
+  const mobileTimelineRef = useRef(null);
+  const isAnimatingRef = useRef(false);
+const PAUSE_TIME = 220; // ms (sweet spot)
+
+
 
   // Detect screen size
   useEffect(() => {
@@ -152,7 +157,12 @@ export default function ThirdHero() {
         scrub: 1,
         markers: false,
         onUpdate: (self) => {
-          const progress = self.progress;
+            if (isAnimatingRef.current) return;
+
+  const index = Math.round(self.progress * (total - 1));
+  if (index === prevDiamondIndexRef.current) return;
+
+  isAnimatingRef.current = true;
 
           // Determine which feature to highlight based on scroll progress
           let diamondIndex;
@@ -344,7 +354,7 @@ useLayoutEffect(() => {
         snapTo: 1 / (total - 1),
         duration: 0.45,
         delay: 0.12,
-        ease: "power2.out",
+        ease: "power3.out",
       },
       onUpdate: self => {
         const index = Math.round(self.progress * (total - 1));
@@ -353,7 +363,28 @@ useLayoutEffect(() => {
         const prev = prevDiamondIndexRef.current;
         prevDiamondIndexRef.current = index;
 
-        const tl = gsap.timeline({ defaults: { ease: "power2.out" } });
+        // Kill previous animation immediately (prevents overlap)
+mobileTimelineRef.current?.kill();
+
+const tl = gsap.timeline({
+  defaults: { ease: "power2.out" },
+  onComplete: () => {
+    mobileTimelineRef.current = null;
+  }
+});
+
+mobileTimelineRef.current = tl;
+
+mobileTimelineRef.current = gsap.timeline({
+  defaults: { ease: "power2.out" },
+  onComplete: () => {
+    setTimeout(() => {
+      isAnimatingRef.current = false;
+    }, PAUSE_TIME);
+  }
+});
+
+
 
         // ---- DIAMOND ----
         tl.to(diamondRef.current, {
@@ -374,6 +405,15 @@ useLayoutEffect(() => {
         }, 0);
 
         // ---- HIDE PREV CARD ----
+        cardsRef.current.forEach((card, i) => {
+  if (!card || i === index) return;
+  gsap.set(card, {
+    opacity: 0,
+    pointerEvents: "none",
+  });
+});
+
+        
         if (cardsRef.current[prev]) {
           tl.to(cardsRef.current[prev], {
             opacity: 0,
