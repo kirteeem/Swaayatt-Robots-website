@@ -298,217 +298,141 @@ useLayoutEffect(() => {
   if (!isMobile && !isTablet) return;
   if (!sectionRef.current) return;
 
-  // Kill any existing scroll trigger first
   if (mobileScrollTriggerRef.current) {
     mobileScrollTriggerRef.current.kill();
     mobileScrollTriggerRef.current = null;
   }
 
   const ctx = gsap.context(() => {
-    const totalCards = FEATURES.length;
+    const total = FEATURES.length;
 
-    const sectionHeight = window.innerHeight * totalCards * 1.5;
-
-    // Initialize cards
+    // RESET
     gsap.set(cardsRef.current, {
-      y: "100%",
       opacity: 0,
-      display: "none",
+      y: 40,
+      pointerEvents: "none",
     });
 
-    // Initialize videos
     gsap.set(videosRef.current, {
       opacity: 0,
-      display: "none",
+      pointerEvents: "none",
     });
 
-    // Show first card
-    if (cardsRef.current[0]) {
-      gsap.set(cardsRef.current[0], {
-        y: "0%",
-        opacity: 1,
-        display: "block",
-      });
-    }
+    // SHOW FIRST
+    gsap.set(cardsRef.current[0], {
+      opacity: 1,
+      y: 0,
+      pointerEvents: "auto",
+    });
 
-    // Show first video
-    if (videosRef.current[0]) {
-      gsap.set(videosRef.current[0], {
-        opacity: 1,
-        display: "block",
-      });
-      videosRef.current[0].play().catch(e =>
-        console.log("Auto-play prevented:", e)
-      );
-    }
+    gsap.set(videosRef.current[0], {
+      opacity: 1,
+      pointerEvents: "auto",
+    });
 
-    // Initialize background
-    if (bgRef.current) {
-      gsap.set(bgRef.current, {
-        background: SECTION_COLORS[0],
-      });
-    }
-
-    // Initialize diamond
-    if (diamondRef.current) {
-      gsap.set(diamondRef.current, {
-        left: DIAMOND_POSITIONS_MOBILE[0],
-      });
-    }
-
-    // Initialize progress bar
-    if (progressBarRef.current) {
-      gsap.set(progressBarRef.current, {
-        width: "0%",
-      });
-    }
-
-    // Reset state
-    prevDiamondIndexRef.current = 0;
-    prevVideoIndexRef.current = 0;
+    videosRef.current[0]?.play().catch(() => {});
     setActiveIndex(0);
+    prevDiamondIndexRef.current = 0;
 
-    const scrollTrigger = ScrollTrigger.create({
+    const ST = ScrollTrigger.create({
       trigger: sectionRef.current,
       start: "top top",
-      end: `+=${sectionHeight}`,
+      end: `+=${window.innerHeight * total * 1.3}`,
       pin: true,
       scrub: false,
       snap: {
-  snapTo: 1 / (totalCards - 1),
-  duration: 0.45,              // smooth settle time
-  delay: 0.08,                 // 🔥 THIS creates the pause feel
-  ease: "power2.out",
-},
-
-      markers: false,
-
-      onUpdate: (self) => {
-        const progress = self.progress;
-        const direction = self.direction; // 1 = down, -1 = up
-        const sectionSize = 1 / totalCards;
-
-        const currentIndex = Math.round(progress * (totalCards - 1));
-if (currentIndex === prevDiamondIndexRef.current) return;
-
-
-        if (currentIndex === prevDiamondIndexRef.current) return;
+        snapTo: 1 / (total - 1),
+        duration: 0.45,
+        delay: 0.12,
+        ease: "power2.out",
+      },
+      onUpdate: self => {
+        const index = Math.round(self.progress * (total - 1));
+        if (index === prevDiamondIndexRef.current) return;
 
         const prev = prevDiamondIndexRef.current;
-        const current = currentIndex;
+        prevDiamondIndexRef.current = index;
 
-        // Update diamond position
-        if (diamondRef.current) {
-          gsap.to(diamondRef.current, {
-            left: DIAMOND_POSITIONS_MOBILE[current],
-            duration: ANIMATION_TIMINGS.CARD_HIDE,
-            ease: "power2.out",
-          });
-        }
+        const tl = gsap.timeline({ defaults: { ease: "power2.out" } });
 
-        // Update progress bar
-        if (progressBarRef.current) {
-          gsap.to(progressBarRef.current, {
-            width: PROGRESS_BAR_STOPS_MOBILE[current],
-            duration: ANIMATION_TIMINGS.CARD_HIDE,
-            ease: "power2.out",
-          });
-        }
+        // ---- DIAMOND ----
+        tl.to(diamondRef.current, {
+          left: DIAMOND_POSITIONS_MOBILE[index],
+          duration: 0.3,
+        }, 0);
 
-        // Update background
-        if (bgRef.current) {
-          gsap.to(bgRef.current, {
-            background: SECTION_COLORS[current],
-            duration: 0.6,
-            ease: "power2.inOut",
-          });
-        }
+        // ---- PROGRESS BAR ----
+        tl.to(progressBarRef.current, {
+          width: PROGRESS_BAR_STOPS_MOBILE[index],
+          duration: 0.3,
+        }, 0);
 
-        // Hide previous card (direction-aware)
-        if (prev !== null && cardsRef.current[prev]) {
-          gsap.to(cardsRef.current[prev], {
-            y: direction === 1 ? "-40%" : "40%",
+        // ---- BG ----
+        tl.to(bgRef.current, {
+          background: SECTION_COLORS[index],
+          duration: 0.5,
+        }, 0);
+
+        // ---- HIDE PREV CARD ----
+        if (cardsRef.current[prev]) {
+          tl.to(cardsRef.current[prev], {
             opacity: 0,
-            duration: ANIMATION_TIMINGS.CARD_HIDE,
+            y: -30,
+            duration: 0.25,
             onComplete: () => {
-              gsap.set(cardsRef.current[prev], { display: "none" });
-              if (videosRef.current[prev]) {
-                videosRef.current[prev].pause();
-              }
+              gsap.set(cardsRef.current[prev], {
+                pointerEvents: "none",
+              });
             },
-          });
+          }, 0);
         }
 
-        // Show current card (direction-aware)
-        if (cardsRef.current[current]) {
-          gsap.fromTo(
-            cardsRef.current[current],
-            {
-              y: direction === 1 ? "100%" : "-100%",
-              opacity: 0,
-              display: "block",
-            },
-            {
-              y: "0%",
-              opacity: 1,
-              duration: ANIMATION_TIMINGS.CARD_SHOW,
-              ease: "power3.out",
-            }
-          );
-        }
-
-        // Hide previous video
-        if (prev !== null && videosRef.current[prev]) {
-          videosRef.current.forEach((v, idx) => {
-  if (!v) return;
-  if (idx === current) {
-    v.style.display = "block";
-    v.currentTime = 0;
-    v.play().catch(() => {});
-  } else {
-    v.pause();
-    v.style.display = "none";
-  }
-});
-
-        }
-
-        // Show current video
-        if (videosRef.current[current]) {
-          gsap.fromTo(
-            videosRef.current[current],
-            { opacity: 0, display: "block" },
+        // ---- SHOW CURRENT CARD ----
+        if (cardsRef.current[index]) {
+          tl.fromTo(
+            cardsRef.current[index],
+            { opacity: 0, y: 30 },
             {
               opacity: 1,
-              duration: 0.4,
-              delay: 0.1,
+              y: 0,
+              duration: 0.35,
               onStart: () => {
-                videosRef.current[current]
-                  ?.play()
-                  .catch(e => console.log("Auto-play prevented:", e));
+                gsap.set(cardsRef.current[index], {
+                  pointerEvents: "auto",
+                });
               },
-            }
+            },
+            0.15
           );
         }
 
-        if (activeIndex !== current) {
-  requestAnimationFrame(() => setActiveIndex(current));
-}
+        // ---- VIDEO SWITCH (HARD SWAP = NO OVERLAP) ----
+        videosRef.current.forEach((v, i) => {
+          if (!v) return;
+          if (i === index) {
+            v.currentTime = 0;
+            v.style.display = "block";
+            gsap.to(v, { opacity: 1, duration: 0.3 });
+            v.play().catch(() => {});
+          } else {
+            gsap.set(v, { opacity: 0, display: "none" });
+            v.pause();
+          }
+        });
 
+        requestAnimationFrame(() => setActiveIndex(index));
       },
     });
 
-    mobileScrollTriggerRef.current = scrollTrigger;
+    mobileScrollTriggerRef.current = ST;
   }, sectionRef);
 
   return () => {
-    if (mobileScrollTriggerRef.current) {
-      mobileScrollTriggerRef.current.kill();
-      mobileScrollTriggerRef.current = null;
-    }
+    mobileScrollTriggerRef.current?.kill();
     ctx.revert();
   };
 }, [isMobile, isTablet]);
+
 
 
   return (
@@ -612,12 +536,12 @@ if (currentIndex === prevDiamondIndexRef.current) return;
           <div className="relative z-30 w-full px-4 pt-20 pb-40">
             <div className="relative w-full min-h-[90vh] overflow-hidden">
               {FEATURES.map((item, i) => (
-                <div
-                  key={i}
-                  ref={el => (cardsRef.current[i] = el)}
-                  className="absolute top-0 left-0 w-full"
-                  style={{ display: i === 0 ? "block" : "none" }}
-                >
+               <div
+  key={i}
+  ref={el => (cardsRef.current[i] = el)}
+  className="absolute top-0 left-0 w-full"
+>
+
                   <div className="rounded-2xl p-4 mb-8">
                     <h3 className="text-2xl font-bold text-white mb-4 drop-shadow-lg">
                       {item.title}
@@ -629,7 +553,7 @@ if (currentIndex === prevDiamondIndexRef.current) return;
 
                   <div className="overflow-hidden rounded-xl mt-6 shadow-2xl">
                     <video
-                      ref={el => (videosRef.current[i] = el)}
+                        ref={el => (videosRef.current[i] = el)}
                       src={item.video}
                       className="w-full h-[450px] object-cover"
                       muted
