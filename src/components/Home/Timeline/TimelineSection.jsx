@@ -17,7 +17,38 @@ export default function TimelineSection() {
     isDesktop: true
   });
   const [activeStep, setActiveStep] = useState(0);
+  const [imagesLoaded, setImagesLoaded] = useState(false);
   const TOTAL_STEPS = 6;
+  
+  // Preload images to prevent layout shift
+  useEffect(() => {
+    const imageSources = [
+      "/images/Blogs/Homepage-1.webp",
+      "/images/Blogs/Blog-1.webp",
+      "/images/media/news/n1.webp",
+    ];
+    
+    let loadedCount = 0;
+    const totalImages = imageSources.length;
+    
+    const imagePromises = imageSources.map(src => {
+      return new Promise((resolve) => {
+        const img = new Image();
+        img.onload = () => resolve();
+        img.onerror = () => resolve(); // Resolve even on error to prevent blocking
+        img.src = src;
+      });
+    });
+    
+    Promise.all(imagePromises).then(() => {
+      setImagesLoaded(true);
+      // Refresh ScrollTrigger after images load
+      setTimeout(() => {
+        ScrollTrigger.refresh();
+      }, 100);
+    });
+  }, []);
+  
   // Detect screen size
   useEffect(() => {
     const checkScreenSize = () => {
@@ -42,28 +73,29 @@ export default function TimelineSection() {
   }, []);
 
   useLayoutEffect(() => {
-    if (!sectionRef.current) return;
+    if (!sectionRef.current || !imagesLoaded) return;
 
-const st = ScrollTrigger.create({
-  trigger: sectionRef.current,
-  start: "top top",
-  end: () =>
-    screenSize.isMobile
-      ? `+=${sectionRef.current.offsetHeight * 2.2}`
-      : "+=" + window.innerHeight * 7.5,
+    const st = ScrollTrigger.create({
+      trigger: sectionRef.current,
+      start: "top top",
+      end: () =>
+        screenSize.isMobile
+          ? `+=${sectionRef.current.offsetHeight * 2.2}`
+          : "+=" + window.innerHeight * 7.5,
 
-  pin: true,
-  scrub: screenSize.isMobile ? 1.2 : 1.8,
+      pin: true,
+      scrub: screenSize.isMobile ? 1.2 : 1.8,
+      invalidateOnRefresh: true,
 
-  onUpdate: (self) => {
-    const p = self.progress;
+      onUpdate: (self) => {
+        const p = self.progress;
 
-    const step = Math.min(
-      TOTAL_STEPS - 1,
-      Math.floor(p * TOTAL_STEPS)
-    );
+        const step = Math.min(
+          TOTAL_STEPS - 1,
+          Math.floor(p * TOTAL_STEPS)
+        );
 
-    setActiveStep(step);
+        setActiveStep(step);
 
         if (!rafRef.current) {
           rafRef.current = requestAnimationFrame(() => {
@@ -78,7 +110,16 @@ const st = ScrollTrigger.create({
       st.kill();
       if (rafRef.current) cancelAnimationFrame(rafRef.current);
     };
-  }, [screenSize]);
+  }, [screenSize, imagesLoaded]);
+
+  // Don't render until images are loaded
+  if (!imagesLoaded) {
+    return (
+      <section className="relative w-full h-screen bg-black overflow-hidden flex items-center justify-center">
+        <div className="text-white">Loading...</div>
+      </section>
+    );
+  }
 
   return (
     <section
@@ -87,7 +128,6 @@ const st = ScrollTrigger.create({
     >
       <BlogNodes progress={progress} activeStep={activeStep} screenSize={screenSize} />
       <CenterFeature screenSize={screenSize} />
-      {/* <RoadTimeline progress={progress} activeStep={activeStep} screenSize={screenSize} /> */}
 
       <style jsx>{`
         @keyframes slideUp {
@@ -101,7 +141,6 @@ const st = ScrollTrigger.create({
         .road-wrap {
           position: absolute;
           inset: 0;
-
           perspective: 1000px;
           pointer-events: none;
         }
@@ -226,7 +265,6 @@ function BlogNodes({ activeStep, screenSize }) {
     "20 Aug 2025",
     "30 Jul 2025",
     "08 Jul 2025",
-
     "23 Apr 2025",
     "11 Sep 2025",
     "11 Sep 2025",
@@ -256,21 +294,18 @@ function BlogNodes({ activeStep, screenSize }) {
       { x: -2560, scale: 0.6, opacity: 0, z: 1 },
       { x: -1560, scale: 0.4, opacity: 0, z: 1 },
       { x: -650, scale: 0.4, opacity: 0.25, z: 5 },
-
       { x: 0, scale: 1, opacity: 1, z: 20 },
-
       { x: 650, scale: 0.4, opacity: 0.25, z: 5 },
       { x: 1560, scale: 0.6, opacity: 0.25, z: 1 },
       { x: 2560, scale: 0.6, opacity: 0, z: 1 },
     ];
   };
 
-  /* ================= desktop  GSAP ANIMATION ================= */
+  /* ================= desktop GSAP ANIMATION ================= */
   useLayoutEffect(() => {
     const slots = getSlots();
-    const CENTER = Math.floor(slots.length / 2); //  3
+    const CENTER = Math.floor(slots.length / 2);
     const total = images.length;
-
 
     let nextCenter = centerIndex;
 
@@ -280,8 +315,6 @@ function BlogNodes({ activeStep, screenSize }) {
       gsap.killTweensOf(el);
 
       let offset = i - activeStep;
-      // if (offset > CENTER) offset -= total;
-      // if (offset < -CENTER) offset += total;
 
       const slotIndex = offset + CENTER;
       const slot = slots[slotIndex];
@@ -295,7 +328,6 @@ function BlogNodes({ activeStep, screenSize }) {
         return;
       }
 
-
       if (slotIndex === CENTER) nextCenter = i;
 
       gsap.to(el, {
@@ -307,18 +339,14 @@ function BlogNodes({ activeStep, screenSize }) {
         ease: "power3.out",
         overwrite: "auto",
       });
-
-
     });
 
     if (nextCenter !== centerIndex) setCenterIndex(nextCenter);
   }, [activeStep, screenSize]);
 
-useEffect(() => {
-  ScrollTrigger.config({ ignoreMobileResize: true });
-}, []);
-
-
+  useEffect(() => {
+    ScrollTrigger.config({ ignoreMobileResize: true });
+  }, []);
 
   /* ================= MOBILE GSAP ANIMATION ================= */
   useLayoutEffect(() => {
@@ -335,34 +363,29 @@ useEffect(() => {
       });
     });
 
-    gsap.to(items, {
+    const tl = gsap.to(items, {
       y: `-=${(total - 1) * GAP}`,
       ease: "none",
       scrollTrigger: {
         trigger: ".timeline-wrapper",
-          id: "timeline-mobile",
+        id: "timeline-mobile",
         start: "top top",
         end: `+=${(total - 0) * 120}%`,
-        
         scrub: 0.5,
         anticipatePin: 1,
         invalidateOnRefresh: true,
       },
     });
-return () => {
-  ScrollTrigger.getById("timeline-mobile")?.kill();
-};
 
+    return () => {
+      ScrollTrigger.getById("timeline-mobile")?.kill();
+    };
   }, [screenSize]);
 
-
-
   // MOBILE COMPONENT - SIMPLE VERSION
-
   if (screenSize.isMobile) {
     return (
       <section className="relative w-full h-screen bg-[#0b0f0c] timeline-wrapper overflow-hidden">
-
         {/* TIMELINE LINE */}
         <div className="absolute left-6 top-0 bottom-0 w-[2px] bg-white/30" />
 
@@ -381,12 +404,12 @@ return () => {
               </div>
 
               <div className="ml-12 mr-6 bg-black/50 rounded-xl overflow-hidden border border-white/20">
-
                 <div className="relative group">
                   <img
                     src={src}
                     className="w-full h-[200px] object-cover"
                     draggable={false}
+                    loading="eager"
                   />
 
                   <div className="absolute inset-0 bg-black/30" />
@@ -424,19 +447,12 @@ return () => {
     );
   }
 
-
-
-
   /* ================= Desktop Animation JSX ================= */
   return (
     <div className="absolute inset-0 overflow-hidden pointer-events-none">
-      {/* GLOW */}
-      {/* <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(0, 255, 72, 0.02)_0%,rgba(0, 0, 0, 0.35)_65%)]" /> */}
-
       {/* CARDS */}
       <div className="absolute inset-0 flex items-center justify-center">
         <div className="relative w-full h-[460px] flex items-center justify-center isolate">
-
           {images.map((src, i) => (
             <div
               key={i}
@@ -447,18 +463,15 @@ return () => {
                 maxWidth: screenSize.isMobile ? 460 : 870,
                 height: "auto",
               }}
-
             >
               <div
-                className={`relative sm:w-full sm:h-full h-[50vh]  sm:mt-20 mt-[40vh] sm:p-0 p-2  overflow-hidden ${centerIndex === i
-                  ? ""
-                  : ""
-                  }`}
+                className={`relative sm:w-full sm:h-full h-[50vh] sm:mt-20 mt-[40vh] sm:p-0 p-2 overflow-hidden`}
               >
                 <img
                   src={src}
                   className="w-full h-full object-cover object-fit object-center"
                   draggable={false}
+                  loading="eager"
                 />
 
                 <div className="absolute inset-0 bg-black/10" />
@@ -475,14 +488,9 @@ return () => {
         </div>
       </div>
 
-
-
-
-
-
       {/* CENTER DATE - DESKTOP ONLY */}
       {centerIndex !== null && screenSize.isDesktop && (
-        <div className="absolute top-[5%]  left-1/2 -translate-x-1/2 z-40">
+        <div className="absolute top-[5%] left-1/2 -translate-x-1/2 z-40">
           <div className="text-center px-6 py-3 rounded-lg backdrop-blur-sm">
             <p className="text-white font-mono text-lg font-semibold">
               {DESKTOP_DATES[centerIndex]}
@@ -493,28 +501,18 @@ return () => {
 
       {/* CENTER TEXT */}
       {centerIndex !== null && (
-        <div className="absolute left-1/2 -translate-x-1/2   sm:bottom-[20vh] bottom-32 mt-[10vh] z-30 px-4 text-center w-[90vw] sm:w-[80vw] md:w-[75vw] lg:w-[40vw] xl:w-[35vw]">
+        <div className="absolute left-1/2 -translate-x-1/2 sm:bottom-[20vh] bottom-32 mt-[10vh] z-30 px-4 text-center w-[90vw] sm:w-[80vw] md:w-[75vw] lg:w-[40vw] xl:w-[35vw]">
           <p
             style={{ fontFamily: "Rethink, sans-serif" }}
-            className=" text-white whitespace-pre-line text-sm sm:text-base lg:text-lg leading-[10%] max-w-[620px] mx-auto">
+            className="text-white whitespace-pre-line text-sm sm:text-base lg:text-lg leading-[10%] max-w-[620px] mx-auto"
+          >
             {CENTER_TEXTS[centerIndex]}
           </p>
         </div>
       )}
-
     </div>
   );
 }
-
-
-
-
-
-
-
-
-
-
 
 /* ================= CENTER FEATURE (GRID LINES) ================= */
 function CenterFeature({ screenSize }) {
@@ -525,140 +523,10 @@ function CenterFeature({ screenSize }) {
         <>
           <div className="absolute top-[5%] bottom-[18%] left-[26.4%] w-px bg-white/30 pointer-events-none" />
           <div className="absolute top-[5%] bottom-[16%] left-[73.6%] w-px bg-white/30 pointer-events-none" />
-
-
           <div className="absolute left-0 top-[12.3%] w-full h-px bg-white/20 pointer-events-none" />
           <div className="absolute left-0 top-[62.8%] w-full h-px bg-white/20 pointer-events-none" />
         </>
       )}
-
     </>
   );
 }
-
-
-
-
-
-// function RoadTimeline({ progress, screenSize }) {
-//   const carRefs = useRef([]);
-//   const wrapperRef = useRef(null);
-
-
-//   const CAR_CONFIGS = [
-//     {
-//       src: "/images/ani-mediea/image (1).png",
-//       name: "bolero",
-//       start: 0,
-//       end: 0.35,
-//       widthClass: "w-[15vw]",
-//     },
-//     {
-//       src: "/images/ani-mediea/image.png",
-//       name: "thar",
-//       start: 0.30,
-//       end: 0.68,
-//       widthClass: "w-[15vw]",
-//     },
-//     {
-//       src: "/images/ani-mediea/image (1).png",
-//       name: "future",
-//       start: 0.64,
-//       end: 1,
-//       widthClass: "w-[15vw]",
-//     },
-//   ];
-
-//   const getActiveCarIndex = (progress) => {
-//     if (progress < 0.33) return 0;
-//     if (progress < 0.66) return 1;
-//     return 2;
-//   };
-
-
-
-
-
-//   const SWITCH_RANGE = 0.05;
-
-//   useLayoutEffect(() => {
-//     if (!wrapperRef.current) return;
-
-//     const width = wrapperRef.current.offsetWidth;
-
-//     gsap.set(carRefs.current, { yPercent: -50 });
-
-//     const x = width * progress;
-
-//     CAR_CONFIGS.forEach((car, i) => {
-//       const el = carRefs.current[i];
-//       if (!el) return;
-
-//       let opacity = 0;
-
-//       if (progress >= car.start && progress <= car.end) {
-//         opacity = 1;
-//       }
-
-//       if (progress > car.end - SWITCH_RANGE && progress <= car.end) {
-//         opacity =
-//           (car.end - progress) / SWITCH_RANGE;
-//       }
-
-//       if (progress >= car.start && progress < car.start + SWITCH_RANGE) {
-//         opacity =
-//           (progress - car.start) / SWITCH_RANGE;
-//       }
-
-//       opacity = Math.max(0, Math.min(1, opacity));
-
-//       gsap.set(el, {
-//         x,
-//         autoAlpha: opacity,
-//       });
-//     });
-//   }, [progress]);
-
-
-
-//   if (screenSize.isMobile) return null;
-
-
-
-//   return (
-//     <div
-//       ref={wrapperRef}
-//       className="fixed bottom-0 left-0 right-0 h-[25vh] z-[999] pointer-events-none overflow-visible"
-//     >
-//       <div className="absolute mt-16 left-0 right-0 h-[13vh] z-10 road-wrap">
-//         <div className="road-surface" />
-//         <div className="road-center">
-//           <div className="road-dash" />
-//         </div>
-//       </div>
-
-//       <div
-//         className="absolute left-[-20px] right-0 bg-black z-[5]"
-//         style={{ top: "12.5vh", height: "9.5vh" }}
-//       />
-
-
-//       {CAR_CONFIGS.map((car, i) => (
-//         <img
-//           key={car.name}
-//           ref={(el) => (carRefs.current[i] = el)}
-//           src={car.src}
-//           className={`absolute top-[14vh] ${car.widthClass} z-50`}
-//           style={{
-//             left: 0,
-//             opacity: 0,
-//             duration: 1,
-//             filter: "drop-shadow(0 0 12px rgba(255,255,255,0.35))",
-//             willChange: "transform, opacity",
-//           }}
-//           alt={car.name}
-//         />
-//       ))}
-//     </div>
-//   );
-// }
