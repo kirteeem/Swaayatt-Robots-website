@@ -1,28 +1,38 @@
 export default function HomeHero() {
   return (
-    <section className="relative min-h-screen w-full overflow-hidden bg-black">
+    <section
+      className="
+        relative
+        min-h-[70vh]
+        sm:min-h-[70vh]
+        lg:min-h-screen
+        w-full
+        overflow-hidden
+        bg-black
+      "
+    >
 
-      {/* ================= BACKGROUND IMAGE ================= */}
- <video
-  className="
-    absolute inset-0
-    w-full h-full
-    object-cover object-center
-    z-0
-    sm:scale-[1.24]    scale-[1.32]   md:scale-[1.32]     /* 👈 zoom level */
-    saturate-[0.85]
-    contrast-[1.05]
-    brightness-[0.85]
-  "
-  autoPlay
-  muted
-  loop
-  playsInline
->
-  <source src="/images/Home/Landing-Final-V1.mp4" type="video/webm" />
-</video>
-
-     
+      {/* ================= BACKGROUND VIDEO ================= */}
+      <video
+        className="
+          absolute inset-0
+          w-full h-full
+          object-cover object-center
+          z-0
+          scale-[1.32]
+          sm:scale-[1.24]
+          md:scale-[1.32]
+          saturate-[0.85]
+          contrast-[1.05]
+          brightness-[0.85]
+        "
+        autoPlay
+        muted
+        loop
+        playsInline
+      >
+        <source src="/images/Home/Landing-Final-V1.mp4" type="video/webm" />
+      </video>
 
       {/* ================= CONTENT ================= */}
       <div
@@ -32,7 +42,9 @@ export default function HomeHero() {
           mx-auto
           px-5 sm:px-8 lg:px-16
           flex items-center
-          min-h-screen
+          min-h-[65vh]
+          sm:min-h-[70vh]
+          lg:min-h-screen
           text-center lg:text-left
         "
       >
@@ -66,7 +78,6 @@ export default function HomeHero() {
               tracking-[-0.02em]
               text-white
               -mt-1 lg:-mt-2
-              
             "
             style={{ fontFamily: "Montserrat, sans-serif" }}
           >
@@ -97,9 +108,6 @@ export default function HomeHero() {
       {/* Bottom blur gradient */}
       <div className="absolute bottom-0 left-0 w-full h-56 sm:h-14 lg:h-72 bg-gradient-to-t from-black via-black/0 to-transparent z-20 pointer-events-none" />
 
-      {/* ================= BOTTOM FADE ================= */}
-
     </section>
   );
 }
-  ///////////////////////////////////////////////////////////////////////////homer hero

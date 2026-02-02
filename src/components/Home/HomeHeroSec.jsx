@@ -5,18 +5,19 @@ export default function HomeHero() {
       {/* ================= BACKGROUND IMAGE ================= */}
       <div className="absolute inset-0 z-0 overflow-hidden">
   <img
-    src="/images/Home/mission.png"
-    alt="Autonomous vehicles"
-    className="
-      w-full
-      h-full
-      object-cover
-      object-center
-      scale-100
-      md:object-bottom
-      md:scale-[1]
-    "
-  />
+          src="/images/Home/mission.png"
+          alt="Autonomous vehicles"
+          className="
+            w-full
+            h-full
+            object-cover
+             [object-position:11%_center]
+            object-left        /* 📱 mobile → show LEFT side */
+            md:object-bottom   /* 💻 desktop → bottom focus */
+            scale-100
+            md:scale-[1]
+          "
+        />
 </div>
 
 

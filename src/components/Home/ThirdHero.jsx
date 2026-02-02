@@ -373,12 +373,14 @@ useLayoutEffect(() => {
       start: "top top",
       end: `+=${sectionHeight}`,
       pin: true,
-      scrub: true,
+      scrub: false,
       snap: {
-        snapTo: 1 / (totalCards - 1),
-        duration: { min: 0.25, max: 0.6 },
-        ease: "power1.inOut",
-      },
+  snapTo: 1 / (totalCards - 1),
+  duration: 0.45,              // smooth settle time
+  delay: 0.08,                 // 🔥 THIS creates the pause feel
+  ease: "power2.out",
+},
+
       markers: false,
 
       onUpdate: (self) => {
@@ -386,8 +388,9 @@ useLayoutEffect(() => {
         const direction = self.direction; // 1 = down, -1 = up
         const sectionSize = 1 / totalCards;
 
-        let currentIndex = Math.floor(progress / sectionSize);
-        currentIndex = Math.min(currentIndex, totalCards - 1);
+        const currentIndex = Math.round(progress * (totalCards - 1));
+if (currentIndex === prevDiamondIndexRef.current) return;
+
 
         if (currentIndex === prevDiamondIndexRef.current) return;
 
@@ -456,13 +459,18 @@ useLayoutEffect(() => {
 
         // Hide previous video
         if (prev !== null && videosRef.current[prev]) {
-          gsap.to(videosRef.current[prev], {
-            opacity: 0,
-            duration: 0.25,
-            onComplete: () => {
-              gsap.set(videosRef.current[prev], { display: "none" });
-            },
-          });
+          videosRef.current.forEach((v, idx) => {
+  if (!v) return;
+  if (idx === current) {
+    v.style.display = "block";
+    v.currentTime = 0;
+    v.play().catch(() => {});
+  } else {
+    v.pause();
+    v.style.display = "none";
+  }
+});
+
         }
 
         // Show current video
@@ -483,8 +491,10 @@ useLayoutEffect(() => {
           );
         }
 
-        setActiveIndex(current);
-        prevDiamondIndexRef.current = current;
+        if (activeIndex !== current) {
+  requestAnimationFrame(() => setActiveIndex(current));
+}
+
       },
     });
 
