@@ -342,12 +342,12 @@ useLayoutEffect(() => {
 
       pin: true,
       scrub: false,
-     snap: {
-  snapTo: 1 / (total - 1),
-  duration: { min: 0.35, max: 0.7 },
-  delay: 0.25,
-  ease: "power1.out",
-},
+      snap: {
+        snapTo: 1 / (total - 1),
+        duration: 0.45,
+        delay: 0.12,
+        ease: "power1.out",
+      },
 
       onUpdate: self => {
         const index = Math.round(self.progress * (total - 1));
@@ -432,13 +432,21 @@ useLayoutEffect(() => {
         }
 
         // ---- VIDEO SWITCH (HARD SWAP) ----
-  videosRef.current.forEach(v => {
+        videosRef.current.forEach((v, i) => {
   if (!v) return;
-  v.preload = "auto";
-  v.muted = true;
-  v.playsInline = true;
-});
 
+  if (i === index) {
+    v.style.display = "block";
+    gsap.to(v, { opacity: 1, duration: 0.25 });
+
+    if (v.paused) {
+      v.play().catch(() => {});
+    }
+  } else {
+    gsap.set(v, { opacity: 0, display: "none" });
+    v.pause();
+  }
+});
 
 
         requestAnimationFrame(() => setActiveIndex(index));
