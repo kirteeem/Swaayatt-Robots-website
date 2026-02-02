@@ -47,7 +47,8 @@ export default function TimelineSection() {
     const st = ScrollTrigger.create({
       trigger: sectionRef.current,
       start: "top top",
-      end: () => "+=" + window.innerHeight * 4.5,
+      end: () => `+=${sectionRef.current.offsetHeight * 1.2}`,
+
 
       scrub: screenSize.isMobile ? 0.8 : 1.2,
       pin: true,
@@ -311,6 +312,9 @@ function BlogNodes({ activeStep, screenSize }) {
     if (nextCenter !== centerIndex) setCenterIndex(nextCenter);
   }, [activeStep, screenSize]);
 
+useEffect(() => {
+  ScrollTrigger.config({ ignoreMobileResize: true });
+}, []);
 
 
 
@@ -336,14 +340,16 @@ function BlogNodes({ activeStep, screenSize }) {
         trigger: ".timeline-wrapper",
         start: "top top",
         end: `+=${(total - 0) * 120}%`,
-        pin: true,
+        
         scrub: 0.5,
         anticipatePin: 1,
         invalidateOnRefresh: true,
       },
     });
+return () => {
+  ScrollTrigger.getById("timeline-mobile")?.kill();
+};
 
-    return () => ScrollTrigger.getAll().forEach(t => t.kill());
   }, [screenSize]);
 
 
