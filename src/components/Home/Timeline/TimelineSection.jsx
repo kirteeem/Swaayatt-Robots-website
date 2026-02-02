@@ -28,21 +28,17 @@ export default function TimelineSection() {
       "/images/media/news/n1.webp",
     ];
     
-    let loadedCount = 0;
-    const totalImages = imageSources.length;
-    
     const imagePromises = imageSources.map(src => {
       return new Promise((resolve) => {
         const img = new Image();
         img.onload = () => resolve();
-        img.onerror = () => resolve(); // Resolve even on error to prevent blocking
+        img.onerror = () => resolve();
         img.src = src;
       });
     });
     
     Promise.all(imagePromises).then(() => {
       setImagesLoaded(true);
-      // Refresh ScrollTrigger after images load
       setTimeout(() => {
         ScrollTrigger.refresh();
       }, 100);
@@ -89,6 +85,7 @@ export default function TimelineSection() {
 
       onUpdate: (self) => {
         const p = self.progress;
+        progressRef.current = p;
 
         const step = Math.min(
           TOTAL_STEPS - 1,
@@ -136,100 +133,6 @@ export default function TimelineSection() {
           50% { transform: translateY(-64px); }
           75% { transform: translateY(-96px); }
           100% { transform: translateY(0); }
-        }
-
-        .road-wrap {
-          position: absolute;
-          inset: 0;
-          perspective: 1000px;
-          pointer-events: none;
-        }
-
-        .road-surface {
-          position: absolute;
-          inset: 0;
-          background: linear-gradient(
-            to bottom,
-            rgba(27, 27, 27, 1) 0%,
-            rgba(32, 32, 32, 1) 40%,
-            rgba(38, 38, 38, 1) 70%,
-            rgba(45, 45, 45, 1) 100%
-          );
-          transform: rotateX(9deg) scaleX(1.06) scaleY(1.08);
-          transform-origin: center bottom;
-        }
-
-        .road-surface::after {
-          content: "";
-          position: absolute;
-          inset: 0;
-          background: linear-gradient(
-            to bottom,
-            rgba(0, 0, 0, 0.35) 0%,
-            rgba(0, 0, 0, 0.15) 45%,
-            rgba(0, 0, 0, 0) 100%
-          );
-          filter: blur(4.2px);
-          mask-image: linear-gradient(
-            to bottom,
-            black 0%,
-            black 30%,
-            transparent 100%
-          );
-        }
-
-        .road-center {
-          position: absolute;
-          top: 78px;
-          left: 0;
-          width: 100%;
-          height: 8.5px;
-          z-index: 20;
-          transform: rotateX(9deg) scaleX(1.06);
-          transform-origin: center bottom;
-          pointer-events: none;
-        }
-
-        .road-dash {
-          width: 100%;
-          height: 100%;
-          background-image: repeating-linear-gradient(
-            80deg,
-            rgba(255, 255, 255, 0.32) 0px,
-            rgba(255, 255, 255, 0.32) 53px,
-            transparent 53px,
-            transparent 90px
-          );
-        }
-
-        .road-vertical-divider {
-          position: absolute;
-          top: 10vh;
-          height: 115px;
-          width: 1px;
-          background: rgba(255, 255, 255, 0.35);
-          transform: rotateX(9deg) rotateZ(-25deg);
-          transform-origin: top;
-          pointer-events: none;
-        }
-
-        @keyframes carEnter {
-          0% { transform: translateX(-100vw) translateY(-50%); }
-          100% { transform: translateX(0) translateY(-50%); }
-        }
-
-        @keyframes carExit {
-          0% { transform: translateX(0) translateY(-50%); }
-          100% { transform: translateX(100vw) translateY(-50%); }
-        }
-
-        @keyframes pointGlow {
-          0%, 100% { 
-            box-shadow: 0 0 0 0 rgba(255, 255, 255, 0.7);
-          }
-          50% { 
-            box-shadow: 0 0 20px 10px rgba(255, 255, 255, 0.7);
-          }
         }
       `}</style>
     </section>
@@ -305,7 +208,6 @@ function BlogNodes({ activeStep, screenSize }) {
   useLayoutEffect(() => {
     const slots = getSlots();
     const CENTER = Math.floor(slots.length / 2);
-    const total = images.length;
 
     let nextCenter = centerIndex;
 
@@ -318,6 +220,7 @@ function BlogNodes({ activeStep, screenSize }) {
 
       const slotIndex = offset + CENTER;
       const slot = slots[slotIndex];
+      
       if (!slot) {
         gsap.to(el, {
           opacity: 0,
@@ -352,8 +255,7 @@ function BlogNodes({ activeStep, screenSize }) {
   useLayoutEffect(() => {
     if (!screenSize.isMobile) return;
 
-    const items = mobileRefs.current;
-    const total = items.length;
+    const items = mobileRefs.current.filter(Boolean);
     const GAP = 380;
 
     items.forEach((el, i) => {
@@ -364,13 +266,13 @@ function BlogNodes({ activeStep, screenSize }) {
     });
 
     const tl = gsap.to(items, {
-      y: `-=${(total - 1) * GAP}`,
+      y: `-=${(items.length - 1) * GAP}`,
       ease: "none",
       scrollTrigger: {
         trigger: ".timeline-wrapper",
         id: "timeline-mobile",
         start: "top top",
-        end: `+=${(total - 0) * 120}%`,
+        end: `+=${items.length * 120}%`,
         scrub: 0.5,
         anticipatePin: 1,
         invalidateOnRefresh: true,
@@ -382,14 +284,11 @@ function BlogNodes({ activeStep, screenSize }) {
     };
   }, [screenSize]);
 
-  // MOBILE COMPONENT - SIMPLE VERSION
+  // MOBILE COMPONENT
   if (screenSize.isMobile) {
     return (
       <section className="relative w-full h-screen bg-[#0b0f0c] timeline-wrapper overflow-hidden">
-        {/* TIMELINE LINE */}
         <div className="absolute left-6 top-0 bottom-0 w-[2px] bg-white/30" />
-
-        {/* TIMELINE ITEMS */}
         <div className="absolute left-0 right-0 top-40 bottom-20">
           {images.slice(0, 5).map((src, i) => (
             <div
@@ -398,11 +297,9 @@ function BlogNodes({ activeStep, screenSize }) {
               className="absolute left-0 right-0"
             >
               <div className="absolute left-6 top-2 w-4 h-4 rounded-full bg-[#0b0f0c] border-2 border-white z-10" />
-
               <div className="ml-12 text-white text-sm font-medium mb-3">
                 {MOBILE_DATES[i]}
               </div>
-
               <div className="ml-12 mr-6 bg-black/50 rounded-xl overflow-hidden border border-white/20">
                 <div className="relative group">
                   <img
@@ -411,29 +308,15 @@ function BlogNodes({ activeStep, screenSize }) {
                     draggable={false}
                     loading="eager"
                   />
-
                   <div className="absolute inset-0 bg-black/30" />
-
                   <div className="absolute inset-0 flex items-center justify-center">
-                    <div
-                      className="w-14 h-14 rounded-full bg-red-600 flex items-center justify-center
-                               backdrop-blur-sm
-                               active:scale-95 transition-transform"
-                    >
-                      <svg
-                        width="30"
-                        height="30"
-                        viewBox="0 0 24 24"
-                        fill="white"
-                        className="ml-[2px]"
-                      >
+                    <div className="w-14 h-14 rounded-full bg-red-600 flex items-center justify-center backdrop-blur-sm active:scale-95 transition-transform">
+                      <svg width="30" height="30" viewBox="0 0 24 24" fill="white" className="ml-[2px]">
                         <path d="M8 5v14l11-7z" />
                       </svg>
                     </div>
                   </div>
                 </div>
-
-                {/* TEXT */}
                 <div className="p-4">
                   <h3 className="text-white text-base font-medium">
                     {CENTER_TEXTS[i]}
@@ -450,35 +333,40 @@ function BlogNodes({ activeStep, screenSize }) {
   /* ================= Desktop Animation JSX ================= */
   return (
     <div className="absolute inset-0 overflow-hidden pointer-events-none">
-      {/* CARDS */}
-      <div className="absolute inset-0 flex items-center justify-center">
-        <div className="relative w-full h-[460px] flex items-center justify-center isolate">
+      {/* CARDS CONTAINER - FIXED POSITIONING */}
+      <div className="absolute top-0 left-0 w-full h-full flex items-center justify-center">
+        <div className="relative w-full h-full flex items-center justify-center">
           {images.map((src, i) => (
             <div
               key={i}
               ref={(el) => (refs.current[i] = el)}
-              className="absolute will-change-transform mb-80"
+              className="absolute will-change-transform"
               style={{
-                width: "100%",
-                maxWidth: screenSize.isMobile ? 460 : 870,
-                height: "auto",
+                top: '50%',
+                left: '50%',
+                transform: 'translate(-50%, -50%)',
               }}
             >
-              <div
-                className={`relative sm:w-full sm:h-full h-[50vh] sm:mt-20 mt-[40vh] sm:p-0 p-2 overflow-hidden`}
-              >
+              {/* IMAGE WRAPPER WITH FIXED VH/VW */}
+              <div className="relative" style={{
+                width: '60vw',
+                height: '50vh',
+                maxWidth: '870px',
+                minHeight: '400px',
+              }}>
                 <img
                   src={src}
-                  className="w-full h-full object-cover object-fit object-center"
+                  className="w-full h-full object-cover rounded-lg"
                   draggable={false}
                   loading="eager"
+                  alt={`Blog ${i + 1}`}
                 />
 
-                <div className="absolute inset-0 bg-black/10" />
+                <div className="absolute inset-0 bg-black/10 rounded-lg" />
 
-                {/* PLAY */}
+                {/* PLAY BUTTON */}
                 <div className="absolute inset-0 flex items-center justify-center">
-                  <div className="w-14 h-14 bg-red-600 rounded-full flex items-center justify-center">
+                  <div className="w-14 h-14 bg-red-600 rounded-full flex items-center justify-center shadow-lg">
                     <div className="ml-1 w-0 h-0 border-t-[10px] border-b-[10px] border-l-[16px] border-transparent border-l-white" />
                   </div>
                 </div>
@@ -490,7 +378,7 @@ function BlogNodes({ activeStep, screenSize }) {
 
       {/* CENTER DATE - DESKTOP ONLY */}
       {centerIndex !== null && screenSize.isDesktop && (
-        <div className="absolute top-[5%] left-1/2 -translate-x-1/2 z-40">
+        <div className="fixed top-[8vh] left-1/2 -translate-x-1/2 z-40 pointer-events-none">
           <div className="text-center px-6 py-3 rounded-lg backdrop-blur-sm">
             <p className="text-white font-mono text-lg font-semibold">
               {DESKTOP_DATES[centerIndex]}
@@ -501,10 +389,15 @@ function BlogNodes({ activeStep, screenSize }) {
 
       {/* CENTER TEXT */}
       {centerIndex !== null && (
-        <div className="absolute left-1/2 -translate-x-1/2 sm:bottom-[20vh] bottom-32 mt-[10vh] z-30 px-4 text-center w-[90vw] sm:w-[80vw] md:w-[75vw] lg:w-[40vw] xl:w-[35vw]">
+        <div className="fixed bottom-[15vh] left-1/2 -translate-x-1/2 z-30 px-4 text-center pointer-events-none"
+          style={{
+            width: screenSize.isMobile ? '90vw' : '40vw',
+            maxWidth: '620px'
+          }}
+        >
           <p
             style={{ fontFamily: "Rethink, sans-serif" }}
-            className="text-white whitespace-pre-line text-sm sm:text-base lg:text-lg leading-[10%] max-w-[620px] mx-auto"
+            className="text-white whitespace-pre-line text-sm sm:text-base lg:text-lg leading-relaxed"
           >
             {CENTER_TEXTS[centerIndex]}
           </p>
@@ -521,10 +414,13 @@ function CenterFeature({ screenSize }) {
       {/* Desktop Grid Lines */}
       {screenSize.isDesktop && (
         <>
-          <div className="absolute top-[5%] bottom-[18%] left-[26.4%] w-px bg-white/30 pointer-events-none" />
-          <div className="absolute top-[5%] bottom-[16%] left-[73.6%] w-px bg-white/30 pointer-events-none" />
-          <div className="absolute left-0 top-[12.3%] w-full h-px bg-white/20 pointer-events-none" />
-          <div className="absolute left-0 top-[62.8%] w-full h-px bg-white/20 pointer-events-none" />
+          {/* Vertical Lines */}
+          <div className="fixed top-[8vh] bottom-[18vh] left-[26.4%] w-px bg-white/30 pointer-events-none z-10" />
+          <div className="fixed top-[8vh] bottom-[18vh] left-[73.6%] w-px bg-white/30 pointer-events-none z-10" />
+
+          {/* Horizontal Lines */}
+          <div className="fixed left-0 top-[15vh] w-full h-px bg-white/20 pointer-events-none z-10" />
+          <div className="fixed left-0 bottom-[25vh] w-full h-px bg-white/20 pointer-events-none z-10" />
         </>
       )}
     </>
