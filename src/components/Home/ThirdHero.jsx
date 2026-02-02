@@ -319,6 +319,11 @@ useLayoutEffect(() => {
     const total = FEATURES.length;
     let isAnimating = false;
 
+    // ✅ ADD GPU ACCELERATION
+    gsap.set([cardsRef.current, videosRef.current, diamondRef.current, progressBarRef.current, bgRef.current], {
+      force3D: true,
+    });
+
     // RESET
     gsap.set(cardsRef.current, { opacity: 0, y: 40, pointerEvents: "none" });
     gsap.set(videosRef.current, { opacity: 0, pointerEvents: "none" });
@@ -330,16 +335,20 @@ useLayoutEffect(() => {
     setActiveIndex(0);
     prevDiamondIndexRef.current = 0;
 
+    // ✅ PRELOAD ALL VIDEOS
+    videosRef.current.forEach(v => {
+      if (v) {
+        v.preload = "auto";
+        v.muted = true;
+        v.playsInline = true;
+        v.load();
+      }
+    });
+
     const ST = ScrollTrigger.create({
       trigger: sectionRef.current,
       start: "top top",
-
-      // ✅ FIXED END
       end: () => `+=${window.innerHeight * total * 2.2}`,
-
-
-
-
       pin: true,
       scrub: false,
       snap: {
@@ -377,44 +386,39 @@ useLayoutEffect(() => {
 
         mobileTimelineRef.current = tl;
 
-        videosRef.current.forEach(v => {
-  v.preload = "auto";
-  v.muted = true;
-  v.playsInline = true;
-});
-
-
-        // ---- DIAMOND ----
+        // ---- DIAMOND ---- ✅ ADD force3D
         tl.to(diamondRef.current, {
           left: DIAMOND_POSITIONS_MOBILE[index],
           duration: 0.3,
+          force3D: true,
         }, 0);
 
-        // ---- PROGRESS BAR ----
+        // ---- PROGRESS BAR ---- ✅ ADD force3D
         tl.to(progressBarRef.current, {
           width: PROGRESS_BAR_STOPS_MOBILE[index],
           duration: 0.3,
+          force3D: true,
         }, 0);
 
         // ---- BG ----
         tl.set(bgRef.current, {
-  background: SECTION_COLORS[index],
-});
+          background: SECTION_COLORS[index],
+        });
 
-
-        // ---- HIDE PREV CARD ----
+        // ---- HIDE PREV CARD ---- ✅ ADD force3D
         if (cardsRef.current[prev]) {
           tl.to(cardsRef.current[prev], {
             opacity: 0,
             y: -30,
             duration: 0.25,
+            force3D: true,
             onComplete: () => {
               gsap.set(cardsRef.current[prev], { pointerEvents: "none" });
             },
           }, 0);
         }
 
-        // ---- SHOW CURRENT CARD ----
+        // ---- SHOW CURRENT CARD ---- ✅ ADD force3D
         if (cardsRef.current[index]) {
           tl.fromTo(
             cardsRef.current[index],
@@ -423,6 +427,7 @@ useLayoutEffect(() => {
               opacity: 1,
               y: 0,
               duration: 0.35,
+              force3D: true,
               onStart: () => {
                 gsap.set(cardsRef.current[index], { pointerEvents: "auto" });
               },
@@ -431,23 +436,22 @@ useLayoutEffect(() => {
           );
         }
 
-        // ---- VIDEO SWITCH (HARD SWAP) ----
+        // ---- VIDEO SWITCH (HARD SWAP) ---- ✅ OPTIMIZED
         videosRef.current.forEach((v, i) => {
-  if (!v) return;
+          if (!v) return;
 
-  if (i === index) {
-    v.style.display = "block";
-    gsap.to(v, { opacity: 1, duration: 0.25 });
+          if (i === index) {
+            v.style.display = "block";
+            gsap.to(v, { opacity: 1, duration: 0.25, force3D: true });
 
-    if (v.paused) {
-      v.play().catch(() => {});
-    }
-  } else {
-    gsap.set(v, { opacity: 0, display: "none" });
-    v.pause();
-  }
-});
-
+            if (v.paused) {
+              v.play().catch(() => {});
+            }
+          } else {
+            gsap.set(v, { opacity: 0, display: "none" });
+            v.pause();
+          }
+        });
 
         requestAnimationFrame(() => setActiveIndex(index));
       },
@@ -480,6 +484,14 @@ useLayoutEffect(() => {
         }
         html {
           scroll-behavior: smooth;
+        }
+        
+        /* ✅ GPU ACCELERATION FOR SMOOTH RENDERING */
+        video {
+          transform: translateZ(0);
+          -webkit-transform: translateZ(0);
+          backface-visibility: hidden;
+          -webkit-backface-visibility: hidden;
         }
       `}</style>
 

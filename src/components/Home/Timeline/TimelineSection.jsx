@@ -179,7 +179,8 @@ function BlogNodes({ activeStep, screenSize }) {
     "Biologically Inspired\nNegotiation Models for\nSmarter Autonomous Systems",
     "AI-driven Cooperative\nDecision Making in\nAutonomous Driving",
     "Redefining the Future of\nAutonomous Vehicles with\nBidirectional Intelligence",
-    "Redefining the Future of\nAutonomous Vehicles with\nBidirectional Intelligence",
+    "AI-driven Cooperative\nDecision Making in\nAutonomous Driving"
+    ,
   ];
 
   const getSlots = () => {
@@ -342,7 +343,7 @@ function BlogNodes({ activeStep, screenSize }) {
               ref={(el) => (refs.current[i] = el)}
               className="absolute will-change-transform"
               style={{
-                top: '50%',
+                top: '45%',
                 left: '50%',
                 transform: 'translate(-50%, -50%)',
               }}
@@ -350,9 +351,9 @@ function BlogNodes({ activeStep, screenSize }) {
               {/* IMAGE WRAPPER WITH FIXED VH/VW */}
               <div className="relative" style={{
                 width: '60vw',
-                height: '50vh',
+                height: '58vh',
                 maxWidth: '870px',
-                minHeight: '400px',
+                minHeight: '450px',
               }}>
                 <img
                   src={src}
@@ -378,7 +379,7 @@ function BlogNodes({ activeStep, screenSize }) {
 
       {/* CENTER DATE - DESKTOP ONLY */}
       {centerIndex !== null && screenSize.isDesktop && (
-        <div className="fixed top-[8vh] left-1/2 -translate-x-1/2 z-40 pointer-events-none">
+        <div className="fixed top-[6vh] left-1/2 -translate-x-1/2 z-40 pointer-events-none">
           <div className="text-center px-6 py-3 rounded-lg backdrop-blur-sm">
             <p className="text-white font-mono text-lg font-semibold">
               {DESKTOP_DATES[centerIndex]}
@@ -389,7 +390,7 @@ function BlogNodes({ activeStep, screenSize }) {
 
       {/* CENTER TEXT */}
       {centerIndex !== null && (
-        <div className="fixed bottom-[15vh] left-1/2 -translate-x-1/2 z-30 px-4 text-center pointer-events-none"
+        <div className="fixed bottom-[10vh] left-1/2 -translate-x-1/2 z-30 px-4 text-center pointer-events-none"
           style={{
             width: screenSize.isMobile ? '90vw' : '40vw',
             maxWidth: '620px'
@@ -415,12 +416,12 @@ function CenterFeature({ screenSize }) {
       {screenSize.isDesktop && (
         <>
           {/* Vertical Lines */}
-          <div className="fixed top-[8vh] bottom-[18vh] left-[26.4%] w-px bg-white/30 pointer-events-none z-10" />
-          <div className="fixed top-[8vh] bottom-[18vh] left-[73.6%] w-px bg-white/30 pointer-events-none z-10" />
+          <div className="fixed top-[6vh] bottom-[15vh] left-[26.4%] w-px bg-white/30 pointer-events-none z-10" />
+          <div className="fixed top-[6vh] bottom-[15vh] left-[73.6%] w-px bg-white/30 pointer-events-none z-10" />
 
           {/* Horizontal Lines */}
-          <div className="fixed left-0 top-[15vh] w-full h-px bg-white/20 pointer-events-none z-10" />
-          <div className="fixed left-0 bottom-[25vh] w-full h-px bg-white/20 pointer-events-none z-10" />
+          <div className="fixed left-0 top-[12vh] w-full h-px bg-white/20 pointer-events-none z-10" />
+          <div className="fixed left-0 bottom-[22vh] w-full h-px bg-white/20 pointer-events-none z-10" />
         </>
       )}
     </>
